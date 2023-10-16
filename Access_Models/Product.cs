@@ -23,12 +23,12 @@ namespace Access_Models
         public int CategoryId { get; set; } 
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
-        public virtual ICollection<Attribute> Attribute { get; set; }
+        public virtual ICollection<ProductAttribute> Attribute { get; set; }
         public virtual ICollection<ProductImage> ProductImage { get; set; }
 
         public Product()
         {
-            Attribute = new List<Attribute>();
+            Attribute = new List<ProductAttribute>();
             ProductImage = new List<ProductImage>();
         }
 

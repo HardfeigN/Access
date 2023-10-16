@@ -13,11 +13,10 @@ namespace Access_Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public int AttributeId { get; set; }
+        public int? AttributeId { get; set; }
         [ForeignKey("AttributeId")]
-        public virtual Attribute Attribute { get; set; }
-        public int ProductId { get; set; }
-        [ForeignKey("ProductId")]
+        public virtual ProductAttribute Attribute { get; set; }
+        public int? ProductId { get; set; }
         public virtual Product Product { get; set; }
         [Range(0, int.MaxValue, ErrorMessage = "Category Level must be equal or greater than 0")]
         public int ImageNumber { get; set; }

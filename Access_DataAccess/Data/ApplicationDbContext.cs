@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Access_Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,13 @@ namespace Access_DataAccess.Data
         {
 
         }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<AttributeValue> AttributeValue { get; set; }
+        public DbSet<Category> Category { get; set; }
+        public DbSet<Order> Order { get; set; }
+        public DbSet<OrderStatus> OrderStatus { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<ProductAttribute> ProductAttribute { get; set; }
+        public DbSet<ProductImage> ProductImage { get; set; }
     }
 }
