@@ -15,6 +15,7 @@ namespace Access_DataAccess.Data
         {
 
         }
+        
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<AttributeValue> AttributeValue { get; set; }
         public DbSet<Category> Category { get; set; }
