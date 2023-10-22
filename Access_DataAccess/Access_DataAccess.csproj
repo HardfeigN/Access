@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Access_Models\Access_Models.csproj" />
+    <ProjectReference Include="..\Access_Utility\Access_Utility.csproj" />
   </ItemGroup>
 
 </Project>

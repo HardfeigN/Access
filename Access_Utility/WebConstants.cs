@@ -12,6 +12,7 @@ namespace Access_Utility
         public const string SessionCart = "SoppingCartSession";
         public const string AdminRole = "Admin";
         public const string CustomerRole = "Customer";
+        public const string CategoryName = "Category";
 
     }
 }
