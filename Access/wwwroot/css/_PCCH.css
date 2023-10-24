@@ -1,0 +1,16 @@
+﻿._pcch-product {
+    display: flex;
+    width: 36.625rem;
+    height: 46.5625rem;
+    flex-shrink: 0;
+    background: #D9D9D9;
+    border: solid 0.1rem rgba(0,0,0, 15%);
+}
+._pcch-product-img {
+    width: 80%;
+    height: 80%;
+    flex-shrink: 0;
+    background: url('../Images/Pages/_PCCH/bag2.png'), transparent 50% / cover no-repeat;
+    background-size: 100%;
+    margin: auto;
+}

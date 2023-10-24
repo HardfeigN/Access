@@ -3,25 +3,29 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-<ul class="navbar-nav">
+<ul class="a-header-list a-header-page-log">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
-        </form>
+    <li >
+        <a src="~/Images/Header/person.svg" id="manage" class="a-header-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"></a>
     </li>
 }
 else
 {
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    <li >
+        <a class="a-header-link" id="login" asp-area="Identity" asp-page="/Account/Login">
+                <img src="~/Images/Header/search.svg">
+        </a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    <li >
+        <a class="a-header-link" id="login" >
+                <img src="~/Images/Header/shopping_bag.svg">
+        </a>
+    </li>
+    <li >
+        <a class="a-header-link" id="login" >
+                <img src="~/Images/Header/person.svg">
+        </a>
     </li>
 }
 </ul>
