@@ -1,0 +1,85 @@
+﻿@model Access_Models.ViewModels.CategoryVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Access_Utility
+
+@{
+    var title = "Create Product";
+}
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/CategoryManagement.css" />
+</head>
+
+<form method="post" >
+    @if (Model.Category.Id != 0)
+    {
+        title = "Edit Category";
+        <input asp-for="Category.Id" hidden />
+    }
+    <div class="border p-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <h2 class="text-info pl-3">@title</h2>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Category.Name"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Category.Name" class="form-control" />
+                        <span asp-validation-for="Category.Name" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Category.ParentId"></label>
+                    </div>
+                    <div class="col-8">
+                        <select asp-for="Category.ParentId" asp-items="@Model.CategorySelectList" class="form-control">
+                            <option disabled selected">--Select Category--</option>
+                        </select>
+                        <span asp-validation-for="Category.ParentId" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-8 offset-4 row">
+
+                        <div class="col">
+                            @if (Model.Category.Id != 0)
+                            {
+                                <input type="submit" class="btn btn-info w-100" value="Update" />
+                            }
+                            else
+                            {
+                                <input type="submit" class="btn btn-primary w-100" value="Create" />
+                            }
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success w-100">
+                                <i class="fa-solid fa-right-from-bracket"></i> Back
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                @* Keep this empty *@
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

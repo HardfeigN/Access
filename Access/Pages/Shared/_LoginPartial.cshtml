@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<ul class="a-header-list a-header-page-log">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li >
+        <a src="~/Images/Header/person.svg" id="manage" class="a-header-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"></a>
+    </li>
+}
+else
+{
+    <li >
+        <a class="a-header-link" id="login" asp-area="Identity" asp-page="/Account/Login">
+                <img src="~/Images/Header/search.svg">
+        </a>
+    </li>
+    <li >
+        <a class="a-header-link" id="login" >
+                <img src="~/Images/Header/shopping_bag.svg">
+        </a>
+    </li>
+    <li >
+        <a class="a-header-link" id="login" >
+                <img src="~/Images/Header/person.svg">
+        </a>
+    </li>
+}
+</ul>

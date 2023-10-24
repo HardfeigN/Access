@@ -1,0 +1,417 @@
+﻿
+body {
+    overflow-x: hidden;
+}
+
+
+
+.a-home-section1 {
+    width: 100%;
+    height: 66.25rem;
+    overflow: hidden;
+}
+
+.a-home-section1-bagimage {
+    width: 47.3125rem;
+    height: 71rem;
+    flex-shrink: 0;
+    background: url('../Images/Pages/Home/homebag.png'), transparent 50% / cover no-repeat;
+    background-size: 100%;
+    position: absolute;
+    top: 0.75rem;
+    left: 72.69rem;
+    padding: 0;
+    z-index: 2000;
+}
+
+.a-home-section1-textmain {
+    width: 73.625rem;
+    color: #FAF6F1;
+    font-family: Conthrax;
+    font-size: 6.9375rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 6.9375rem;
+    top: 19.31rem;
+    position: absolute;
+    z-index: 2000;
+}
+
+.a-home-section1-textsecond {
+    width: 50.875rem;
+    color: #FFF;
+    font-family: Play-Bold;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.0675rem;
+    text-transform: capitalize;
+    top: 34.25rem;
+    position: absolute;
+    z-index: 2000;
+}
+
+.a-home-section1-textback {
+    font-family: Conthrax;
+    font-size: 11.5625rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    background: radial-gradient(252.3% 141.18% at 0% 7.55%, rgba(125, 93, 220, 0.20) 0%, rgba(201, 99, 153, 0.20) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    top: 21.25rem;
+    right: 3.62rem;
+    position: absolute;
+    z-index: 1000;
+}
+
+.a-home-section1-bgcircle1 {
+    width: 29.5625rem;
+    height: 29.5625rem;
+    flex-shrink: 0;
+    border-radius: 29.5625rem;
+    background: rgba(201, 99, 153, 0.25);
+    filter: blur(100px);
+    top: -16.81rem;
+    left: 40.56rem;
+    position: absolute;
+    z-index: 1000;
+}
+
+.a-home-section1-bgcircle2 {
+    width: 41rem;
+    height: 41rem;
+    flex-shrink: 0;
+    border-radius: 41rem;
+    background: rgba(125, 93, 220, 0.25);
+    filter: blur(100px);
+    top: -19.75rem;
+    left: 56.75rem;
+    position: absolute;
+    z-index: 1000;
+}
+
+.a-home-section1-bgcircle3 {
+    width: 41rem;
+    height: 41rem;
+    flex-shrink: 0;
+    border-radius: 41rem;
+    background: rgba(125, 93, 220, 0.25);
+    filter: blur(100px);
+    top: 43.88rem;
+    left: -12.73rem;
+    position: absolute;
+    z-index: 1000;
+}
+
+.a-home-section1-btn-ln {
+    width: 22.5rem;
+    height: 3.75rem;
+    flex-shrink: 0;
+    border: 0.33rem solid #FAF6F1;
+    justify-content: center;
+    position: absolute;
+    display: flex;
+    top: 46rem;
+    align-items: center;
+}
+
+.a-home-section1-btn-ln-text {
+    color: #FAF6F1;
+    font-family: Play-Bold;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+}
+
+.a-home-section1-btn-ct {
+    width: 22.5rem;
+    height: 3.75rem;
+    flex-shrink: 0;
+    background: radial-gradient(15583.68% 141.42% at 0% 0%, #C96399 1.25%, #7D5DDC 100%);
+    border: 0.33rem solid #FAF6F1;
+    justify-content: center;
+    position: absolute;
+    display: flex;
+    top: 46rem;
+    left: 34.69rem;
+    align-items: center;
+}
+
+.a-home-section1-btn-ct-text {
+    color: #FAF6F1;
+    font-family: Play-Bold;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+}
+
+.a-home-ticker {
+    width: 120rem;
+    height: 8.5rem;
+    flex-shrink: 0;
+    background: #FAF6F1;
+    overflow: hidden;
+}
+
+.a-home-ticker-text1 {
+    font-family: Play-Bold;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.0675rem;
+    text-transform: capitalize;
+    background: radial-gradient(422463.65% 137.79% at 2.04% -53.59%, #7D5DDC 0%, #262632 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    overflow: hidden;
+    width: 100%;
+    height: 1.75rem;
+    padding-top: 1.12rem;
+}
+
+.a-home-ticker-text2 {
+    color: #262632;
+    font-family: Play-Bold;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.0675rem;
+    text-transform: capitalize;
+    overflow: hidden;
+    width: 100%;
+    height: 1.75rem;
+    padding-top: 0.5rem;
+}
+
+.a-home-ticker-text3 {
+    font-family: Play-Bold;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.0675rem;
+    text-transform: capitalize;
+    background: linear-gradient(90deg, #262632 2.03%, #C96399 97.43%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    overflow: hidden;
+    width: 100%;
+    height: 1.75rem;
+    padding-top: 0.5rem;
+    position: relative;
+}
+
+.a-home-section2 {
+    width: 100%;
+    height: 71.75rem;
+    overflow: hidden;
+    display: flex;
+}
+
+.a-home-section2-headertext {
+    font-family: Conthrax;
+    font-size: 2.5rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.1125rem;
+    text-transform: capitalize;
+    background: radial-gradient(48514.66% 103.65% at 0.95% 50%, #7D5DDC 0%, #C96399 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding-left: 26.94rem;
+    padding-top: 5.94rem;
+    position: absolute;
+}
+
+.a-home-section2-eq {
+    width: 30rem;
+    height: 30rem;
+    margin: 0;
+    padding-top: 16.13rem;
+    padding-left: 3.75rem;
+    position: absolute;
+}
+
+.a-home-section2-eq-text {
+    color: #FFF;
+    font-family: Play-Regular;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.0675rem;
+    text-transform: capitalize;
+    top: -3.63rem;
+    left: 1.5rem;
+    position: relative;
+}
+
+.a-home-section2-eq-img {
+    width: 17.5625rem;
+    height: 22.5625rem;
+    flex-shrink: 0;
+    background: linear-gradient(0deg, rgba(125, 93, 220, 0.15) 0%, rgba(125, 93, 220, 0.15) 100%), url('../Images/Pages/Home/Rectangle left.png'), lightgray 50% / cover no-repeat;
+    top: -29.7625rem; /*-height-2-5.19*/
+    left: 5rem;
+    position: relative;
+}
+
+.a-home-section2-eq-svg {
+    width: 17.6875rem;
+    height: 22.5rem;
+    flex-shrink: 0;
+    stroke-width: 1px;
+    stroke: #FAF6F1;
+    background-size: 100%;
+    position: relative;
+}
+
+.a-home-section2-fb {
+    width: 30rem;
+    height: 30rem;
+    margin: 0;
+    padding-top: 48.39rem;
+    padding-left: 12.56rem;
+    position: absolute;
+}
+
+.a-home-section2-fb-text {
+    color: #FFF;
+    font-family: Play-Regular;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.0675rem;
+    text-transform: capitalize;
+    top: -3.63rem;
+    left: 1.5rem;
+    position: relative;
+}
+
+.a-home-section2-fb-img {
+    width: 17.5625rem;
+    height: 22.5625rem;
+    flex-shrink: 0;
+    background: linear-gradient(0deg, rgba(125, 93, 220, 0.15) 0%, rgba(125, 93, 220, 0.15) 100%), url('../Images/Pages/Home/Rectangle right.png'), lightgray 50% / cover no-repeat;
+    top: -29.7625rem; /*-height-2-5.19*/
+    left: 5rem;
+    position: relative;
+}
+
+.a-home-section2-fb-svg {
+    width: 17.6875rem;
+    height: 22.5rem;
+    flex-shrink: 0;
+    stroke-width: 1px;
+    stroke: #FAF6F1;
+    background-size: 100%;
+    position: relative;
+}
+
+.a-home-section2-acc {
+    width: 30rem;
+    height: 30rem;
+    margin: 0;
+    padding-top: 18.76rem;
+    padding-left: 31.3rem;
+    position: absolute;
+}
+
+.a-home-section2-acc-text {
+    color: #FFF;
+    font-family: Play-Regular;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.0675rem;
+    text-transform: capitalize;
+    top: -3.63rem;
+    left: 1.5rem;
+    position: relative;
+}
+
+.a-home-section2-acc-img {
+    width: 17.5625rem;
+    height: 22.5625rem;
+    flex-shrink: 0;
+    background: linear-gradient(0deg, rgba(125, 93, 220, 0.15) 0%, rgba(125, 93, 220, 0.15) 100%), url('../Images/Pages/Home/Rectangle right.png'), lightgray 50% / cover no-repeat;
+    top: -29.7625rem; /*-height-2-5.19*/
+    left: 5rem;
+    position: relative;
+}
+
+.a-home-section2-acc-svg {
+    width: 17.6875rem;
+    height: 22.5rem;
+    flex-shrink: 0;
+    stroke-width: 1px;
+    stroke: #FAF6F1;
+    background-size: 100%;
+    position: relative;
+}
+
+.a-home-section2-text-right-h {
+    width: 56.0625rem;
+    color: #FAF6F1;
+    text-align: center;
+    font-family: Play-Regular;
+    font-size: 2.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 100%; /* 2.5rem */
+    text-transform: uppercase;
+    padding-top: 17.5rem;
+    padding-left: 60.56rem;
+    position: absolute;
+}
+
+.a-home-section2-text-right {
+    width: 55.625rem;
+    height: 28.6875rem;
+    flex-shrink: 0;
+    color: #FFF;
+    text-align: justify;
+    font-family: Play-Regular;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 125%; /* 1.875rem */
+    letter-spacing: 0.225rem;
+    padding-top: 21.5rem;
+    padding-left: 60.56rem;
+    position: absolute;
+}
+
+.a-home-section3 {
+    width: 119.6875rem;
+    height: 50.8125rem;
+    flex-shrink: 0;
+    background: #FAF6F1;
+    display: flex;
+    justify-content: space-between;
+}
+
+.a-home-section3-pcch-list {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+}
+

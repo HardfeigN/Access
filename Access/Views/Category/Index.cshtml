@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Access_Models.Category>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/CategoryManagement.css" />
+</head>
+
+
+<div class="a-category-management">
+
+    <div class="a-container-content">
+        <div class="a-category-table-container">
+            <div class="a-category-list">
+                <div class="a-category-list-item a-category-list-text">Category List</div>
+                <div class="a-category-list-item">
+                    <a asp-controller="Category" asp-action="Upsert" class="a-category-create-cat-btn a-category-list-btn">
+                        <i class="fa-solid fa-plus"></i> &nbsp; Create new Category
+                    </a>
+                </div>
+            </div>
+            <br /><br />
+            @if (Model.Count() > 0)
+            {
+                <div class="a-category-list">
+                    <table class="a-category-table">
+                        <thead>
+                            <tr>
+                                <td width="50%">
+                                Category Name
+                                </td>
+                                <td width="30%">
+                                Parent Category
+                                </td>
+                                <td width="20%"></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var obj in Model)
+                            {
+                                <tr class="a-category-table-tr-pd">
+                                    <td width="50%">@obj.Name</td>
+                                    <td width="30%">@obj.ParentId</td>
+                                    <td width="20%" class="a-category-table-last-column">
+                                        <div role="group" class="a-category-table-btn-group">
+                                            <div class="a-category-table-btn-list">
+                                                <a asp-controller="Category" asp-route-Id="@obj.Id" asp-action="Upsert" class="a-category-table-btn">
+                                                    <i class="fa-solid fa-pen-alt a-category-table-btn-icon-edit"></i>
+                                                </a>
+
+                                                <a asp-controller="Category" asp-route-Id="@obj.Id" asp-action="Delete" class="a-category-table-btn">
+                                                    <i class="fa-solid fa-trash-can a-category-table-btn-icon-del"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="a-category-list">No category exists.</div>
+            }
+
+        </div>
+    </div>
+
+</div>

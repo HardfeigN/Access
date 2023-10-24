@@ -15,8 +15,6 @@ namespace Access_Models
         [Required]
         [StringLength(30, ErrorMessage = "Attribute Value must not be greater then 30.")]
         public string Name { get; set; }
-        [Required]
-        [Range(0, int.MaxValue, ErrorMessage = "Category Level must be equal or greater than 0")]
-        public int Level { get; set; }
+        public int? ParentId { get; set; }
     }
 }

@@ -3,42 +3,107 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Access</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Access.styles.css" asp-append-version="true" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/_layout.css" />
+    <link rel="stylesheet" href="~/fonts/fontawesome/css/all.css" />
+    <link rel="stylesheet" href="~/fonts/conthrax-sb.ttf" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Access</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
+            <div class="a-header-back">
+                <div class="a-container-content">
+                    <div class="a-header">
+                        <ul class="a-header-list">
+                            <a class="a-header-logo" asp-area="" asp-page="/Index">ACCESS</a>
+                        </ul>
+
+                        <ul class="a-header-list a-header-page-list">
+     
+                            <li >
+                                <a class="a-header-link" asp-controller="Category" asp-action="Index">CATALOG</a>
+                            </li>
+
+                            <li >
+                                <a class="a-header-link" asp-controller="Category" asp-action="Index">NEW ARRIVALS</a>
+                            </li>
+
+                            <li >
+                                <a class="a-header-link" asp-controller="Category" asp-action="Index">LOOKBOOK</a>
+                            </li>
+
+                            <li >
+                                <a class="a-header-link" asp-controller="Category" asp-action="Index">ABOUT</a>
+                            </li>
+
+                        </ul>
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
             </div>
-        </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div class="">
+        <main role="main" class="">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - Access - <a asp-area="" asp-page="/Privacy">Privacy</a>
+    <footer class="a-footer">
+        <div class="a-container-content">
+            <div class="a-footer-content">
+                <div class="a-footer-list">
+                    <ul class="a-footer-list-ul">
+                        <li>
+                            <a class="a-footer-link a-footer-link-logo">ACCESS</a>
+                        </li>
+                        <li>
+                            <a class="a-footer-link a-footer-link-reg">+1(234)567-89-00</a>
+                        </li>
+                        <li>
+                            <a class="a-footer-link a-footer-link-reg">access@site.com</a>
+                        </li>
+                    </ul>
+
+                    <ul class="a-footer-list-ul">
+                        <li>
+                            <a class="a-footer-link a-footer-link-bold">HELP</a>
+                        </li>
+                        <li>
+                            <a class="a-footer-link a-footer-link-reg">Shipping/Returns</a>
+                        </li>
+                        <li>
+                            <a class="a-footer-link a-footer-link-reg">Loyalty program</a>
+                        </li>
+                        <li>
+                            <a class="a-footer-link a-footer-link-reg">Privacy</a>
+                        </li>
+                    </ul>
+
+                    <ul class="a-footer-list-ul">
+                        <li>
+                            <a class="a-footer-link a-footer-link-bold">INFO</a>
+                        </li>
+                        <li>
+                            <a class="a-footer-link a-footer-link-reg">About</a>
+                        </li>
+                        <li>
+                            <a class="a-footer-link a-footer-link-reg">Contact us</a>
+                        </li>
+                    </ul>
+
+                    <ul class="a-footer-list-ul">
+                        <li>
+                            <a class="a-footer-link a-footer-link-bold">NEWSLETTER</a>
+                        </li>
+                        <li>
+                            <a class="a-footer-link a-footer-link-reg">Sign up to our newsletter for 5% off your first order and be the first to know about exclusive offers, product launches</a>
+                        </li>
+                        <li>
+                            <div class="a-footer-link a-footer-link-rect"></div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="a-footer-copyright">© site 2023</div>
+            </div>
         </div>
     </footer>
 
