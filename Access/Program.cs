@@ -27,6 +27,7 @@ builder.Services.AddSession(Options =>
 });
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IAttributeValueRepository, AttributeValueRepository>();
+builder.Services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
 //
 builder.Services.AddControllersWithViews();
 
