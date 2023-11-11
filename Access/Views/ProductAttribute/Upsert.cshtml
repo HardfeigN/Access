@@ -1,0 +1,111 @@
+﻿@model Access_Models.ViewModels.ProductAttributeVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Access_Utility
+
+@{
+    var title = "Create Product Attribute";
+}
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/CategoryManagement.css" />
+</head>
+
+<form method="post">
+    @if (Model.ProductAttribute.Id != 0)
+    {
+        title = "Edit Product Attribute";
+        <input asp-for="ProductAttribute.Id" hidden />
+    }
+    <div class="border p-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <h2 class="text-info pl-3">@title</h2>
+        </div>
+        <div class="row">
+            <div class="col-8">
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="ProductAttribute.AttributeTypeId"></label>
+                    </div>
+                    <div class="col-8">
+                        <select asp-for="ProductAttribute.AttributeTypeId" asp-items="@Model.AttributeTypeSelectList" class="form-control">
+                            <option disabled selected">--Select Category--</option>
+                        </select>
+                        <span asp-validation-for="ProductAttribute.AttributeTypeId" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="ProductAttribute.AttributeValueId"></label>
+                    </div>
+                    <div class="col-8">
+                        <select asp-for="ProductAttribute.AttributeValueId" asp-items="@Model.AttributeValueSelectList" class="form-control">
+                            <option disabled selected">--Select Category--</option>
+                        </select>
+                        <span asp-validation-for="ProductAttribute.AttributeValueId" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="ProductAttribute.ProductId"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="ProductAttribute.ProductId" class="form-control" />
+                        <span asp-validation-for="ProductAttribute.ProductId" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="ProductAttribute.IsInStock"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="ProductAttribute.IsInStock" class="form-control" />
+                        <span asp-validation-for="ProductAttribute.IsInStock" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-8 offset-4 row">
+
+                        <div class="col">
+                            @if (Model.ProductAttribute.Id != 0)
+                            {
+                                <input type="submit" class="btn btn-info w-100" value="Update" />
+                            }
+                            else
+                            {
+                                <input type="submit" class="btn btn-primary w-100" value="Create" />
+                            }
+                        </div>
+
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success w-100">
+                                <i class="fa-solid fa-right-from-bracket"></i> Back
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                @* Keep this empty *@
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

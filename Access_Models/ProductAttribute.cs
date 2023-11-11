@@ -15,14 +15,14 @@ namespace Access_Models
         [Required]
         public int AttributeValueId { get; set; }
         [ForeignKey("AttributeValueId")]
-        public virtual AttributeValue AttributeValue { get; set; }
+        public virtual AttributeValue? AttributeValue { get; set; }
         [Required]
         public int AttributeTypeId { get; set; }
         [ForeignKey("AttributeTypeId")]
-        public virtual AttributeType AttributeType { get; set; }
-        public int? ProductId { get; set; }
+        public virtual AttributeType? AttributeType { get; set; }
+        public int ProductId { get; set; }
         [ForeignKey("ProductId")]
-        public virtual Product Product { get; set; }
+        public virtual Product? Product { get; set; }
         public bool IsInStock { get; set; }
     }
 }

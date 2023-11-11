@@ -30,7 +30,7 @@ namespace Access.Controllers
             CategoryVM categoryVM = new CategoryVM()
             {
                 Category = new Category(),
-                CategorySelectList = _catRepos.GetAllDropdownList(WebConstants.CategoryName)
+                CategorySelectList = _catRepos.GetAllDropdownList(nameof(Category))
             };
 
             if (id == null)
@@ -72,7 +72,7 @@ namespace Access.Controllers
                 _catRepos.Save();
                 return RedirectToAction("Index");
             }
-            categoryVM.CategorySelectList = _catRepos.GetAllDropdownList(WebConstants.CategoryName);
+            categoryVM.CategorySelectList = _catRepos.GetAllDropdownList(nameof(Category));
             
             if (_catRepos.Find(categoryVM.Category.Id) != null)
             {
@@ -94,7 +94,12 @@ namespace Access.Controllers
                 return NotFound();
             }
 
-            return View(obj);
+            CategoryVM categoryVM = new CategoryVM()
+            {
+                Category = obj,
+                CategorySelectList = _catRepos.GetAllDropdownList(nameof(Category))
+            };
+            return View(categoryVM);
         }
 
         //POST - Delete

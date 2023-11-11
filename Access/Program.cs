@@ -29,6 +29,7 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IAttributeValueRepository, AttributeValueRepository>();
 builder.Services.AddScoped<IAttributeTypeRepository, AttributeTypeRepository>();
 builder.Services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
+builder.Services.AddScoped<IProductAttributeRepository, ProductAttributeRepository>();
 //
 builder.Services.AddControllersWithViews();
 
