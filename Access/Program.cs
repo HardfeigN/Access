@@ -26,6 +26,7 @@ builder.Services.AddSession(Options =>
     Options.Cookie.IsEssential = true;
 });
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IAttributeValueRepository, AttributeValueRepository>();
 //
 builder.Services.AddControllersWithViews();
 

@@ -22,7 +22,7 @@ namespace Access_DataAccess.Repository
 
         public IEnumerable<SelectListItem> GetAllDropdownList(string obj)
         {
-            if (obj == WebConstants.CategoryName)
+            if (obj == nameof(Category)) //WebConstants.CategoryName
             {
                 List<SelectListItem> listItem = new List<SelectListItem>
                 {
