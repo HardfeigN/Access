@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Access_Models
 {
-    public class AttributeValue
+    public class AttributeType
     {
         [Key]
         public int Id { get; set; }
         [Required]
-        [StringLength(15, ErrorMessage = "Attribute Value must not be greater then 7.")]
-        public string Value { get; set; }
+        [StringLength(7, ErrorMessage = "Attribute Value must not be greater then 7.")]
+        public string Name { get; set; }
     }
 }

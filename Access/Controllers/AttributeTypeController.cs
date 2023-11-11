@@ -6,18 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Access.Controllers
 {
-    public class AttributeValueController : Controller
+    public class AttributeTypeController : Controller
     {
-        private readonly IAttributeValueRepository _attrValueRepos;
+        private readonly IAttributeTypeRepository _attrTypeRepos;
 
-        public AttributeValueController(IAttributeValueRepository attrValueRepos)
+        public AttributeTypeController(IAttributeTypeRepository attrTypeRepos)
         {
-            _attrValueRepos = attrValueRepos;
+            _attrTypeRepos = attrTypeRepos;
         }
 
         public IActionResult Index()
         {
-            ICollection<AttributeValue> objList = _attrValueRepos.GetAll();
+            ICollection<AttributeType> objList = _attrTypeRepos.GetAll();
             return View(objList);
         }
 
@@ -29,11 +29,11 @@ namespace Access.Controllers
             if (id == null)
             {
                 //for create
-                return View(new AttributeValue());
+                return View(new AttributeType());
             }
             else
             {
-                var obj = _attrValueRepos.Find(id.GetValueOrDefault());
+                var obj = _attrTypeRepos.Find(id.GetValueOrDefault());
                 if (obj == null)
                 {
                     return NotFound();
@@ -45,25 +45,25 @@ namespace Access.Controllers
         //POST - Upsert
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(AttributeValue attributeValue)
+        public IActionResult Upsert(AttributeType attributeType)
         {
             if (ModelState.IsValid)
             {
-                if (attributeValue.Id == 0)
+                if (attributeType.Id == 0)
                 {
                     //create
-                    _attrValueRepos.Add(attributeValue);
+                    _attrTypeRepos.Add(attributeType);
                 }
                 else
                 {
                     //update
-                    var objFromDb = _attrValueRepos.FirstOrDefault(u => u.Id == attributeValue.Id, isTracking: false);
-                    _attrValueRepos.Update(attributeValue);
+                    var objFromDb = _attrTypeRepos.FirstOrDefault(u => u.Id == attributeType.Id, isTracking: false);
+                    _attrTypeRepos.Update(attributeType);
                 }
-                _attrValueRepos.Save();
+                _attrTypeRepos.Save();
                 return RedirectToAction("Index");
             }
-            return View(attributeValue);
+            return View(attributeType);
         }
 
         //GET - Delete
@@ -73,7 +73,7 @@ namespace Access.Controllers
             {
                 return NotFound();
             }
-            var obj = _attrValueRepos.Find(id.GetValueOrDefault());
+            var obj = _attrTypeRepos.Find(id.GetValueOrDefault());
             if (obj == null)
             {
                 return NotFound();
@@ -88,14 +88,14 @@ namespace Access.Controllers
         [ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            var obj = _attrValueRepos.Find(id.GetValueOrDefault());
+            var obj = _attrTypeRepos.Find(id.GetValueOrDefault());
             if (obj == null)
             {
                 return NotFound();
             }
 
-            _attrValueRepos.Remove(obj);
-            _attrValueRepos.Save();
+            _attrTypeRepos.Remove(obj);
+            _attrTypeRepos.Save();
             return RedirectToAction("Index");
         }
 

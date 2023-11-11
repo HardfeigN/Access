@@ -4,6 +4,7 @@ using Access_DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Access_DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231111033015_changeOrderProperties")]
+    partial class changeOrderProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,24 +24,6 @@ namespace Access_DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Access_Models.AttributeType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(7)
-                        .HasColumnType("nvarchar(7)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AttributeType");
-                });
 
             modelBuilder.Entity("Access_Models.AttributeValue", b =>
                 {
@@ -50,8 +35,8 @@ namespace Access_DataAccess.Migrations
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasMaxLength(7)
+                        .HasColumnType("nvarchar(7)");
 
                     b.HasKey("Id");
 
@@ -176,10 +161,8 @@ namespace Access_DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AttributeTypeId")
-                        .HasColumnType("int");
-
                     b.Property<int>("AttributeValueId")
+                        .HasMaxLength(20)
                         .HasColumnType("int");
 
                     b.Property<bool>("IsInStock")
@@ -190,8 +173,6 @@ namespace Access_DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AttributeTypeId");
 
                     b.HasIndex("AttributeValueId");
 
@@ -484,12 +465,6 @@ namespace Access_DataAccess.Migrations
 
             modelBuilder.Entity("Access_Models.ProductAttribute", b =>
                 {
-                    b.HasOne("Access_Models.AttributeType", "AttributeType")
-                        .WithMany()
-                        .HasForeignKey("AttributeTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Access_Models.AttributeValue", "AttributeValue")
                         .WithMany()
                         .HasForeignKey("AttributeValueId")
@@ -501,8 +476,6 @@ namespace Access_DataAccess.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("AttributeType");
 
                     b.Navigation("AttributeValue");
 

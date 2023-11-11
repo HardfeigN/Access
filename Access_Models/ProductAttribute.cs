@@ -13,11 +13,13 @@ namespace Access_Models
         [Key]
         public int Id { get; set; }
         [Required]
-        [StringLength(20, ErrorMessage = "Attribute Value must not be greater then 20.")]
-        public string Type { get; set; }
         public int AttributeValueId { get; set; }
         [ForeignKey("AttributeValueId")]
         public virtual AttributeValue AttributeValue { get; set; }
+        [Required]
+        public int AttributeTypeId { get; set; }
+        [ForeignKey("AttributeTypeId")]
+        public virtual AttributeType AttributeType { get; set; }
         public int? ProductId { get; set; }
         [ForeignKey("ProductId")]
         public virtual Product Product { get; set; }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Access_Models.AttributeValue>
+﻿@model IEnumerable<Access_Models.AttributeType>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
@@ -15,10 +15,10 @@
     <div class="a-container-content">
         <div class="a-category-table-container">
             <div class="a-category-list">
-                <div class="a-category-list-item a-category-list-text">Attribute Value List</div>
+                <div class="a-category-list-item a-category-list-text">Attribute Type List</div>
                 <div class="a-category-list-item">
-                    <a asp-controller="AttributeValue" asp-action="Upsert" class="a-category-create-cat-btn a-category-list-btn">
-                        <i class="fa-solid fa-plus"></i> &nbsp; Create new Attribute Value
+                    <a asp-controller="AttributeType" asp-action="Upsert" class="a-category-create-cat-btn a-category-list-btn">
+                        <i class="fa-solid fa-plus"></i> &nbsp; Create new Attribute Type
                     </a>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                         <thead>
                             <tr>
                                 <td width="80%">
-                                    Attribute Value
+                                    Attribute Type Name
                                 </td>
                                 <td width="20%"></td>
                             </tr>
@@ -39,15 +39,15 @@
                             @foreach (var obj in Model)
                             {
                                 <tr class="a-category-table-tr-pd">
-                                    <td width="80%">@obj.Value</td>
+                                    <td width="80%">@obj.Name</td>
                                     <td width="20%" class="a-category-table-last-column">
                                         <div role="group" class="a-category-table-btn-group">
                                             <div class="a-category-table-btn-list">
-                                                <a asp-controller="AttributeValue" asp-route-Id="@obj.Id" asp-action="Upsert" class="a-category-table-btn">
+                                                <a asp-controller="AttributeType" asp-route-Id="@obj.Id" asp-action="Upsert" class="a-category-table-btn">
                                                     <i class="fa-solid fa-pen-alt a-category-table-btn-icon-edit"></i>
                                                 </a>
 
-                                                <a asp-controller="AttributeValue" asp-route-Id="@obj.Id" asp-action="Delete" class="a-category-table-btn">
+                                                <a asp-controller="AttributeType" asp-route-Id="@obj.Id" asp-action="Delete" class="a-category-table-btn">
                                                     <i class="fa-solid fa-trash-can a-category-table-btn-icon-del"></i>
                                                 </a>
                                             </div>
@@ -61,7 +61,7 @@
             }
             else
             {
-                <div class="a-category-list">No category exists.</div>
+                <div class="a-category-list">No Attribute types exists.</div>
             }
 
         </div>
