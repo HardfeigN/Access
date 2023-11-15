@@ -11,27 +11,20 @@ using System.Threading.Tasks;
 
 namespace Access_DataAccess.Repository
 {
-    public class CategoryRepository : Repository<Category>, ICategoryRepository
+    public class ProductRepository : Repository<Product>, IProductRepository
     {
         private readonly ApplicationDbContext _db;
 
-        public CategoryRepository(ApplicationDbContext db) : base(db)
+        public ProductRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
 
         public IEnumerable<SelectListItem> GetAllDropdownList(string obj)
         {
-            if (obj == nameof(Category)) //WebConstants.CategoryName
+            if (obj == nameof(Category))
             {
-                List<SelectListItem> listItem = new List<SelectListItem>
-                {
-                    new SelectListItem()
-                    {
-                        Text = "No parent",
-                        Value = DBNull.Value.ToString()
-                    }
-                };
+                List<SelectListItem> listItem = new List<SelectListItem>();
                 listItem.AddRange(_db.Category.Select(i => new SelectListItem
                 {
                     Text = i.Name,
@@ -42,9 +35,9 @@ namespace Access_DataAccess.Repository
             return null;
         }
 
-        public void Update(Category obj)
+        public void Update(Product obj)
         {
-            _db.Category.Update(obj);
+            _db.Product.Update(obj);
         }
     }
 }

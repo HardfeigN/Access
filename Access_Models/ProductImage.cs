@@ -13,7 +13,7 @@ namespace Access_Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public int? AttributeId { get; set; }
+        public int AttributeId { get; set; }
         [ForeignKey("AttributeId")]
         public virtual ProductAttribute Attribute { get; set; }
         public int? ProductId { get; set; }

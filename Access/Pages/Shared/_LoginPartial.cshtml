@@ -1,30 +1,53 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using Access_Models;
+@using Access_Utility;
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
 <ul class="a-header-list a-header-page-log">
+<li >
+    <a class="a-header-link" id="login" asp-area="Identity" asp-page="/Account/Login">
+            <img src="~/Images/Header/search.svg">
+    </a>
+</li>
+<li >
+    @if (HttpContextAccessor.HttpContext.Session.Get<List<ShoppingCart>>(WebConstants.SessionCart) != null)
+    {
+        <a asp-action="Index" asp-controller="Cart" class="a-header-link">
+        @{
+            var count = HttpContextAccessor.HttpContext.Session.Get<List<ShoppingCart>>(WebConstants.SessionCart).Count;
+        }
+            <img src="~/Images/Header/shopping_bag.svg">@*<sub class="a-header-link-log-sub">(@count)</sub>*@
+        </a>
+    }
+    else
+    {
+        <a asp-action="Index" asp-controller="Cart" class="a-header-link">
+            <img src="~/Images/Header/shopping_bag.svg">@*<sub class="a-header-link-log-sub">(0)</sub>*@
+        </a>
+    }
+</li>
 @if (SignInManager.IsSignedIn(User))
 {
     <li >
-        <a src="~/Images/Header/person.svg" id="manage" class="a-header-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"></a>
+        <a id="manage" class="a-header-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                <img src="~/Images/Header/person.svg">    
+        </a>
+    </li>
+    <li >
+        <a id="manage" class="a-header-link" asp-area="Identity" asp-page="/Account/Logout" title="Manage">
+                <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
     </li>
 }
 else
 {
     <li >
-        <a class="a-header-link" id="login" asp-area="Identity" asp-page="/Account/Login">
-                <img src="~/Images/Header/search.svg">
-        </a>
-    </li>
-    <li >
-        <a class="a-header-link" id="login" >
-                <img src="~/Images/Header/shopping_bag.svg">
-        </a>
-    </li>
-    <li >
-        <a class="a-header-link" id="login" >
-                <img src="~/Images/Header/person.svg">
+        <a id="login" class="a-header-link" asp-area="Identity" asp-page="/Account/Login" title="login">
+            <img src="~/Images/Header/person.svg">
         </a>
     </li>
 }

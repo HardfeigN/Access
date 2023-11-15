@@ -15,14 +15,14 @@ namespace Access_Models
         [Required]
         public string Name { get; set; }
         [Required]
-        [Range(0, int.MaxValue)]
-        public int Price { get; set; }
+        [Range(0, double.MaxValue)]
+        public float Price { get; set; }
         public string ShortDesc { get; set; }
         public string Description { get; set; }
         [Display(Name = "Category Type")]
         public int CategoryId { get; set; } 
         [ForeignKey("CategoryId")]
-        public virtual Category Category { get; set; }
+        public virtual Category? Category { get; set; }
         public virtual ICollection<ProductAttribute> Attribute { get; set; }
         public virtual ICollection<ProductImage> ProductImage { get; set; }
 

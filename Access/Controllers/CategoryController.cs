@@ -66,7 +66,6 @@ namespace Access.Controllers
                 else
                 {
                     //update
-                    var objFromDb = _catRepos.FirstOrDefault(u => u.Id == categoryVM.Category.Id, isTracking: false);
                     _catRepos.Update(categoryVM.Category);
                 }
                 _catRepos.Save();

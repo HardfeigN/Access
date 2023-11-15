@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Access_Models
 {
-    public class Order
+    public class OrderHeader
     {
         [Key]
         public int Id { get; set; }
@@ -17,11 +17,10 @@ namespace Access_Models
         public virtual OrderStatus OrderStatus { get; set; }
         public string CreatedByUserId { get; set; }
         [ForeignKey("CreatedByUserId")]
-        public ApplicationUser CreatedBy { get; set; }
-        public int OrderPrice;
+        public virtual ApplicationUser CreatedBy { get; set; }
+        public float OrderPrice;
         public DateTime CreateDate { get; set; }
         public DateTime PaymentDate { get; set; }
         public DateTime ComplationDate { get; set; }
-        public virtual ICollection<Product> Product { get; set; }
     }
 }

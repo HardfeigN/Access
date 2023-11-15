@@ -62,7 +62,6 @@ namespace Access.Controllers
                 else
                 {
                     //update
-                    var objFromDb = _prodAttrRepos.FirstOrDefault(u => u.Id == productAttributeVM.ProductAttribute.Id, isTracking: false);
                     _prodAttrRepos.Update(productAttributeVM.ProductAttribute);
                 }
                 _prodAttrRepos.Save();

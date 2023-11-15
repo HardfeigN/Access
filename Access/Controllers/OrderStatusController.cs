@@ -57,7 +57,6 @@ namespace Access.Controllers
                 else
                 {
                     //update
-                    var objFromDb = _ordStRepos.FirstOrDefault(u => u.Id == orderStatus.Id, isTracking: false);
                     _ordStRepos.Update(orderStatus);
                 }
                 _ordStRepos.Save();

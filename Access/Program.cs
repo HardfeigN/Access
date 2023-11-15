@@ -30,6 +30,10 @@ builder.Services.AddScoped<IAttributeValueRepository, AttributeValueRepository>(
 builder.Services.AddScoped<IAttributeTypeRepository, AttributeTypeRepository>();
 builder.Services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
 builder.Services.AddScoped<IProductAttributeRepository, ProductAttributeRepository>();
+builder.Services.AddScoped<IInquiryDetailRepository, InquiryDetailRepository>();
+builder.Services.AddScoped<IInquiryHeaderRepository, InquiryHeaderRepository>();
+builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 //
 builder.Services.AddControllersWithViews();
 

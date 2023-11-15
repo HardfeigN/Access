@@ -57,7 +57,6 @@ namespace Access.Controllers
                 else
                 {
                     //update
-                    var objFromDb = _attrValueRepos.FirstOrDefault(u => u.Id == attributeValue.Id, isTracking: false);
                     _attrValueRepos.Update(attributeValue);
                 }
                 _attrValueRepos.Save();

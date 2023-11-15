@@ -96,6 +96,10 @@ ul {
     text-align: center;
 }
 
+.a-header-link sub {
+    all: initial;
+}
+
 .a-header-page-list {
     width: 45rem;
 }
