@@ -1,0 +1,36 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/Inquiry.css" />
+    <link rel="stylesheet" href="~/lib/DataTables/datatables.css" />
+</head>
+
+<div class="a-container-content">
+    <div class="a-inquiry-table-container">
+        <table id="inquiryDataTable" class="a-inquiry-table">
+            <thead class="a-inquiry-table-head">
+                <tr class="a-inquiry-table-row">
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/inquiry.js"></script>
+    <script src="~/lib/DataTables/datatables.js"></script>
+}

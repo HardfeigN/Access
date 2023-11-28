@@ -32,8 +32,11 @@ builder.Services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
 builder.Services.AddScoped<IProductAttributeRepository, ProductAttributeRepository>();
 builder.Services.AddScoped<IInquiryDetailRepository, InquiryDetailRepository>();
 builder.Services.AddScoped<IInquiryHeaderRepository, InquiryHeaderRepository>();
+builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+builder.Services.AddScoped<IOrderHeaderRepository, OrderHeaderRepository>();
 builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductImageRepository, ProductImageRepository>();
 //
 builder.Services.AddControllersWithViews();
 

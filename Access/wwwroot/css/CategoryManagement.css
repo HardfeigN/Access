@@ -8,7 +8,7 @@ a{
 
 .a-category-management {
     width: 100%;
-    height: 40rem;
+    min-height: 40rem;
     display: flex;
     justify-content: center;
 }
@@ -73,7 +73,7 @@ a{
 
 .a-category-table-container {
     width: 80%;
-    height: 30rem;
+    min-height: 30rem;
     margin: auto;
     display: flex;
     flex-direction: column;

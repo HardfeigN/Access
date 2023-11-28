@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Product>
+﻿@model List<Product>
 @using Access_Models;
 @using Access_Utility
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -21,7 +21,8 @@
                                 Shopping Cart
                             </div>
                             <div class="col-6 text-right">
-                                <a asp-action="Index" asp-controller="Home" class="btn btn-outline-info btn-sm">Continue Shopping</a>
+                                <a asp-action="Clear" class="btn btn-outline-info btn-sm">Clear Cart</a>
+                                <a asp-action="Index" asp-controller="Catalog" class="btn btn-outline-info btn-sm">Continue Shopping</a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -41,22 +42,27 @@
                             </div>
 
                             <hr />
-                            @foreach (var obj in Model)
+                            @for (int i = 0; i < Model.Count(); i++)
                             {
+                                <input hidden asp-for="@Model[i].Id" />
                                 <div class="row h-100">
                                     <div class="col-4 col-md-2 text-center py-2">
                                         @*<img src="@WebConstants.ProductImagePath@obj.Image" class="rounded w-100" />*@
                                     </div>
                                     <div class="col-8 col-lg-7">
-                                        <h5>@obj.Name</h5>
-                                        <div style="font-size:11px;">@obj.ShortDesc</div>
+                                        <h5>@Model.ElementAt(i).Name</h5>
+                                        <div style="font-size:11px;">@Model[i].ShortDesc</div>
                                     </div>
                                     <div class="col-3 col-lg-2 pt-lg-4" style="font-size:11px;">
-                                        <span style="font-size:17px;"> @obj.Price</span>/ kg
+                                        <span style="font-size:17px;"> @Model[i].Price</span>
 
                                     </div>
+                                    <div class="col-3 col-lg-2 pt-lg-4" style="font-size:11px;">
+                                        <input type="number" asp-for="@Model[i].TempQuantity" value="@Model[i].TempQuantity" />
+                                        <span asp-validation-for="@Model[i].TempQuantity"></span>
+                                    </div>
                                     <div class="col-2 col-lg-1 p-0 pt-lg-4 text-center">
-                                        <a asp-action="Remove" asp-route-id="@obj.Id" class="btn btn-outline-danger">
+                                        <a asp-action="Remove" asp-route-id="@Model[i].Id" class="btn btn-outline-danger">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>
@@ -83,4 +89,8 @@
 else
 {
     <p>Please add items to cart.</p>
+}
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
 }

@@ -1,0 +1,108 @@
+﻿@using Access_Utility;
+@model Access_Models.ViewModels.InquiryVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/Inquiry.css" />
+</head>
+
+<div class="a-container-content">
+
+    <form method="post" class="a-inquiry-details-form-container">
+        <input hidden asp-for="InquiryHeader.Id" />
+        <div class="a-inquiry-details">
+            <div class="a-inquiry-details-header">
+                <div class="a-inquiry-details-header-title a-inquiry-details-header-item">
+                    Order Summary
+                </div>
+                <div class="a-inquiry-details-header-button a-inquiry-details-header-item">
+                    <a asp-action="Index">
+                        Back to Inquiry
+                    </a>
+                </div>
+            </div>
+
+            <div class="a-inquiry-details-body">
+                <div class="a-inquiry-details-info-item">
+                    <div class="a-inquiry-details-opi-header">
+                        PickUp Details
+                    </div>
+
+                    <div class="a-inquiry-details-order-info-item">
+                        <div class="a-inquiry-details-order-info-item-left">
+                            Name
+                        </div>
+                        <input asp-for="InquiryHeader.FullName" type="text" class="a-inquiry-details-order-info-item-right" />
+                        <span asp-validation-for="InquiryHeader.FullName"></span>
+                    </div>
+
+                    <div class="a-inquiry-details-order-info-item">
+                        <div class="a-inquiry-details-order-info-item-left">
+                            Phone
+                        </div>
+                        <input asp-for="InquiryHeader.PhoneNumber" type="text" class="a-inquiry-details-order-info-item-right" />
+                        <span asp-validation-for="InquiryHeader.PhoneNumber"></span>
+                    </div>
+
+                    <div class="a-inquiry-details-order-info-item">
+                        <div class="a-inquiry-details-order-info-item-left">
+                            Email
+                        </div>
+                        <input asp-for="InquiryHeader.Email" type="text" class="a-inquiry-details-order-info-item-right" />
+                        <span asp-validation-for="InquiryHeader.Email"></span>
+                    </div>
+
+                    <div class="a-inquiry-details-order-info-item">
+                        <div class="a-inquiry-details-order-info-item-left">
+                            Inquiry Date
+                        </div>
+                        <input value="@Model.InquiryHeader.InquiryDate.ToShortDateString()" type="text" class="a-inquiry-details-order-info-item-right" readonly />
+                    </div>
+
+                    <div class="a-inquiry-details-order-info-item">
+                        <div class="a-inquiry-details-order-info-item-left">
+
+                        </div>
+                        <div class="a-inquiry-details-order-info-item-right">
+                            <div class="a-inquiry-details-buttons">
+                                <input type="submit" class="a-inquiry-details-btn a-inquiry-details-btn-ctc" value="Convert To Cart" />
+                                <input type="submit" class="a-inquiry-details-btn a-inquiry-details-btn-del" value="Delete" formaction="/Inquiry/Delete" formmethod="post" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="a-inquiry-details-info-item a-inquiry-details-products">
+                    <div class="a-inquiry-details-opi-header">
+                        Order Summary
+                    </div>
+
+                    @foreach (var prod in Model.InquiryDetail)
+                    {
+                        <div class="a-inquiry-details-product-item">
+                            <div class="a-inquiry-details-product-img">
+                                <img src="@WebConstants.ProductImagePath@prod.Product.Id\@Model.ProductImages.Where(u => u.ProductId == prod.Product.Id && u.ImageNumber == 0).FirstOrDefault().Name" />
+                            </div>
+                            <div class="a-inquiry-details-product-info">
+                                <div class="a-inquiry-details-product-text">
+                                    @prod.Product.Name
+                                </div>
+                                <div class="a-inquiry-details-product-text">
+                                    Price: @prod.Product.Price $
+                                </div>
+                            </div>
+                        </div>                        
+                    }
+
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+</div>

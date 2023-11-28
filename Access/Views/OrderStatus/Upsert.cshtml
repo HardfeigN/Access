@@ -30,8 +30,28 @@
                         <label asp-for="Name"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="Name" class="form-control" />
+                        <input asp-for="Name" list="StatusNumber" />
+                        <datalist id="StatusNumber">
+                            <option value="@WebConstants.StatusPending"></option>
+                            <option value="@WebConstants.StatusApproved"></option>
+                            <option value="@WebConstants.StatusProcessing"></option>
+                            <option value="@WebConstants.StatusShipped"></option>
+                            <option value="@WebConstants.StatusCancelled"></option>
+                            <option value="@WebConstants.StatusRefunded"></option>
+                        </datalist>
                         <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="StatusNumber"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="StatusNumber">
+
+                        <span asp-validation-for="StatusNumber" class="text-danger"></span>
                     </div>
 
                 </div>

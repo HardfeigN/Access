@@ -1,0 +1,43 @@
+﻿@model Access_Models.ViewModels.CatalogVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/_IndividualProductCard.css" />
+    <link rel="stylesheet" href="~/css/Catalog.css" />
+</head>
+
+
+<div class="a-container-content">
+
+    <div class="a-catalog-content">
+        
+
+        <div class="a-catalog-product-table">
+            <div class="a-catalog-product-table-body">
+                @{
+                    for (int i = 0; i < Math.Ceiling(Model.IndividualProductVMs.Count() / 4.0); i++)
+                    {
+                        <div class="a-catalog-product-table-row">
+                            @for (int j = 0; j < 4; j++)
+                            {
+                                //display all products
+                                <div class="a-catalog-product-table-cell">
+                                    @if (i * 4 + j < Model.IndividualProductVMs.Count() && j < 4)
+                                    {
+                                        <partial name="~/Views/Shared/_IndividualProductCard.cshtml" model="Model.IndividualProductVMs.ElementAt(i * 4 + j)" />
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

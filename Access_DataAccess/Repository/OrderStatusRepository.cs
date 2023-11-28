@@ -22,11 +22,22 @@ namespace Access_DataAccess.Repository
 
         public void Update(OrderStatus obj)
         {
-            var objFromDb = base.FirstOrDefault(u => u.Id == obj.Id);
-            if (objFromDb != null)
+            _db.OrderStatus.Update(obj);
+        }
+
+        public IEnumerable<SelectListItem> GetAllDropdownList(string obj, bool addId)
+        {
+            if (obj == nameof(OrderStatus))
             {
-                objFromDb.Name = obj.Name;
+                List<SelectListItem> listItem = new List<SelectListItem>();
+                listItem.AddRange(_db.OrderStatus.Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = addId ? i.Id.ToString() : i.Name
+                }));
+                return listItem;
             }
+            return null;
         }
     }
 }

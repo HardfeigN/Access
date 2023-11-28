@@ -12,5 +12,6 @@ namespace Access_DataAccess.Repository.IRepository
     {
         void Update(Category obj);
         IEnumerable<SelectListItem> GetAllDropdownList(string obj);
+        Task<IEnumerable<SelectListItem>> GetAllDropdownListAsync(string obj);
     }
 }

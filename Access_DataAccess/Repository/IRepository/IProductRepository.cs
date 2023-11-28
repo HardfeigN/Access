@@ -1,4 +1,5 @@
 ﻿using Access_Models;
+using Access_Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,8 @@ namespace Access_DataAccess.Repository.IRepository
     {
         void Update(Product obj);
         IEnumerable<SelectListItem> GetAllDropdownList(string obj);
+        Task<IEnumerable<SelectListItem>> GetAllDropdownListAsync(string obj);
+        IndividualProductVM GetIndividualProductVM(int id);
+        Task<IndividualProductVM> GetIndividualProductVMAsync(int id);
     }
 }

@@ -9,13 +9,15 @@ namespace Access.Controllers
     public class ProductController : Controller
     {
         private readonly IProductRepository _prodRepos;
+        private readonly IProductImageRepository _prodImgRepos;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
 
-        public ProductController(IProductRepository prodRepos, IWebHostEnvironment webHostEnvironment)
+        public ProductController(IProductRepository prodRepos, IWebHostEnvironment webHostEnvironment, IProductImageRepository prodImgRepos)
         {
             _prodRepos = prodRepos;
             _webHostEnvironment = webHostEnvironment;
+            _prodImgRepos = prodImgRepos;
         }
 
         public IActionResult Index()
@@ -36,7 +38,8 @@ namespace Access.Controllers
                     Category = new Category()
                 },
                 
-                CategorySelectList = _prodRepos.GetAllDropdownList(nameof(Category))
+                CategorySelectList = _prodRepos.GetAllDropdownList(nameof(Category)),
+                ProductImages = new List<ProductImage>()
             };
 
             if (id == null)
@@ -51,6 +54,7 @@ namespace Access.Controllers
                 {
                     return NotFound();
                 }
+                productVM.ProductImages = _prodImgRepos.GetProductImages(productVM.Product.Id);
                 return View(productVM);
             }
         }
@@ -62,52 +66,18 @@ namespace Access.Controllers
         {
             if (ModelState.IsValid)
             {
-                var files = HttpContext.Request.Form.Files;
-                string webRootPath = _webHostEnvironment.WebRootPath;
-
-                string upload = webRootPath + WebConstants.ProductImagePath;
-                string fileName = Guid.NewGuid().ToString();
-
                 if (productVM.Product.Id == 0)
                 {
-                    //create
-                    /*
-                    string extension = Path.GetExtension(files[0].FileName);
-                    using (var fileStrem = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
-                    {
-                        files[0].CopyTo(fileStrem);
-                    };
-                    productVM.Product.Image = fileName + extension;
-                    */
+
                     _prodRepos.Add(productVM.Product);
+                    TempData[WebConstants.Success] = "Pruduct created successfully";
                 }
                 else
                 {
                     //update
                     var objFromDb = _prodRepos.FirstOrDefault(u => u.Id == productVM.Product.Id, isTracking:false);
-                    /*
-                    if (files.Count > 0)
-                    {
-                        string extension = Path.GetExtension(files[0].FileName);
-                        var oldFile = Path.Combine(upload, objFromDb.Image);
-                        if (System.IO.File.Exists(oldFile))
-                        {
-                            System.IO.File.Delete(oldFile);
-                        }
-
-                        using (var fileStrem = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
-                        {
-                            files[0].CopyTo(fileStrem);
-                        };
-
-                        productVM.Product.Image = fileName + extension;
-                    }
-                    else
-                    {
-                        productVM.Product.Image = objFromDb.Image;
-                    }
-                    */
                     _prodRepos.Update(productVM.Product);
+                    TempData[WebConstants.Success] = "Pruduct updated successfully";
                 }
                 _prodRepos.Save();
                 return RedirectToAction("Index");
@@ -139,19 +109,13 @@ namespace Access.Controllers
             var obj = _prodRepos.Find(id.GetValueOrDefault());
             if (obj == null)
             {
+                TempData[WebConstants.Error] = "Error deleting Product";
                 return NotFound();
             }
-            /*
-            string upload = _webHostEnvironment.WebRootPath + WebConstants.ProductImagePath;
 
-            var oldFile = Path.Combine(upload, obj.Image);
-            if (System.IO.File.Exists(oldFile))
-            {
-                System.IO.File.Delete(oldFile);
-            }
-            */
             _prodRepos.Remove(obj);
             _prodRepos.Save();
+            TempData[WebConstants.Success] = "Pruduct deleted successfully";
             return RedirectToAction("Index");
         }
     }

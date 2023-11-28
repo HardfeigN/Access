@@ -1,0 +1,18 @@
+﻿@using Access_Utility
+
+@if(TempData[WebConstants.Success] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.success('@TempData[WebConstants.Success]');
+    </script>
+}
+@if(TempData[WebConstants.Error] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.success('@TempData[WebConstants.Error]');
+    </script>
+}

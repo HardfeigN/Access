@@ -53,15 +53,18 @@ namespace Access.Controllers
                 {
                     //create
                     _ordStRepos.Add(orderStatus);
+                    TempData[WebConstants.Success] = "Order Status created successfully";
                 }
                 else
                 {
                     //update
                     _ordStRepos.Update(orderStatus);
+                    TempData[WebConstants.Success] = "Order Status updated successfully";
                 }
                 _ordStRepos.Save();
                 return RedirectToAction("Index");
             }
+            TempData[WebConstants.Error] = "Error while creating or updating Order status";
             return View(orderStatus);
         }
 
@@ -90,11 +93,13 @@ namespace Access.Controllers
             var obj = _ordStRepos.Find(id.GetValueOrDefault());
             if (obj == null)
             {
+                TempData[WebConstants.Error] = "Error while deleting Order Status";
                 return NotFound();
             }
 
             _ordStRepos.Remove(obj);
             _ordStRepos.Save();
+            TempData[WebConstants.Success] = "Order Status deleted successfully";
             return RedirectToAction("Index");
         }
 

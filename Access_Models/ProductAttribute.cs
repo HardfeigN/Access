@@ -24,5 +24,10 @@ namespace Access_Models
         [ForeignKey("ProductId")]
         public virtual Product? Product { get; set; }
         public bool IsInStock { get; set; }
+        public virtual ICollection<ProductImage> ProductImage { get; }
+        public ProductAttribute()
+        {
+            ProductImage = new List<ProductImage>();
+        }
     }
 }

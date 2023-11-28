@@ -1,0 +1,78 @@
+﻿a {
+    text-decoration: none;
+}
+
+.a-IPC-containet {
+    all: inherit;
+    cursor: pointer;
+    width: 27.1875rem;
+    height: 31.6875rem;
+    flex-shrink: 0;
+    border: 0.06rem solid #000;
+    background: #D9D9D9;
+    overflow: hidden;
+}
+
+.a-IPC-img-container {
+    width: auto;
+    height: 27.1875rem;
+    flex-shrink: 0;
+    border-bottom: 0.06rem solid #000;
+    background: #FFF;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+.a-IPC-img-container img {
+    width: 27.1875rem;
+    height: 27.1875rem;
+    flex-shrink: 0;
+}
+
+.a-IPC-imgages {
+    display: flex;
+    position: relative;
+    right: 0rem;
+}
+
+.a-IPC-detail-container {
+    width: auto;
+    height: 4.5rem;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 1.895rem;
+    padding-right: 1.895rem;
+}
+
+.a-IPC-detail-container-item {
+    width: auto;
+    height: 100%;
+    display: flex;
+}
+
+.a-IPC-name-text {
+    width: 100%;
+    color: #1E1E1E;
+    font-family: Conthrax;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    align-self: center;
+    text-align: center;
+}
+
+.a-IPC-name-price {
+    width: 100%;
+    color: #1E1E1E;
+    font-family: Conthrax;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    align-self: center;
+    text-align: center;
+}

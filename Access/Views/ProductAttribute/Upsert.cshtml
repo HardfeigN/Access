@@ -10,99 +10,127 @@
 }
 <head>
     <link rel="stylesheet" href="~/css/CategoryManagement.css" />
+    <link rel="stylesheet" href="~/css/UpsertManagement.css" />
 </head>
 
-<form method="post">
-    @if (Model.ProductAttribute.Id != 0)
-    {
-        title = "Edit Product Attribute";
-        <input asp-for="ProductAttribute.Id" hidden />
-    }
-    <div class="border p-3">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group row">
-            <h2 class="text-info pl-3">@title</h2>
-        </div>
-        <div class="row">
-            <div class="col-8">
+<div class="a-container-content">
 
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="ProductAttribute.AttributeTypeId"></label>
-                    </div>
-                    <div class="col-8">
-                        <select asp-for="ProductAttribute.AttributeTypeId" asp-items="@Model.AttributeTypeSelectList" class="form-control">
-                            <option disabled selected">--Select Category--</option>
-                        </select>
-                        <span asp-validation-for="ProductAttribute.AttributeTypeId" class="text-danger"></span>
-                    </div>
-
+    <div class="a-upsert-container-content">
+        <form class="a-upsert-form" method="post" enctype="multipart/form-data">
+            @if (Model.ProductAttribute.Id != 0)
+            {
+                title = "Edit Product Attribute";
+                <input asp-for="ProductAttribute.Id" hidden />
+            }
+            <div class="">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="a-upsert-form-lable">
+                    <h2 class="">@title</h2>
                 </div>
+                <div class="">
+                    <div class="">
 
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="ProductAttribute.AttributeValueId"></label>
-                    </div>
-                    <div class="col-8">
-                        <select asp-for="ProductAttribute.AttributeValueId" asp-items="@Model.AttributeValueSelectList" class="form-control">
-                            <option disabled selected">--Select Category--</option>
-                        </select>
-                        <span asp-validation-for="ProductAttribute.AttributeValueId" class="text-danger"></span>
-                    </div>
+                        <div class="form-group a-upsert-form-item">
+                            <div class="a-upsert-form-lable a-upsert-form-item-div">
+                                <label asp-for="ProductAttribute.AttributeTypeId"></label>
+                            </div>
+                            <div class="a-upsert-form-input a-upsert-form-item-div">
+                                <select asp-for="ProductAttribute.AttributeTypeId" asp-items="@Model.AttributeTypeSelectList" class="form-control">
+                                    <option disabled selected">--Select Category--</option>
+                                </select>
+                                <span asp-validation-for="ProductAttribute.AttributeTypeId" class="text-danger"></span>
+                            </div>
 
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="ProductAttribute.ProductId"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="ProductAttribute.ProductId" class="form-control" />
-                        <span asp-validation-for="ProductAttribute.ProductId" class="text-danger"></span>
-                    </div>
-
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="ProductAttribute.IsInStock"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="ProductAttribute.IsInStock" class="form-control" />
-                        <span asp-validation-for="ProductAttribute.IsInStock" class="text-danger"></span>
-                    </div>
-
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-8 offset-4 row">
-
-                        <div class="col">
-                            @if (Model.ProductAttribute.Id != 0)
-                            {
-                                <input type="submit" class="btn btn-info w-100" value="Update" />
-                            }
-                            else
-                            {
-                                <input type="submit" class="btn btn-primary w-100" value="Create" />
-                            }
                         </div>
 
-                        <div class="col">
-                            <a asp-action="Index" class="btn btn-success w-100">
-                                <i class="fa-solid fa-right-from-bracket"></i> Back
-                            </a>
+                        <div class="form-group a-upsert-form-item">
+                            <div class="a-upsert-form-lable a-upsert-form-item-div">
+                                <label asp-for="ProductAttribute.AttributeValueId"></label>
+                            </div>
+                            <div class="a-upsert-form-input a-upsert-form-item-div">
+                                <select asp-for="ProductAttribute.AttributeValueId" asp-items="@Model.AttributeValueSelectList" class="form-control">
+                                    <option disabled selected">--Select Category--</option>
+                                </select>
+                                <span asp-validation-for="ProductAttribute.AttributeValueId" class="text-danger"></span>
+                            </div>
+
                         </div>
+
+                        <div class="form-group a-upsert-form-item">
+                            <div class="a-upsert-form-lable a-upsert-form-item-div">
+                                <label asp-for="ProductAttribute.ProductId"></label>
+                            </div>
+                            <div class="a-upsert-form-input a-upsert-form-item-div">
+                                <input asp-for="ProductAttribute.ProductId" class="form-control" />
+                                <span asp-validation-for="ProductAttribute.ProductId" class="text-danger"></span>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group a-upsert-form-item">
+                            <div class="a-upsert-form-lable a-upsert-form-item-div">
+                                <label asp-for="ProductAttribute.IsInStock"></label>
+                            </div>
+                            <div class="a-upsert-form-item-div">
+                                <input asp-for="ProductAttribute.IsInStock" class="form-control" />
+                                <span asp-validation-for="ProductAttribute.IsInStock" class="text-danger"></span>
+                            </div>
+
+                        </div>
+
+                        <div class="a-upsert-form-lable">
+                            <h3 class="">Product Images</h3>
+                        </div>
+
+
+                        <div class="form-group a-upsert-form-item">
+                            <div class="a-upsert-form-lable a-upsert-form-item-div">
+                                <label>Images</label>
+                            </div>
+                            <div class="a-upsert-form-item-div">
+                                <input type="file" name="files" id="uploadBox" multiple class="form-control" />
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="form-group a-upsert-form-item">
+                            <div class="a-upsert-form-item-div">
+
+                                <div class="a-upsert-form-item-div">
+                                    @if (Model.ProductAttribute.Id != 0)
+                                    {
+                                        <input type="submit" class="btn btn-info w-100" value="Update" />
+                                    }
+                                    else
+                                    {
+                                        <input type="submit" class="btn btn-primary w-100" value="Create" />
+                                    }
+                                </div>
+
+                            <div class="a-upsert-form-item-div">
+                                    <a asp-action="Index" class="btn btn-success w-100">
+                                        <i class="fa-solid fa-right-from-bracket"></i> Back
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="a-upsert-form-lable a-upsert-form-item-div">
+                        @if (Model.ProductImages.Count() > 0)
+                        {
+                            foreach (var image in Model.ProductImages)
+                            {
+                                <img src="@WebConstants.ProductImagePath@Model.ProductAttribute.ProductId\@image.Name" width="100" style="width: 3rem; height: 3rem; border-radius:5px; border:1px solid #bbb" />
+                            }
+                        }
                     </div>
                 </div>
             </div>
-            <div class="col-4">
-                @* Keep this empty *@
-            </div>
-        </div>
+        </form>
     </div>
-</form>
-
+</div>
 @section Scripts{
 
     @{

@@ -183,10 +183,29 @@ namespace Access_DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("OrderStatusId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ShippingDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -210,6 +229,9 @@ namespace Access_DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
+
+                    b.Property<int>("StatusNumber")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -288,7 +310,7 @@ namespace Access_DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AttributeId")
+                    b.Property<int?>("AttributeId")
                         .HasColumnType("int");
 
                     b.Property<int>("ImageNumber")
@@ -298,7 +320,7 @@ namespace Access_DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -585,7 +607,7 @@ namespace Access_DataAccess.Migrations
                         .IsRequired();
 
                     b.HasOne("Access_Models.OrderStatus", "OrderStatus")
-                        .WithMany()
+                        .WithMany("OrderHeader")
                         .HasForeignKey("OrderStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -636,14 +658,14 @@ namespace Access_DataAccess.Migrations
             modelBuilder.Entity("Access_Models.ProductImage", b =>
                 {
                     b.HasOne("Access_Models.ProductAttribute", "Attribute")
-                        .WithMany()
-                        .HasForeignKey("AttributeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("ProductImage")
+                        .HasForeignKey("AttributeId");
 
                     b.HasOne("Access_Models.Product", "Product")
                         .WithMany("ProductImage")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Attribute");
 
@@ -701,10 +723,20 @@ namespace Access_DataAccess.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Access_Models.OrderStatus", b =>
+                {
+                    b.Navigation("OrderHeader");
+                });
+
             modelBuilder.Entity("Access_Models.Product", b =>
                 {
                     b.Navigation("Attribute");
 
+                    b.Navigation("ProductImage");
+                });
+
+            modelBuilder.Entity("Access_Models.ProductAttribute", b =>
+                {
                     b.Navigation("ProductImage");
                 });
 #pragma warning restore 612, 618

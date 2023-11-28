@@ -30,7 +30,11 @@
                         <label asp-for="Name"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="Name" class="form-control" />
+                        <input asp-for="Name" list="AttributeType">
+                        <datalist   id="AttributeType">
+                            <option value="@WebConstants.Size"></option>
+                            <option value="@WebConstants.Color"></option>
+                        </datalist>
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
 

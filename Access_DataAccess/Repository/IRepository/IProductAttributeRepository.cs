@@ -12,5 +12,7 @@ namespace Access_DataAccess.Repository.IRepository
     {
         void Update(ProductAttribute obj);
         IEnumerable<SelectListItem> GetAllDropdownList(string obj);
+        Task<IEnumerable<SelectListItem>> GetAllDropdownListAsync(string obj);
+        IEnumerable<ProductAttribute> GetAllProductAttributes(int id, bool isLasy);
     }
 }

@@ -10,5 +10,6 @@ namespace Access_Models.ViewModels
     {
         public InquiryHeader InquiryHeader { get; set; }
         public IEnumerable<InquiryDetail> InquiryDetail { get; set; }
+        public IEnumerable<ProductImage> ProductImages { get; set; }
     }
 }

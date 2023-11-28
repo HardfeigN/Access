@@ -1,0 +1,60 @@
+﻿@model Access_Models.ViewModels.OrderListVM 
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<form method="get">
+    <div style="width:80%; display: flex; flex-direction: column;">
+        <div class="row" style="width:100%; display: flex; flex-direction: row;">
+
+            <div>
+                @Html.Editor("searchName", new { htmlAttributes = new { @class="", @placeholder="Name..."}});
+            </div>
+            <div>
+                @Html.Editor("searchEmail", new { htmlAttributes = new { @class="", @placeholder="Email..."}});
+            </div>
+            <div>
+                @Html.Editor("searchPhone", new { htmlAttributes = new { @class="", @placeholder="Phone..."}});
+            </div>
+
+        </div>
+        <div class="row" style="width:100%; display: flex; flex-direction: row;">
+            <div style="display: flex; flex-direction: column;">
+
+                <div>
+                    @Html.DropDownList("Status_Name", Model.OrderStatusList, "--Order Status--", htmlAttributes: new { @class=""});
+                    @*@Html.DropDownListFor(u => u.Status.Name, Model.OrderStatusList, "--Order Status--", new { @class=""}); for search by id (in OrderStatusList.value set id's')*@
+                </div>
+
+            </div>
+
+            <button type="submit">
+                Search
+            </button>
+
+        </div>
+
+    </div>
+</form>
+
+<ejs-grid id="Grid" dataSource="@Model.OrderHList" allowFiltering="true" allowSorting="true" allowPaging="true">
+    <e-grid-filtersettings type="Menu"></e-grid-filtersettings>
+    <e-grid-loadingIndicator indicatorType="Shimmer"></e-grid-loadingIndicator>
+    <e-grid-pagesettings pageSize="5"></e-grid-pagesettings>
+    <e-grid-columns>
+        <e-grid-column field="Id" headerText="ID" isPrimaryKey="true" textAlign="Right" width="2rem"></e-grid-column>
+        <e-grid-column field="FullName" headerText="Name" textAlign="Right" width="20rem"></e-grid-column>
+        <e-grid-column field="Email" headerText="Email" textAlign="Right" width="20rem"></e-grid-column>
+        <e-grid-column field="PhoneNumber" headerText="Phone Number" textAlign="Right" width="20rem"></e-grid-column>
+        <e-grid-column field="OrderStatus.Name" headerText="Order Status" textAlign="Right" width="20rem"></e-grid-column>
+        <e-grid-column field="CreateDate" headerText="Date of Creation" customFormat="@(new { type="date", format="MM/dd/yyyy" })" textAlign="Right" width="20rem"></e-grid-column>
+        <e-grid-column field="Id" headerText="" width="3rem"
+                       template="<a rel='nofollow' href='Order/Details/${Id}'><i class='fa-solid fa-pen-alt' style='width: 3rem;
+                                                                                                                    height: 3rem;
+                                                                                                                    display: flex;
+                                                                                                                    justify-content: center;
+                                                                                                                    align-items: center;
+                                                                                                                    border-radius: 0.5rem;'></i></a>"></e-grid-column>
+
+    </e-grid-columns>
+</ejs-grid>

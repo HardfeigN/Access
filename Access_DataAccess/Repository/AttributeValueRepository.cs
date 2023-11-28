@@ -22,11 +22,7 @@ namespace Access_DataAccess.Repository
 
         public void Update(AttributeValue obj)
         {
-            var objFromDb = base.FirstOrDefault(u => u.Id == obj.Id);
-            if (objFromDb != null)
-            {
-                objFromDb.Value = obj.Value;
-            }
+            _db.AttributeValue.Update(obj);
         }
     }
 }

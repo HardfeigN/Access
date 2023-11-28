@@ -13,5 +13,7 @@ namespace Access_Models.ViewModels
         public Product Product { get; set; }
         [ValidateNever]
         public IEnumerable<SelectListItem> CategorySelectList { get; set; }
+        [ValidateNever]
+        public IEnumerable<ProductImage> ProductImages { get; set; }
     }
 }

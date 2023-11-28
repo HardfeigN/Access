@@ -53,15 +53,18 @@ namespace Access.Controllers
                 {
                     //create
                     _attrTypeRepos.Add(attributeType);
+                    TempData[WebConstants.Success] = "Attribute Type created successfully";
                 }
                 else
                 {
                     //update
                     _attrTypeRepos.Update(attributeType);
+                    TempData[WebConstants.Success] = "Attribute Type updated successfully";
                 }
                 _attrTypeRepos.Save();
                 return RedirectToAction("Index");
             }
+            TempData[WebConstants.Error] = "Error while creating or updating Attribute Type";
             return View(attributeType);
         }
 
@@ -90,11 +93,13 @@ namespace Access.Controllers
             var obj = _attrTypeRepos.Find(id.GetValueOrDefault());
             if (obj == null)
             {
+                TempData[WebConstants.Error] = "Error while deleting Attribute Type";
                 return NotFound();
             }
 
             _attrTypeRepos.Remove(obj);
             _attrTypeRepos.Save();
+            TempData[WebConstants.Success] = "Attribute Type deleted successfully";
             return RedirectToAction("Index");
         }
 

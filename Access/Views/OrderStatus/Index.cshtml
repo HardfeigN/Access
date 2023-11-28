@@ -29,8 +29,11 @@
                     <table class="a-category-table">
                         <thead>
                             <tr>
-                                <td width="80%">
+                                <td width="50%">
                                     Order Status Name
+                                </td>
+                                <td width="30%">
+                                    Order Status Number
                                 </td>
                                 <td width="20%"></td>
                             </tr>
@@ -39,7 +42,8 @@
                             @foreach (var obj in Model)
                             {
                                 <tr class="a-category-table-tr-pd">
-                                    <td width="80%">@obj.Name</td>
+                                    <td width="50%">@obj.Name</td>
+                                    <td width="30%">@obj.StatusNumber</td>
                                     <td width="20%" class="a-category-table-last-column">
                                         <div role="group" class="a-category-table-btn-group">
                                             <div class="a-category-table-btn-list">

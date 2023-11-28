@@ -17,9 +17,9 @@ namespace Access.Controllers
             _catRepos = catRepos;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ICollection<Category> objList = _catRepos.GetAll();
+            ICollection<Category> objList = await _catRepos.GetAllAsync();
             return View(objList);
         }
 
@@ -62,15 +62,19 @@ namespace Access.Controllers
                 {
                     //create
                     _catRepos.Add(categoryVM.Category);
+                    TempData[WebConstants.Success] = "Category created successfully";
                 }
                 else
                 {
                     //update
                     _catRepos.Update(categoryVM.Category);
+                    TempData[WebConstants.Success] = "Category updated successfully";
                 }
                 _catRepos.Save();
                 return RedirectToAction("Index");
             }
+            TempData[WebConstants.Error] = "Error while creating or updating category";
+
             categoryVM.CategorySelectList = _catRepos.GetAllDropdownList(nameof(Category));
             
             if (_catRepos.Find(categoryVM.Category.Id) != null)
@@ -110,11 +114,13 @@ namespace Access.Controllers
             var obj = _catRepos.Find(id.GetValueOrDefault());
             if (obj == null)
             {
+                TempData[WebConstants.Error] = "Error while deketing category";
                 return NotFound();
             }
 
             _catRepos.Remove(obj);
             _catRepos.Save();
+            TempData[WebConstants.Success] = "Category deleted successfully";
             return RedirectToAction("Index");
         }
     }

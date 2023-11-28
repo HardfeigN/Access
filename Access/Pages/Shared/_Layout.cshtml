@@ -7,44 +7,49 @@
     <link rel="stylesheet" href="~/css/_layout.css" />
     <link rel="stylesheet" href="~/fonts/fontawesome/css/all.css" />
     <link rel="stylesheet" href="~/fonts/conthrax-sb.ttf" />
+    <link rel="stylesheet" href="~/lib/summernote-0.8.18-dist/summernote-lite.css" />
+    <link rel="stylesheet" href="~/css/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/23.2.4/fluent.css" />
 </head>
 <body>
     <header>
-            <div class="a-header-back">
-                <div class="a-container-content">
-                    <div class="a-header">
-                        <ul class="a-header-list">
-                            <a class="a-header-logo" asp-area="" asp-page="/Index">ACCESS</a>
-                        </ul>
+        <div class="a-header-back">
+            <div class="a-container-content">
+                <div class="a-header">
+                    <ul class="a-header-list">
+                        <a class="a-header-logo" asp-area="" asp-page="/Index">ACCESS</a>
+                    </ul>
 
-                        <ul class="a-header-list a-header-page-list">
+                    <ul class="a-header-list a-header-page-list">
      
-                            <li >
-                                <a class="a-header-link" asp-controller="Category" asp-action="Index">CATALOG</a>
-                            </li>
+                        <li >
+                            <a class="a-header-link" asp-controller="Catalog" asp-action="Index">CATALOG</a>
+                        </li>
 
-                            <li >
-                                <a class="a-header-link" asp-controller="Category" asp-action="Index">NEW ARRIVALS</a>
-                            </li>
+                        <li >
+                            <a class="a-header-link" asp-controller="Inquiry" asp-action="Index">NEW ARRIVALS</a>
+                        </li>
 
-                            <li >
-                                <a class="a-header-link" asp-controller="Category" asp-action="Index">LOOKBOOK</a>
-                            </li>
+                        <li >
+                            <a class="a-header-link" asp-controller="Category" asp-action="Index">LOOKBOOK</a>
+                        </li>
 
-                            <li >
-                                <a class="a-header-link" asp-controller="Category" asp-action="Index">ABOUT</a>
-                            </li>
+                        <li >
+                            <a class="a-header-link" asp-controller="Category" asp-action="Index">ABOUT</a>
+                        </li>
 
-                        </ul>
+                    </ul>
 
-                        <partial name="_LoginPartial" />
-                    </div>
+                    <partial name="_LoginPartial" />
                 </div>
             </div>
+        </div>
     </header>
     <div class="">
-        <main role="main" class="">
+        <main role="main" class="a-render-body">
+            <partial name="~/Views/Shared/_Notifications.cshtml" />
             @RenderBody()
+            <!-- Syncfusion ASP.NET Core Script Manager -->
         </main>
     </div>
 
@@ -109,9 +114,20 @@
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/toastr.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/summernote-0.8.18-dist/summernote-lite.js"></script>
+    <script src="https://cdn.syncfusion.com/ej2/23.2.4/dist/ej2.min.js"></script>
+
+
 
     @await RenderSectionAsync("Scripts", required: false)
+    <ejs-scripts></ejs-scripts>
 </body>
+
+<script type="text/javascript">
+    html.style.height = `calc(${element.scrollHeight}/font-size)`;
+</script>
+
 </html>

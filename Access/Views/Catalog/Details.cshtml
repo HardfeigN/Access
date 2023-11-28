@@ -1,0 +1,127 @@
+﻿@model Access_Models.ViewModels.IndividualProductVM
+@using Access_Utility
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/Catalog.css" />
+</head>
+
+<div class="a-container-content">
+    <div class="a-details-container">
+      <form method="post">
+        <input asp-for="@Model.Product.Id" hidden />
+        <div class="a-product-info">
+            <div class="a-details-slider">
+                @{
+                    int imgBlocksCount = 4;
+                    if (Model.ProductImages.Count() > 4) imgBlocksCount = Model.ProductImages.Count();
+                    string height = (Math.Round(imgBlocksCount * (13.375 + 1.54), 2).ToString() + "rem").Replace(",", ".");
+                    <div class="a-details-slider-images" style="height: @height;" onclick="sliderMove()">
+                        @for (int i = 0; i < 4 || i < Model.ProductImages.Count(); i++)
+                        {
+                            <div class="a-details-slider-images-item">
+                                @if(i < Model.ProductImages.Count())
+                                {
+                                    <img loading="lazy" src="@WebConstants.ProductImagePath@Model.Product.Id\@Model.ProductImages.ElementAt(i).Name" />
+                                }
+                            </div>                            
+                        }
+                    </div>
+                }
+
+                <div class="a-details-slider-mainimage">
+                    <img src="@WebConstants.ProductImagePath@Model.Product.Id\@Model.ProductImages.ToArray()[Model.SliderImageIndex].Name" />
+                </div>
+            </div>
+
+            <div class="a-details-rightblock">
+                <div class="a-details-rightblock-content">
+
+                    <div class="a-details-product-name">
+                        @Model.Product.Name
+                    </div>
+
+                    <div class="a-details-product-price">
+                        @Model.Product.Price
+                    </div>
+
+                    <div class="a-details-product-color">
+
+                        @{
+                            int count = Model.ProductAttributes.Where(a => a.AttributeType.Name == WebConstants.Color).Count();
+                            if (count > 0)
+                            {
+                                for (int i = 0; i < 3 || i < Model.ProductAttributes.Count(); i++)
+                                {
+                                    if (i < count)
+                                    {
+                                        <div class="a-details-product-color-item" style="background: @Model.ProductAttributes.ElementAt(i).AttributeValue.Value;border: 0.5rem solid #FAF6F1;">
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="a-details-product-color-item">
+                                        </div>
+                                    }
+
+                                }
+
+                            }
+                        }
+                    </div>
+
+                    @if (Model.ExistInCart)
+                    {
+                        <button asp-action="RemoveFromCart" asp-route-id="@Model.Product.Id" type="submit" class="a-details-product-addtocart-button">Remove from Cart</button>
+                    }
+                    else
+                    {
+                        <button type="submit" formmethod="post" class="a-details-product-addtocart-button">ADD TO CART</button>
+                    }
+
+                    <div class="a-details-product-description">
+                        <div class="a-details-product-description-buttons">
+                            <div class="a-details-product-description-buttons-item">
+                                DESCRIPTION
+                            </div>
+                            <div class="a-details-product-description-buttons-item">
+                                MATERIALS
+                            </div>
+                            <div class="a-details-product-description-buttons-item">
+                                SIZE
+                            </div>
+                            <div class="a-details-product-description-buttons-item">
+                                SHIPPING / RETURNS
+                            </div>
+                        </div>
+
+                        <div class="a-details-product-description-content">
+                            <p>
+                                Free delivery by courier within the day in Paris and suburbs. For any order in France, free shipping by DPD in 3 working days.In the rest of the world and from 200€ of order, free shipping by Fedex and DHL between 3 and 5 working days.
+                                <br />
+                                <br />
+                                Returns are eligible for refund within 30 days of your purchase (personalized items excluded).
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+      </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function sliderMove() {
+        var imagesCount = $('.a-details-slider-images-item').length;
+        if (imagesCount > 4){
+
+            $('.a-details-slider-images').css('bottom', '13.375rem');
+        }
+    }
+</script>
