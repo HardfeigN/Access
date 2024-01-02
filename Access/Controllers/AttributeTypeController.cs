@@ -1,11 +1,12 @@
 ﻿using Access_DataAccess.Repository.IRepository;
 using Access_Models;
-using Access_Models.ViewModels;
 using Access_Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Access.Controllers
 {
+    [Authorize(Roles = WebConstants.AdminRole)]
     public class AttributeTypeController : Controller
     {
         private readonly IAttributeTypeRepository _attrTypeRepos;
@@ -15,14 +16,14 @@ namespace Access.Controllers
             _attrTypeRepos = attrTypeRepos;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             ICollection<AttributeType> objList = _attrTypeRepos.GetAll();
             return View(objList);
         }
 
-
-        //GET - Upsert
+        [HttpGet]
         public IActionResult Upsert(int? id)
         {
 
@@ -42,7 +43,6 @@ namespace Access.Controllers
             }
         }
 
-        //POST - Upsert
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Upsert(AttributeType attributeType)
@@ -68,7 +68,7 @@ namespace Access.Controllers
             return View(attributeType);
         }
 
-        //GET - Delete
+        [HttpGet]
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
@@ -84,7 +84,6 @@ namespace Access.Controllers
             return View(obj);
         }
 
-        //POST - Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Delete")]
@@ -102,6 +101,5 @@ namespace Access.Controllers
             TempData[WebConstants.Success] = "Attribute Type deleted successfully";
             return RedirectToAction("Index");
         }
-
     }
 }

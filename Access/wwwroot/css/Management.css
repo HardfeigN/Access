@@ -1,0 +1,292 @@
+﻿a{
+    text-decoration: none;
+}
+
+.a-management {
+    width: 100%;
+    min-height: 40rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.a-management-list-text {
+    padding-top: 0;
+    padding-left: 0;
+    width: 100%;
+    line-height: normal;
+    color: #FAF6F1;
+    font-family: Play-Bold;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: left;
+}
+
+.a-management-list-btn {
+    padding-top: 0;
+    padding-left: 0;
+    width: 100%;
+    line-height: normal;
+    color: #FAF6F1;
+    font-family: Play-Regular !important;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 300;
+    text-decoration: none;
+    text-align: center;
+}
+
+.a-management-table {
+    padding-top: 0;
+    padding-left: 0;
+    width: 100%;
+    line-height: 5rem;
+    color: #FAF6F1;
+    font-family: Play-Bold;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    text-decoration: none;
+    border-spacing: .5rem;
+}
+
+.a-management-table table{
+    border-collapse: collapse;
+}
+
+.a-management-table thead td{
+    background: #FAF6F1;
+    color: #262632;
+    text-align: center;
+}
+
+.a-management-table td, th{
+    outline: .125rem solid #FAF6F1;
+    outline-offset: -.125rem;
+    text-decoration: none;
+}
+
+.a-management-table-tr-pd td {
+    padding-left: 2rem;
+}
+
+.a-management-table-container {
+    width: 88rem;
+    min-height: 30rem;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.a-management-table-last-column {
+    text-align: center;
+    padding-left: 0 !important;
+}
+
+.a-management-list {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.a-management-list-item {
+    width: auto;
+    display: inline-block;
+    justify-content: space-between;
+}
+
+.a-management-table-btn-group {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    margin: auto;
+}
+
+.a-management-table-btn-list {
+    width: 6.875rem;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+}
+
+.a-management-table-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    background: #FAF6F1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.a-management-table-btn-icon-del {
+    color: #C96363;
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-shrink: 0;
+}
+
+.a-management-table-btn-icon-edit {
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-shrink: 0;
+    color: #fff;
+}
+
+.a-management-create-cat-btn {
+    padding-top: 0;
+    padding-left: 0;
+    width: 100%;
+    line-height: normal;
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/*usert-delete*/
+
+.a-management-title {
+    display: flex;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: start;
+    user-select: none;
+}
+
+.a-management-form-container {
+    margin-top: 2rem;
+    width: 100%;
+    height: max-content;
+    display: flex;
+    justify-content: center;
+}
+
+.a-management-form {
+    width: 25rem;
+    height: max-content;
+    display: flex;
+    justify-content: space-around;
+}
+
+.a-management-inform-container {
+    display: flex;
+    width: 90%;
+    height: max-content;
+    margin: auto;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.a-management-form-item{
+    width: 100%;
+    min-height: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.a-management-form-label {
+    margin-left: 0;
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.a-management-form-input {
+    display: flex;
+    margin-top: .5rem;
+    width: 100%;
+    height: 2rem;
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    background: none;
+    border: none;
+    outline: .125rem solid #FAF6F180;
+    outline-offset: -.125rem;
+}
+
+.a-management-form-input:focus {
+    outline: .125rem solid #FAF6F1;
+    outline-offset: -.125rem;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #FAF6F1;
+    -webkit-box-shadow: 0 0 0 62.5rem #262632 inset;
+    background-color: transparent;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.a-management-form-span {
+    display: flex;
+    margin-top: .1rem;
+    font-family: Play-Regular;
+    font-size: 1rem;
+}
+
+.a-management-form-buttons{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.a-management-form-btn-item{
+    display: flex;
+    width: 50%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+}
+
+.a-management-form-btn {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 2rem;
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    border: none;
+    background: none;
+    outline: .125rem solid #FAF6F1;
+    outline-offset: -.125rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.a-management-form-btn:active {
+    background: #FAF6F120;
+}

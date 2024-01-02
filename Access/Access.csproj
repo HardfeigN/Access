@@ -4,6 +4,8 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,10 +29,6 @@
     <ProjectReference Include="..\Access_DataAccess\Access_DataAccess.csproj" />
     <ProjectReference Include="..\Access_Models\Access_Models.csproj" />
     <ProjectReference Include="..\Access_Utility\Access_Utility.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\Images\Pages\Home\" />
   </ItemGroup>
 
 </Project>

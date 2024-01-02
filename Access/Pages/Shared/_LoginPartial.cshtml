@@ -9,7 +9,7 @@
 
 <ul class="a-header-list a-header-page-log">
 <li >
-    <a class="a-header-link" id="login" asp-area="Identity" asp-page="/Account/Login">
+    <a class="a-header-link" id="login" asp-controller="Catalog" asp-action="Search">
             <img src="~/Images/Header/search.svg">
     </a>
 </li>
@@ -33,20 +33,15 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li >
-        <a id="manage" class="a-header-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+        <a id="manage" class="a-header-link" asp-action="Index" asp-controller="Account" title="Manage">
                 <img src="~/Images/Header/person.svg">    
-        </a>
-    </li>
-    <li >
-        <a id="manage" class="a-header-link" asp-area="Identity" asp-page="/Account/Logout" title="Manage">
-                <i class="fa-solid fa-right-from-bracket"></i>
         </a>
     </li>
 }
 else
 {
     <li >
-        <a id="login" class="a-header-link" asp-area="Identity" asp-page="/Account/Login" title="login">
+        <a id="login" class="a-header-link" asp-action="Index" asp-controller="Account" title="login">
             <img src="~/Images/Header/person.svg">
         </a>
     </li>

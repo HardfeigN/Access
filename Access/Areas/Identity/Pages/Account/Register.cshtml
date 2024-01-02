@@ -1,8 +1,56 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Sign up";
 }
+<head>
+    <link rel="stylesheet" href="~/css/login.css" />
+</head>
+
+<div class="a-container-content">
+    <div class="a-login-container">
+        <div class="a-login-title">@ViewData["Title"]</div>
+        <div class="a-login-form-container">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="a-reg-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="a-login-inform-container">
+                <div class="a-login-form-item a-login-form-inp-cont">
+                    <input asp-for="Input.FullName" class="a-login-form-input" autocomplete="username" aria-required="true" placeholder=" " />
+                    <label asp-for="Input.FullName" class="a-login-form-label">Full Name</label>
+                    <span asp-validation-for="Input.FullName" class="a-login-form-span"></span>
+                </div>
+                <div class="a-login-form-item a-login-form-inp-cont">
+                    <input asp-for="Input.Email" class="a-login-form-input" autocomplete="username" aria-required="true" placeholder=" " />
+                    <label asp-for="Input.Email" class="a-login-form-label">Email</label>
+                    <span asp-validation-for="Input.Email" class="a-login-form-span"></span>
+                </div>
+                <div class="a-login-form-item a-login-form-inp-cont">
+                    <input asp-for="Input.PhoneNumber" class="a-login-form-input" autocomplete="username" aria-required="true" placeholder=" " />
+                    <label asp-for="Input.PhoneNumber" class="a-login-form-label">Phone Number</label>
+                    <span asp-validation-for="Input.PhoneNumber" class="a-login-form-span"></span>
+                </div>
+                <div class="a-login-form-item a-login-form-inp-cont">
+                    <input asp-for="Input.Password" class="a-login-form-input" autocomplete="new-password" aria-required="true" placeholder=" " />
+                    <label asp-for="Input.Password" class="a-login-form-label">Password</label>
+                    <span asp-validation-for="Input.Password" class="a-login-form-span"></span>
+                </div>
+                <div class="a-login-form-item a-login-form-inp-cont">
+                    <input asp-for="Input.ConfirmPassword" class="a-login-form-input" autocomplete="new-password" aria-required="true" placeholder=" " />
+                    <label asp-for="Input.ConfirmPassword" class="a-login-form-label">Confirm Password</label>
+                    <span asp-validation-for="Input.ConfirmPassword" class="a-login-form-span"></span>
+                </div>
+                    <button id="registerSubmit" type="submit" class="a-login-btn">Sign up</button>
+                <div class="a-login-form-item">
+                    <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Log in</a>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+
+@* 
 
 <h1>@ViewData["Title"]</h1>
 
@@ -71,6 +119,7 @@
         </section>
     </div>
 </div>
+*@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Access_Models.ViewModels
 {
     public class CatalogVM
@@ -15,6 +10,7 @@ namespace Access_Models.ViewModels
         public IEnumerable<ProductImage> ProductImages { get; set; }
         public IEnumerable<AttributeType> AttributeTypes { get; set; }
         public IEnumerable<AttributeValue> AttributeValues { get; set; }
-
+        public Category CurrentCategory { get; set; }
+        public string SearchText { get; set; }
     }
 }

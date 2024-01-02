@@ -1,0 +1,136 @@
+﻿@model Access_Models.ViewModels.UserOrderList
+@using Access_Models
+@using Access_Utility;
+@{
+    ViewData["Title"] = "My Orders - Access";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/Account.css" />
+</head>
+
+<div class="a-container-content">
+
+    <div class="a-account-container">
+
+        <div class="a-account-title-line">
+            <div class="a-account-title-line-text">Account</div>
+        </div>
+
+
+        <form class="a-account-form-container" method="post">
+            <div class="a-account-form-left">
+
+                <div class="a-account-form-left-container">
+
+                    <a asp-action="Index" class="a-account-form-left-item"> PEPSONAL DATA</a>
+                    <a class="a-account-form-left-item a-account-form-left-item-current a-account-form-left-item-other">ORDERS</a>
+
+                </div>
+
+
+            </div>
+
+            <div class="a-account-form-orders-right">
+
+                @{
+                    if (Model.OrderHeader.Count() < 1)
+                    {
+                        <div class="a-account-form-noorders">
+                            Please make an order
+                        </div>
+                    }
+                    for (int i = 0; i < Model.OrderHeader.Count(); i++)
+                    {
+                        string orderClassName = "a-account-form-orders-right-item";
+                        if(i != 0) {
+                            orderClassName += " a-account-form-orders-right-item-mt";
+                        }
+                        IEnumerable<OrderDetail> orderDetailList = Model.OrderDetail.Where(u => u.OrderHeaderId == Model.OrderHeader.ElementAt(i).Id);
+                        <div class="@orderClassName">
+
+                            <div class="a-account-form-orders-right-item-container">
+
+                                <div class="a-account-orders-r-item-title">
+
+                                    <div class="a-account-orders-number">
+                                        ORDER №@Model.OrderHeader.ElementAt(i).Id &nbsp;&nbsp;&nbsp;&nbsp;/@orderDetailList.Sum(u => u.Quantity) - @Model.OrderHeader.ElementAt(i).OrderStatusName
+                                    </div>
+
+                                    <div class="a-account-orders-total">
+                                        TOTAL: @Model.OrderHeader.ElementAt(i).OrderCost$
+                                    </div>
+
+                                </div>
+
+                                <div class="a-account-orders-date">
+                                    @Model.OrderHeader.ElementAt(i).CreationDate.ToShortDateString()
+                                </div>
+
+                                @for (int ordD = 0; ordD < orderDetailList.Count(); ordD++)
+                                {
+                                    ProductAttribute prodAttr = Model.ProductAttribute.FirstOrDefault(u => u.Id == orderDetailList.ElementAt(ordD).ProductAttributeId);
+                                    string prodClassName = "a-account-orders-product";
+                                    if (i == 0)
+                                    {
+                                        prodClassName += " a-account-orders-product-first";
+                                    }
+                                    else
+                                    {
+                                        prodClassName += " a-account-orders-product-other";
+                                    }
+                                    <div class="@prodClassName">
+
+                                        <div class="a-account-orders-product-img">
+                                            @if (Model.ProductImage.Where(u => u.AttributeId == prodAttr.Id).Count() > 0)
+                                            {
+                                                <img loading="lazy" src="@WebConstants.ProductImagePath@prodAttr.ProductId\@Model.ProductImage.FirstOrDefault(u => u.AttributeId == prodAttr.Id).Name" />
+                                            }
+                                            else
+                                            {
+                                                <img loading="lazy" src="" />
+                                            }
+                                        </div>
+
+                                        <div class="a-account-orders-product-info">
+
+                                            <div class="a-account-orders-product-name">
+                                                @Model.Product.FirstOrDefault(u => u.Id == prodAttr.ProductId).Name
+                                            </div>
+
+                                            <div class="a-account-orders-product-price">
+                                                $@Model.Product.FirstOrDefault(u => u.Id == prodAttr.ProductId).Price
+                                            </div>
+                                
+                                            <div class="a-account-orders-product-attr">
+                                                @prodAttr.AttributeType.Name: @prodAttr.AttributeValue.Value
+                                            </div>
+                                                                
+                                            <div class="a-account-orders-product-count">
+                                                @orderDetailList.ElementAt(ordD).Quantity
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+                                    
+                                }
+
+                            </div>
+
+                        </div>
+
+                    }
+
+                }
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

@@ -2,32 +2,35 @@
 using Access_Models;
 using Access_Models.ViewModels;
 using Access_Utility;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Access.Controllers
 {
+    [Authorize(Roles = WebConstants.AdminRole)]
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _catRepos;
+        [BindProperty]
+        public CategoryVM CategoryVM { get; set; }
 
         public CategoryController(ICategoryRepository catRepos)
         {
             _catRepos = catRepos;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public IActionResult Index()
         {
-            ICollection<Category> objList = await _catRepos.GetAllAsync();
+            ICollection<Category> objList = _catRepos.GetAll();
             return View(objList);
         }
 
-        //GET - Upsert
+        [HttpGet]
         public IActionResult Upsert(int? id)
         {
 
-            CategoryVM categoryVM = new CategoryVM()
+            CategoryVM = new CategoryVM()
             {
                 Category = new Category(),
                 CategorySelectList = _catRepos.GetAllDropdownList(nameof(Category))
@@ -36,38 +39,37 @@ namespace Access.Controllers
             if (id == null)
             {
                 //for create
-                return View(categoryVM);
+                return View(CategoryVM);
             }
             else
             {
 
-                categoryVM.Category = _catRepos.Find(id.GetValueOrDefault());
-                if (categoryVM.Category == null)
+                CategoryVM.Category = _catRepos.Find(id.GetValueOrDefault());
+                if (CategoryVM.Category == null)
                 {
                     return NotFound();
                 }
-                categoryVM.CategorySelectList = categoryVM.CategorySelectList.Where(u => u.Value != categoryVM.Category.Id.ToString());
-                return View(categoryVM);
+                CategoryVM.CategorySelectList = CategoryVM.CategorySelectList.Where(u => u.Value != CategoryVM.Category.Id.ToString());
+                return View(CategoryVM);
             }
         }
 
-        //POST - Upsert
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(CategoryVM categoryVM)
+        public IActionResult Upsert()
         {
             if (ModelState.IsValid)
             {
-                if (categoryVM.Category.Id == 0)
+                if (CategoryVM.Category.Id == 0)
                 {
                     //create
-                    _catRepos.Add(categoryVM.Category);
+                    _catRepos.Add(CategoryVM.Category);
                     TempData[WebConstants.Success] = "Category created successfully";
                 }
                 else
                 {
                     //update
-                    _catRepos.Update(categoryVM.Category);
+                    _catRepos.Update(CategoryVM.Category);
                     TempData[WebConstants.Success] = "Category updated successfully";
                 }
                 _catRepos.Save();
@@ -75,16 +77,16 @@ namespace Access.Controllers
             }
             TempData[WebConstants.Error] = "Error while creating or updating category";
 
-            categoryVM.CategorySelectList = _catRepos.GetAllDropdownList(nameof(Category));
+            CategoryVM.CategorySelectList = _catRepos.GetAllDropdownList(nameof(Category));
             
-            if (_catRepos.Find(categoryVM.Category.Id) != null)
+            if (_catRepos.Find(CategoryVM.Category.Id) != null)
             {
-                categoryVM.CategorySelectList = categoryVM.CategorySelectList.Where(u => u.Value != categoryVM.Category.Id.ToString());
+                CategoryVM.CategorySelectList = CategoryVM.CategorySelectList.Where(u => u.Value != CategoryVM.Category.Id.ToString());
             }
-            return View(categoryVM);
+            return View(CategoryVM);
         }
 
-        //GET - Delete
+        [HttpGet]
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
@@ -97,15 +99,14 @@ namespace Access.Controllers
                 return NotFound();
             }
 
-            CategoryVM categoryVM = new CategoryVM()
+            CategoryVM = new CategoryVM()
             {
                 Category = obj,
                 CategorySelectList = _catRepos.GetAllDropdownList(nameof(Category))
             };
-            return View(categoryVM);
+            return View(CategoryVM);
         }
 
-        //POST - Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Delete")]

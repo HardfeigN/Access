@@ -2,76 +2,89 @@
 using Access_Models;
 using Access_Models.ViewModels;
 using Access_Utility;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.IO;
 
 namespace Access.Controllers
 {
+    [Authorize(Roles = WebConstants.AdminRole)]
     public class ProductAttributeController : Controller
     {
         private readonly IProductAttributeRepository _prodAttrRepos;
         private readonly IProductImageRepository _prodImgRepos;
+        private readonly IProductRepository _prodRepos;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        [BindProperty]
+        public ProductAttributeVM ProductAttributeVM { get; set; }
 
-        public ProductAttributeController(IProductAttributeRepository prodAttrRepos, IProductImageRepository prodImgRepos, IWebHostEnvironment webHostEnvironment)
+        public ProductAttributeController(IProductAttributeRepository prodAttrRepos, IProductImageRepository prodImgRepos, IWebHostEnvironment webHostEnvironment, IProductRepository prodRepos)
         {
             _prodAttrRepos = prodAttrRepos;
             _prodImgRepos = prodImgRepos;
             _webHostEnvironment = webHostEnvironment;
+            _prodRepos = prodRepos;
         }
 
         public IActionResult Index()
         {
-            ICollection<ProductAttribute> objList = _prodAttrRepos.GetAll(includeProperties: $"{nameof(AttributeType)},{nameof(AttributeValue)},{nameof(Product)}");
-            return View(objList);
+            ProductAttributeListVM productAttributeListVM = new ProductAttributeListVM()
+            {
+                ProductAttribute = _prodAttrRepos.GetAll(includeProperties: $"{nameof(AttributeType)},{nameof(AttributeValue)},{nameof(Product)}"),
+            };
+            List<ProductImage> images = new List<ProductImage>();
+            foreach(ProductAttribute prodAttr in productAttributeListVM.ProductAttribute)
+            {
+                images.AddRange(_prodImgRepos.GetProductAttributeImages(prodAttr.Id));
+            }
+            productAttributeListVM.ProductImages = images;
+
+            return View(productAttributeListVM);
         }
 
-
-        //GET - Upsert
+        [HttpGet]
         public IActionResult Upsert(int? id)
         {
-            ProductAttributeVM productAttributeVM = new ProductAttributeVM()
+            ProductAttributeVM = new ProductAttributeVM()
             {
                 ProductAttribute = new ProductAttribute(),
                 AttributeTypeSelectList = _prodAttrRepos.GetAllDropdownList(nameof(AttributeType)),
                 AttributeValueSelectList = _prodAttrRepos.GetAllDropdownList(nameof(AttributeValue)),
+                ProductSelectList = _prodRepos.GetAllDropdownList(nameof(Product)),
                 ProductImages = new List<ProductImage>()
             };
 
             if (id == null)
             {
                 //for create
-                return View(productAttributeVM);
+                return View(ProductAttributeVM);
             }
             else
             {
-                productAttributeVM.ProductAttribute = _prodAttrRepos.Find(id.GetValueOrDefault());
-                if (productAttributeVM.ProductAttribute == null)
+                ProductAttributeVM.ProductAttribute = _prodAttrRepos.Find(id.GetValueOrDefault());
+                if (ProductAttributeVM.ProductAttribute == null)
                 {
                     return NotFound();
                 }
-                productAttributeVM.ProductImages = _prodImgRepos.GetProductAttributeImages(productAttributeVM.ProductAttribute.Id);
-                return View(productAttributeVM);
+                ProductAttributeVM.ProductImages = _prodImgRepos.GetProductAttributeImages(ProductAttributeVM.ProductAttribute.Id);
+                return View(ProductAttributeVM);
             }
         }
 
-        //POST - Upsert
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(ProductAttributeVM productAttributeVM)
+        public IActionResult Upsert()
         {
             if (ModelState.IsValid)
             {
-                if (productAttributeVM.ProductAttribute.Id == 0)
+                if (ProductAttributeVM.ProductAttribute.Id == 0)
                 {
                     //create
-                    _prodAttrRepos.Add(productAttributeVM.ProductAttribute);
+                    _prodAttrRepos.Add(ProductAttributeVM.ProductAttribute);
                     _prodAttrRepos.Save();
 
                     var files = HttpContext.Request.Form.Files;
                     string webRootPath = _webHostEnvironment.WebRootPath;
-                    string upload = webRootPath + WebConstants.ProductImagePath + $"{productAttributeVM.ProductAttribute.ProductId}\\";
+                    string upload = webRootPath + WebConstants.ProductImagePath + $"{ProductAttributeVM.ProductAttribute.ProductId}\\";
                     List<ProductImage> images = new List<ProductImage>() ;
                     if (!Directory.Exists(upload))
                     {
@@ -91,14 +104,14 @@ namespace Access.Controllers
                         ProductImage productImage = new ProductImage()
                         {
                             Name = fileName + extension,
-                            AttributeId = productAttributeVM.ProductAttribute.Id,
-                            ProductId = productAttributeVM.ProductAttribute.ProductId,
+                            AttributeId = ProductAttributeVM.ProductAttribute.Id,
+                            ProductId = ProductAttributeVM.ProductAttribute.ProductId,
                             ImageNumber = i
                         };
                         images.Add(productImage);
                         _prodImgRepos.Add(productImage);
                     }
-                    productAttributeVM.ProductImages = images;
+                    ProductAttributeVM.ProductImages = images;
                     _prodImgRepos.Save();
                     TempData[WebConstants.Success] = "Pruduct Attribute created successfully";
                 }
@@ -106,49 +119,82 @@ namespace Access.Controllers
                 {
                     //update
 
-                    /*
-                    if (files.Count > 0)
+                    var files = HttpContext.Request.Form.Files;
+                    string webRootPath = _webHostEnvironment.WebRootPath;
+                    string upload = webRootPath + WebConstants.ProductImagePath + $"{_prodAttrRepos.FirstOrDefault(u => u.Id == ProductAttributeVM.ProductAttribute.Id, isTracking: false).ProductId}\\";
+                    string newUpload = webRootPath + WebConstants.ProductImagePath + $"{ProductAttributeVM.ProductAttribute.ProductId}\\";
+                    List<ProductImage> images = new List<ProductImage>();
+                    if (!Directory.Exists(upload))
                     {
-                        string extension = Path.GetExtension(files[0].FileName);
-                        var oldFile = Path.Combine(upload, objFromDb.Image);
-                        if (System.IO.File.Exists(oldFile))
+                        Directory.CreateDirectory(upload);
+                    }
+                    if (Convert.ToBoolean(ProductAttributeVM.DeleteOldImages))
+                    {
+                        List<ProductImage> oldImages = _prodImgRepos.GetAll(u => u.AttributeId == ProductAttributeVM.ProductAttribute.Id).ToList();
+                        foreach (var image in oldImages)
                         {
-                            System.IO.File.Delete(oldFile);
+                            if (System.IO.File.Exists(upload + image.Name))
+                            {
+                                System.IO.File.Delete(upload + image.Name);
+                            }
                         }
-
-                        using (var fileStrem = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
-                        {
-                            files[0].CopyTo(fileStrem);
-                        };
-
-                        productVM.Product.Image = fileName + extension;
-                    }
-                    else
+                        _prodImgRepos.RemoveRange(oldImages);
+                    }else if(ProductAttributeVM.ProductAttribute.ProductId != _prodAttrRepos.FirstOrDefault(u => u.Id == ProductAttributeVM.ProductAttribute.Id, isTracking: false).ProductId)
                     {
-                        productVM.Product.Image = objFromDb.Image;
+                        List<ProductImage> oldImages = _prodImgRepos.GetAll(u => u.AttributeId == ProductAttributeVM.ProductAttribute.Id).ToList();
+                        foreach (var image in oldImages)
+                        {
+                            if (System.IO.File.Exists(upload + image.Name))
+                            {
+                                System.IO.File.Move(upload + image.Name, newUpload + image.Name, true);
+                                image.ProductId = ProductAttributeVM.ProductAttribute.ProductId;
+                            }
+                        }
+                        _prodImgRepos.Save();
                     }
-                    */
 
-                    _prodAttrRepos.Update(productAttributeVM.ProductAttribute);
+                    for (int i = 0; i < files.Count(); i++)
+                    {
+
+                        string fileName = Guid.NewGuid().ToString();
+                        string extension = Path.GetExtension(files[i].FileName);
+                        using (var fileStrem = new FileStream(Path.Combine(newUpload, fileName + extension), FileMode.Create))
+                        {
+                            files[i].CopyTo(fileStrem);
+                        };
+                        ProductImage productImage = new ProductImage()
+                        {
+                            Name = fileName + extension,
+                            AttributeId = ProductAttributeVM.ProductAttribute.Id,
+                            ProductId = ProductAttributeVM.ProductAttribute.ProductId,
+                            ImageNumber = i
+                        };
+                        images.Add(productImage);
+                        _prodImgRepos.Add(productImage);
+                    }
+                    _prodAttrRepos.Update(ProductAttributeVM.ProductAttribute);
                     _prodAttrRepos.Save();
+                    ProductAttributeVM.ProductImages = images;
+                    _prodImgRepos.Save();
+
                     TempData[WebConstants.Success] = "Product Attribute updated successfully";
                 }
                 return RedirectToAction("Index");
             }
             TempData[WebConstants.Error] = "Error while creating or updating Product Attribute";
-            productAttributeVM.AttributeTypeSelectList = _prodAttrRepos.GetAllDropdownList(nameof(AttributeType));
-            productAttributeVM.AttributeValueSelectList = _prodAttrRepos.GetAllDropdownList(nameof(AttributeValue));
-            productAttributeVM.ProductImages = new List<ProductImage>();
-            if (_prodAttrRepos.Find(productAttributeVM.ProductAttribute.Id) != null)
+            ProductAttributeVM.AttributeTypeSelectList = _prodAttrRepos.GetAllDropdownList(nameof(AttributeType));
+            ProductAttributeVM.AttributeValueSelectList = _prodAttrRepos.GetAllDropdownList(nameof(AttributeValue));
+            ProductAttributeVM.ProductImages = new List<ProductImage>();
+            if (_prodAttrRepos.Find(ProductAttributeVM.ProductAttribute.Id) != null)
             {
-                productAttributeVM.AttributeTypeSelectList = productAttributeVM.AttributeTypeSelectList.Where(u => u.Value == productAttributeVM.ProductAttribute.Id.ToString());
-                productAttributeVM.AttributeValueSelectList = productAttributeVM.AttributeValueSelectList.Where(u => u.Value == productAttributeVM.ProductAttribute.Id.ToString());
-                productAttributeVM.ProductImages = _prodImgRepos.GetProductImages(productAttributeVM.ProductAttribute.ProductId);
+                ProductAttributeVM.AttributeTypeSelectList = ProductAttributeVM.AttributeTypeSelectList.Where(u => u.Value == ProductAttributeVM.ProductAttribute.Id.ToString());
+                ProductAttributeVM.AttributeValueSelectList = ProductAttributeVM.AttributeValueSelectList.Where(u => u.Value == ProductAttributeVM.ProductAttribute.Id.ToString());
+                ProductAttributeVM.ProductImages = _prodImgRepos.GetProductImages(ProductAttributeVM.ProductAttribute.ProductId);
             }
-            return View(productAttributeVM);
+            return View(ProductAttributeVM);
         }
 
-        //GET - Delete
+        [HttpGet]
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
@@ -161,17 +207,16 @@ namespace Access.Controllers
                 return NotFound();
             }
 
-            ProductAttributeVM productAttributeVM = new ProductAttributeVM()
+            ProductAttributeVM = new ProductAttributeVM()
             {
                 ProductAttribute = obj,
                 AttributeTypeSelectList = _prodAttrRepos.GetAllDropdownList(nameof(AttributeType)),
                 AttributeValueSelectList = _prodAttrRepos.GetAllDropdownList(nameof(AttributeValue))
             };
 
-            return View(productAttributeVM);
+            return View(ProductAttributeVM);
         }
 
-        //POST - Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Delete")]

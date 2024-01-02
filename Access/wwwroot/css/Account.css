@@ -1,0 +1,343 @@
+﻿
+
+
+.a-account-container {
+    width: 100%;
+    height: 40.8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.a-account-title-line {
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.a-account-title-line-text {
+    color: #FAF6F1;
+    font-family: Play-Bold;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.045rem;
+}
+
+.a-account-form-container {
+    width: 100%;
+    height: 36.625rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.a-account-form-left {
+    width: 25rem;
+    height: 36.625rem;
+    outline: .125rem solid #FAF6F1;
+    outline-offset: -.125rem;
+}
+
+.a-account-form-left-container {
+    margin: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.a-account-form-left-item {
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.a-account-form-left-item-current {
+    text-decoration: underline #FAF6F1;
+    text-underline-offset: .38rem;
+}
+
+.a-account-form-left-item-other {
+    margin-top: 1.75rem;
+}
+
+.a-account-form-right {
+    width: 86.75rem;
+    height: 36.625rem;
+    outline: .125rem solid #FAF6F1;
+    outline-offset: -.125rem;
+}
+
+.a-account-form-right-container {
+    margin: 1.5rem 4.06rem 1.5rem 2.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.a-account-form-right-title {
+    width: 100%;
+    color: #FAF6F1;
+    font-family: Play-Bold;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    display: flex;
+    justify-content: start;
+}
+
+.a-account-form-right-btn-container {
+    width: 100%;
+    justify-content: end;
+    align-items: center;
+    display: flex;
+}
+
+.a-account-form-right-edit-btn,
+.a-account-form-right-submit-btn {
+    border: none;
+    font: inherit;
+    color: inherit;
+    text-decoration: none;
+    color: #262632;
+    font-family: Play-Regular;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    cursor: pointer;
+    user-select: none;
+    width: 9.375rem;
+    height: 2.25rem;
+    background: #FAF6F1;
+    justify-content: center;
+    align-items: center;
+}
+
+.a-account-form-right-edit-btn {
+    display: flex;
+}
+.a-account-form-right-submit-btn {
+    display: none;
+}
+
+.a-account-form-right-item {
+    width: 100%;
+    margin-top: 2.06rem;
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    display: flex;
+}
+
+.a-account-form-right-item-text {
+    width: 26.375rem;
+}
+
+.a-account-form-right-item-input {
+    width: 26.375rem;
+    height: 100%;
+    border: none;
+    background: none;
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    outline: .125rem solid #FAF6F180;
+    outline-offset: -.125rem;
+}
+
+.a-account-form-right-item textarea {
+    max-width: 26.375rem;
+    min-width: 26.375rem;
+    height: auto;
+    min-height: 1.75rem;
+    max-height: 5rem;
+    outline: .125rem solid #FAF6F180;
+    outline-offset: -.125rem;
+}
+
+.a-account-form-right-item-input:focus {
+    outline: .125rem solid #FAF6F1;
+    outline-offset: -.125rem;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.a-cart-product-count-btn,
+.a-cart-product-count-input {
+    color: #262632;
+    font-family: Play-Regular;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    cursor: pointer;
+}
+
+
+/*ORDERS*/
+
+
+.a-account-form-orders-right {
+    width: 86.75rem;
+    height: 36.625rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.a-account-form-noorders {
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.a-account-form-orders-right::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.a-account-form-orders-right-item {
+    width: 100%;
+    outline: .125rem solid #FAF6F1;
+    outline-offset: -.125rem;
+}
+
+.a-account-form-orders-right-item-mt {
+    margin-top: 1rem;
+}
+
+.a-account-form-orders-right-item-container {
+    margin: 1.5rem 3.3125rem 1.06rem 1.06rem;
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+}
+
+.a-account-orders-r-item-title {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.a-account-orders-number {
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.a-account-orders-total {
+    color: #FAF6F1;
+    font-family: Play-Bold;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.a-account-orders-date {
+    margin-top: .69rem;
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.a-account-orders-product {
+    width: 100%;
+    height: 8.6875rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+.a-account-orders-product-first {
+    margin-top: .69rem;
+}
+
+.a-account-orders-product-other {
+    margin-top: 1.75rem;
+}
+
+.a-account-orders-product-img {
+    width: 8.6875rem;
+    height: 8.6875rem;
+}
+
+.a-account-orders-product-img img{
+    width: 100%;
+    height: 100%;
+}
+
+.a-account-orders-product-info {
+    margin-top: .69rem;
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.a-account-orders-product-name {
+    color: #FAF6F1;
+    font-family: Conthrax;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.a-account-orders-product-price,
+.a-account-orders-product-attr,
+.a-account-orders-product-count {
+    color: #FAF6F1;
+    font-family: Play;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.a-account-orders-product-price {
+    margin-top: .75rem;
+    font-size: 1.25rem;
+}
+
+.a-account-orders-product-attr {
+    margin-top: .75rem;
+    font-size: 0.875rem;
+}
+
+.a-account-orders-product-count {
+    margin-top: .5rem;
+    font-size: 1.25rem;
+}

@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Access_Models.ViewModels.IndividualProductVM>
+@using Access_Models.ViewModels
+@*
+
+@{
+    for (int i = 0; i < Math.Ceiling(Model.Count() / 4.0); i++)
+    {
+        <div class="a-catalog-product-table-row">
+            @for (int j = 0; j < 4; j++)
+            {
+                //display all products
+                <div class="a-catalog-product-table-cell">
+                    @if (i * 4 + j < Model.Count() && j < 4)
+                    {
+                        <partial name="~/Views/Shared/_IndividualProductCard.cshtml" model="Model.ElementAt(i * 4 + j)" />
+                    }
+                </div>
+            }
+        </div>
+    }
+}
+*@
+
+@foreach(IndividualProductVM prodVM in @Model){
+    <partial name="~/Views/Shared/_IndividualProductCard.cshtml" model="@prodVM" />
+}

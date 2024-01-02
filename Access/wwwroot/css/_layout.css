@@ -79,13 +79,12 @@ header{
 }
 
 .a-header-logo {
-    width: 14.875rem;
     font-family: Conthrax;
     font-size: 2.5rem;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
-    background: radial-gradient(2682.46% 147.95% at 0% 0%, #7D5DDC 0%, #C96399 100%);
+    background: linear-gradient(90deg, #7D5DDC 2.03%, #C96399 97.43%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -124,6 +123,47 @@ header{
     padding: 0;
     flex-direction: row;
     align-items: center;
+}
+
+.a-header-dropbtn {
+    color: #FAF6F1;
+    font-family: Play-Bold;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.a-header-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.a-header-dropdown-content {
+    display: none;
+    position: absolute;
+    background: #00000070;
+    z-index: 3000;
+}
+
+.a-header-dropdown-content a {
+    padding: .75rem 1rem;
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+    display: block;
+}
+
+.a-header-dropdown:hover .a-header-dropdown-content {
+    display: block;
+}
+
+.a-header-dropdown-content a:hover {
+    background: #000;
 }
 
 .a-footer {

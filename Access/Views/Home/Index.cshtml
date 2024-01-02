@@ -1,0 +1,98 @@
+﻿@model IEnumerable<Access_Models.ProductImage>
+@{
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+@{
+    ViewData["Title"] = "Access";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/Home.css" />
+</head>
+
+<div class="a-container-content">
+    <div class="a-home-section1">
+        <div class="a-home-section1-bgcircle1"></div>
+        <div class="a-home-section1-bgcircle2"></div>
+        <div class="a-home-section1-bgcircle3"></div>
+        <div class="a-home-section1-bagimage"></div>
+        <div class="a-home-section1-textmain">Keep up with the era</div>
+        <div class="a-home-section1-textback">TEXT<br/>2023</div>
+        <div class="a-home-section1-textsecond">
+            some important text about why we are the coolest. some important text about why we are the coolest. some important text about why we are
+            the coolest.
+        </div>
+        <a asp-controller="Home" asp-action="About" class="a-home-section1-btn-ln">LEARN MORE</a>
+        <a asp-controller="Catalog" asp-action="Index" class="a-home-section1-btn-ct">TO CATALOG</a>
+    </div>
+</div>
+
+<div class="a-home-ticker">
+    <div class="a-home-ticker-runline-1">
+        <a class="a-home-ticker-text1 a-home-ticker-runline-text-1">10% OFF YOUR FIRST ORDER / SIGN UP FOR 10% OFF YOUR FIRST ORDER / SIGN UP FOR 10% OFF YOUR FIRST ORDER / SIGN UP FOR 10% OFF YOUR FIRST ORDER /&nbsp</a>
+        <a class="a-home-ticker-text1 a-home-ticker-runline-text-1">10% OFF YOUR FIRST ORDER / SIGN UP FOR 10% OFF YOUR FIRST ORDER / SIGN UP FOR 10% OFF YOUR FIRST ORDER / SIGN UP FOR 10% OFF YOUR FIRST ORDER /&nbsp</a>
+    </div>   
+    <a class="a-home-ticker-text2">10% OFF YOUR FIRST ORDER / SIGN UP FOR 10% OFF YOUR FIRST ORDER / SIGN UP FOR 10% OFF YOUR FIRST ORDER / SIGN UP FOR 10% OFF YOUR FIRST ORDER</a>
+    <div class="a-home-ticker-runline-2">
+        <a class="a-home-ticker-text3 a-home-ticker-runline-text-2 a-home-ticker-text-left">10% OFF YOUR FIRST ORDER / SIGN UP FOR 10% OFF YOUR FIRST ORDER / SIGN UP FOR 10% OFF YOUR FIRST ORDER / SIGN UP FOR 10% OFF YOUR FIRST ORDER /&nbsp</a>
+        <a class="a-home-ticker-text3 a-home-ticker-runline-text-2 a-home-ticker-text-left">10% OFF YOUR FIRST ORDER / SIGN UP FOR 10% OFF YOUR FIRST ORDER / SIGN UP FOR 10% OFF YOUR FIRST ORDER / SIGN UP FOR 10% OFF YOUR FIRST ORDER /&nbsp</a>
+    </div>
+</div>
+
+<div class="a-container-content">
+    <div class="a-home-section2">
+    <div class="a-home-section2-headertext">immediate access to quality materials</div>
+
+    <div class="a-home-section2-eq">
+        <svg class="a-home-section2-eq-svg" xmlns="http://www.w3.org/2000/svg" width="285" height="362" viewBox="0 0 285 362" fill="none">
+            <path d="M58.3861 1L1 1V361H284V304.261" stroke="#FAF6F1" />
+            <div class="a-home-section2-eq-text">equipment</div>
+            <div class="a-home-section2-eq-img"></div>
+        </svg>
+    </div>
+    
+    <div class="a-home-section2-fb">
+        <svg class="a-home-section2-fb-svg" xmlns="http://www.w3.org/2000/svg" width="285" height="362" viewBox="0 0 285 362" fill="none">
+            <path d="M58.3861 1L1 1V361H284V304.261" stroke="#FAF6F1" />
+            <div class="a-home-section2-fb-text">fabrics</div>
+            <div class="a-home-section2-fb-img"></div>
+        </svg>
+    </div>
+
+    <div class="a-home-section2-acc">
+        <svg class="a-home-section2-acc-svg" xmlns="http://www.w3.org/2000/svg" width="285" height="362" viewBox="0 0 285 362" fill="none">
+            <path d="M58.3861 1L1 1V361H284V304.261" stroke="#FAF6F1" />
+            <div class="a-home-section2-acc-text">accessories</div>
+            <div class="a-home-section2-acc-img"></div>
+        </svg>
+    </div>
+
+    <div class="a-home-section2-text-right-h">
+        Keep up with the era
+    </div>
+
+    <div class="a-home-section2-text-right">
+        We create boldly designed minimalist bags and accessories inspired by the contemporary architectural trend Less is More.
+        We strive for perfection in lines and proportions without compromising on functionality. The perfect balance between quality, durability and style.
+        <br/><br/>
+        We collaborate with the most prestigious tanneries in northern Italy, which are located less than 70 km from the manufacturing facilities. These companies offer the highest quality leathers in a sustainable way.
+        <br/><br/>
+        From choice of raw material to transformation to the final product, we pay special attention to sustainability by selecting hides from the food industry only, in compliance with the strictest regulations.
+    </div>
+
+</div>
+</div>
+
+<div class="a-home-section3">
+    <div class="a-container-content">
+        <div class="a-home-section3-pcch-list">
+            @for (int i = 0; i < Model.Count() && i < 3; i++)
+            {
+                if(Model.ElementAt(i) != null)
+                {
+                    <partial name="~/Views/Shared/_ProductCategoryCardHigh.cshtml"  model="Model.ElementAt(i)"></partial>
+                }
+            }
+        </div>
+    </div>
+</div>

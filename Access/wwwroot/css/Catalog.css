@@ -1,37 +1,181 @@
-﻿
+﻿img {
+    user-select: none;
+}
+
+.a-catalog-filter {
+    height: auto;
+    width: 0;
+    position: fixed;
+    z-index: 5000;
+    top: 5.5rem;
+    right: 0;
+    background-color: #262632;
+    outline: 0.1rem solid #FAF6F1;
+    outline-offset: -0.1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: 0.5s;
+}
+
+.a-catalog-filter a {
+    padding: .5rem .5rem .5rem 2rem;
+    text-decoration: none;
+    font-size: 1rem;
+    color: #818181;
+    cursor: pointer;
+    display: block;
+    transition: 0.3s;
+}
+
+.a-catalog-filter a:hover {
+    color: #f1f1f1;
+}
+
+.a-catalog-filter .a-catalog-closebtn {
+    position: absolute;
+    top: 0;
+    right: 1.5rem;
+    font-size: 2.25rem;
+    margin-left: 3.125rem;
+}
+
+@media screen and (max-height: 450px) {
+    .a-catalog-filter {
+        padding-top: 1rem;
+    }
+
+    .a-catalog-filter a {
+        font-size: 1.125rem;
+    }
+}
 
 .a-catalog-content {
     width: 100%;
     min-height: 90.3rem;
+    overflow: hidden;
+}
+
+.a-catalog-search {
+    width: 100%;
+    height: 3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+}
+
+.a-catalog-search-input {
+    width: 15rem;
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    height: 1.5rem;
+    display: flex;
+    background: none;
+    border: none;
+    outline: .125rem solid #FAF6F180;
+    outline-offset: -.125rem;
+}
+
+.a-catalog-search-input:focus {
+    outline: .125rem solid #FAF6F1;
+    outline-offset: -.125rem;
+}
+
+.a-catalog-btn {
+    width: 8rem;
+    height: 1.5rem;
+    margin-left: 1rem;
+    outline: .125rem solid #FAF6F1;
+    outline-offset: -.125rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    appearance: auto;
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    background: none;
+}
+
+.a-catalog-category-line {
+    width: 100%;
+    height: 3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.a-catalog-category-name {
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.045rem;
+}
+
+.a-category-filter {
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.02625rem;
+    cursor: pointer;
 }
 
 .a-catalog-product-table {
     width: 100%;
     height: auto;
     display: table;
-    border-spacing: 1.25rem;
 }
 
 .a-catalog-product-table-body {
-    display: table-row-group;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 .a-catalog-product-table-row {
+    /*
     width: 100%;
-    display: table-row;
+    margin-top: 1.37rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    */
+    width: 110%;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    flex-wrap: wrap;
 }
 
-.a-catalog-product-table-cell {
-    display: table-cell;
-    width: 27.1875rem;
-    height: 31.6875rem;
-}
 
 
 /*details*/
 
+.a-details {
+    width: 100%;
+    height: max-content;
+    display: flex;
+    flex-direction: column;
+}
+
 .a-details-container {
     width: 100%;
-    min-height: 65rem;
+    height: auto;
+    padding-bottom: 2.125rem;
 }
 
 .a-product-info {
@@ -50,13 +194,21 @@
     overflow: hidden;   
 }
 
-.a-details-slider-images {
+.a-details-slider-images-container {
+    height: 58.125rem;
     width: 10.75rem;
+    position: relative;
+}
+
+.a-details-slider-images {
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
-    bottom:0rem;
+    bottom: 0rem;
+    transition: 0.2s ease-in-out;
+    transition-property: bottom;
 }
 
 .a-details-slider-images-item {
@@ -79,6 +231,36 @@
 .a-details-slider-mainimage img{
     width: 100%;
     height: 100%;
+}
+
+.a-details-slider-next-btn,
+.a-details-slider-prev-btn {
+    position: absolute;
+    left: 4.375rem;
+    width: 2rem;
+    height: 2rem;
+    background-color: #00000030;
+    outline: 0.1rem solid #FAF6F1;
+    outline-offset: -0.1rem;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    font-size: 3rem;
+    font-weight: 400;
+    font-family: Play-Regular;
+    color: #262632;
+    user-select: none;
+}
+
+.a-details-slider-prev-btn{
+    top: .5rem;
+}
+
+.a-details-slider-next-btn {
+    bottom: .5rem;
+    transform: scaleY(-1);
 }
 
 .a-details-rightblock {
@@ -128,9 +310,18 @@
 }
 
 .a-details-product-color-item {
-    width: 2.75rem;
-    height: 2.75rem;
+    width: 3.25rem;
+    height: 3.25rem;
     flex-shrink: 0;
+    outline: 0.1rem solid #FAF6F1;
+    outline-offset: -0.1rem;
+}
+
+.a-details-product-color-item-empty {
+    width: 3.25rem;
+    height: 3.25rem;
+    flex-shrink: 0;
+    outline: none;
 }
 
 .a-details-product-addtocart-button {
@@ -138,7 +329,7 @@
     height: 3.75rem;
     flex-shrink: 0;
     display: flex;
-    background: radial-gradient(15583.68% 141.42% at 0% 0%, #C96399 1.25%, #7D5DDC 100%);
+    background: linear-gradient(90deg, #7D5DDC 2.03%, #C96399 97.43%);
     justify-content: center;
     align-items: center;
     margin-top: 2.56rem;
@@ -188,5 +379,26 @@
     font-size: 0.875rem;
     font-style: normal;
     font-weight: 400;
+    line-height: normal;
+}
+
+
+.a-details-category-products-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    padding-bottom: 2.125rem;
+}
+
+.a-details-category-products-container-text {
+    height: 1.75rem;
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
     line-height: normal;
 }

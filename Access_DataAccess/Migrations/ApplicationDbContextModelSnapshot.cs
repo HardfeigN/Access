@@ -90,14 +90,17 @@ namespace Access_DataAccess.Migrations
                     b.Property<int>("InquiryHeaderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("ProductAttributeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("InquiryHeaderId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductAttributeId");
 
                     b.ToTable("InquiryDetail");
                 });
@@ -115,6 +118,10 @@ namespace Access_DataAccess.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -136,6 +143,29 @@ namespace Access_DataAccess.Migrations
                     b.ToTable("InquiryHeader");
                 });
 
+            modelBuilder.Entity("Access_Models.InquiryToOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("InquiryHeaderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OrderHeaderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InquiryHeaderId");
+
+                    b.HasIndex("OrderHeaderId");
+
+                    b.ToTable("InquiryToOrder");
+                });
+
             modelBuilder.Entity("Access_Models.OrderDetail", b =>
                 {
                     b.Property<int>("Id")
@@ -150,7 +180,7 @@ namespace Access_DataAccess.Migrations
                     b.Property<double>("PricePerPiece")
                         .HasColumnType("float");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("ProductAttributeId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -160,7 +190,7 @@ namespace Access_DataAccess.Migrations
 
                     b.HasIndex("OrderHeaderId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductAttributeId");
 
                     b.ToTable("OrderDetail");
                 });
@@ -173,14 +203,11 @@ namespace Access_DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("ComplationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("CreatedByUserId")
                         .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CustomerUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
@@ -195,24 +222,18 @@ namespace Access_DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OrderStatusId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
+                    b.Property<float>("OrderCost")
+                        .HasColumnType("real");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ShippingDate")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedByUserId");
 
-                    b.HasIndex("OrderStatusId");
+                    b.HasIndex("CustomerUserId");
 
                     b.ToTable("OrderHeader");
                 });
@@ -225,15 +246,20 @@ namespace Access_DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("StatusNumber")
+                    b.Property<int>("OrderHeaderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StatusId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderHeaderId");
+
+                    b.HasIndex("StatusId");
 
                     b.ToTable("OrderStatus");
                 });
@@ -330,6 +356,27 @@ namespace Access_DataAccess.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductImage");
+                });
+
+            modelBuilder.Entity("Access_Models.Status", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Status");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -542,6 +589,13 @@ namespace Access_DataAccess.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FullAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -557,15 +611,15 @@ namespace Access_DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Access_Models.Product", "Product")
+                    b.HasOne("Access_Models.ProductAttribute", "ProductAttribute")
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ProductAttributeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("InquiryHeader");
 
-                    b.Navigation("Product");
+                    b.Navigation("ProductAttribute");
                 });
 
             modelBuilder.Entity("Access_Models.InquiryHeader", b =>
@@ -579,6 +633,21 @@ namespace Access_DataAccess.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
+            modelBuilder.Entity("Access_Models.InquiryToOrder", b =>
+                {
+                    b.HasOne("Access_Models.InquiryHeader", "InquiryHeader")
+                        .WithMany()
+                        .HasForeignKey("InquiryHeaderId");
+
+                    b.HasOne("Access_Models.OrderHeader", "OrderHeader")
+                        .WithMany()
+                        .HasForeignKey("OrderHeaderId");
+
+                    b.Navigation("InquiryHeader");
+
+                    b.Navigation("OrderHeader");
+                });
+
             modelBuilder.Entity("Access_Models.OrderDetail", b =>
                 {
                     b.HasOne("Access_Models.OrderHeader", "OrderHeader")
@@ -587,15 +656,15 @@ namespace Access_DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Access_Models.Product", "Product")
+                    b.HasOne("Access_Models.ProductAttribute", "ProductAttribute")
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ProductAttributeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("OrderHeader");
 
-                    b.Navigation("Product");
+                    b.Navigation("ProductAttribute");
                 });
 
             modelBuilder.Entity("Access_Models.OrderHeader", b =>
@@ -606,15 +675,32 @@ namespace Access_DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Access_Models.OrderStatus", "OrderStatus")
-                        .WithMany("OrderHeader")
-                        .HasForeignKey("OrderStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Access_Models.ApplicationUser", "CustomerUser")
+                        .WithMany()
+                        .HasForeignKey("CustomerUserId");
 
                     b.Navigation("CreatedBy");
 
-                    b.Navigation("OrderStatus");
+                    b.Navigation("CustomerUser");
+                });
+
+            modelBuilder.Entity("Access_Models.OrderStatus", b =>
+                {
+                    b.HasOne("Access_Models.OrderHeader", "OrderHeader")
+                        .WithMany("Statuses")
+                        .HasForeignKey("OrderHeaderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Access_Models.Status", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrderHeader");
+
+                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("Access_Models.Product", b =>
@@ -723,9 +809,9 @@ namespace Access_DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Access_Models.OrderStatus", b =>
+            modelBuilder.Entity("Access_Models.OrderHeader", b =>
                 {
-                    b.Navigation("OrderHeader");
+                    b.Navigation("Statuses");
                 });
 
             modelBuilder.Entity("Access_Models.Product", b =>

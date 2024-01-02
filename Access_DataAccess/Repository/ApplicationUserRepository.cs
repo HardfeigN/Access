@@ -1,13 +1,7 @@
 ﻿using Access_DataAccess.Data;
 using Access_DataAccess.Repository.IRepository;
 using Access_Models;
-using Access_Utility;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Access_DataAccess.Repository
 {
@@ -18,6 +12,21 @@ namespace Access_DataAccess.Repository
         public ApplicationUserRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
+        }
+
+        public void Update(ApplicationUser obj)
+        {
+            var objFromDb = base.FirstOrDefault(u => u.Id == obj.Id, isTracking: false);
+            if (objFromDb != null)
+            {
+                objFromDb.FullAddress = obj.FullAddress;
+                objFromDb.FullName = obj.FullName;
+                objFromDb.Email = obj.Email;
+                objFromDb.PhoneNumber = obj.PhoneNumber;
+                objFromDb.DateOfBirth = obj.DateOfBirth;
+                _db.Entry(objFromDb).State = EntityState.Modified;
+                _db.ApplicationUser.Update(objFromDb);
+            }
         }
     }
 }

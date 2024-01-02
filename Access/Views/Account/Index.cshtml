@@ -1,0 +1,108 @@
+﻿@model Access_Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Account - Access";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/Account.css" />
+</head>
+
+
+<div class="a-container-content">
+
+    <div class="a-account-container">
+
+        <form class="a-account-title-line">
+            <div class="a-account-title-line-text">Account</div>
+            <button asp-action="LogOut" formmethod="post" class="a-account-form-right-edit-btn"><div class="a-account-btn-text">log out</div></button>
+        </form>
+
+        <form class="a-account-form-container" method="post">
+            <input hidden asp-for="@Model.Id" />
+            <div class="a-account-form-left">
+
+                <div class="a-account-form-left-container">
+
+                    <a class="a-account-form-left-item a-account-form-left-item-current"> PEPSONAL DATA</a>
+                    <a asp-action="Orders" class="a-account-form-left-item a-account-form-left-item-other">ORDERS</a>
+
+                </div>
+
+            </div>
+
+            <div class="a-account-form-right">
+
+                <div class="a-account-form-right-container">
+
+                    <div class="a-account-form-right-title">
+                        PEPSONAL DATA
+                    </div>
+
+                    <div class="a-account-form-right-btn-container">
+                        <a onclick="onEditClick()" id="a" class="a-account-form-right-edit-btn"><div class="a-account-btn-text">edit</div></a>
+                        <button asp-action="Index" type="submit" id="btn" class="a-account-form-right-submit-btn"><div class="a-account-btn-text">submit</div></button>
+                    </div>
+
+                    <div class="a-account-form-right-item">
+                        <div class="a-account-form-right-item-text">
+                            Phone
+                        </div>
+                        <input asp-for="PhoneNumber" type="number" disabled class="a-account-form-right-item-input" value="@Model.PhoneNumber" />
+                        <span asp-validation-for="PhoneNumber"></span>
+                    </div>
+                    
+                    <div class="a-account-form-right-item">
+                        <div class="a-account-form-right-item-text">
+                            Full Name
+                        </div>
+                        <input asp-for="FullName" type="text" disabled class="a-account-form-right-item-input" value="@Model.FullName" />
+                        <span asp-validation-for="FullName"></span>
+                    </div>
+                    
+                    <div class="a-account-form-right-item">
+                        <div class="a-account-form-right-item-text">
+                            Date Of Birth
+                        </div>
+                        <input asp-for="DateOfBirthOnly" type="date" disabled class="a-account-form-right-item-input" value="@Model.DateOfBirthOnly.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="DateOfBirthOnly"></span>
+                    </div>
+                    
+                    <div class="a-account-form-right-item">
+                        <div class="a-account-form-right-item-text">
+                            E-mail
+                        </div>
+                        <input asp-for="Email" type="email" disabled class="a-account-form-right-item-input" value="@Model.Email" />
+                        <span asp-validation-for="Email"></span>
+                    </div>
+                    
+                    <div class="a-account-form-right-item">
+                        <div class="a-account-form-right-item-text">
+                            Full Address
+                        </div>
+                        <textarea asp-for="FullAddress" disabled class="a-account-form-right-item-input">@Model.FullAddress</textarea>
+                        <span asp-validation-for="FullAddress"></span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        function onEditClick(){
+            $('#a').css('display', 'none');
+            $('#btn').css('display', 'flex');
+            $('.a-account-form-right-item-input').each(function (i, elem) {
+                $(elem).attr('disabled', false);
+            });
+        }
+    </script>
+}

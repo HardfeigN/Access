@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Access_Models.ViewModels
 {
     public class IndividualProductVM
@@ -13,6 +8,7 @@ namespace Access_Models.ViewModels
         public bool ExistInCart { get; set; }
         public IEnumerable<ProductAttribute> ProductAttributes { get; set; }
         public IEnumerable<ProductImage> ProductImages { get; set; }
+        public IEnumerable<IndividualProductVM> IndividualProductVMs { get; set; }
 
         public IndividualProductVM()
         {

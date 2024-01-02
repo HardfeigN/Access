@@ -1,7 +1,18 @@
-﻿<head>
+﻿@model Access_Models.ProductImage
+@using Access_Utility
+
+<head>
     <link rel="stylesheet" href="~/css/_PCCH.css" />
 </head>
-<div class="_pcch-product">
-    <div class="_pcch-product-img">
-    </div>
-</div>
+
+@if (Model == null)
+{
+    <a class="_pcch-product-empty">
+    </a>
+}
+else
+{
+    <a asp-controller="Catalog" asp-action="Details" asp-route-id="@Model.ProductId" class="_pcch-product">
+        <img class="_pcch-product-img" loading="lazy" src="@WebConstants.ProductImagePath@Model.ProductId\@Model.Name" />
+    </a>
+}

@@ -2,16 +2,19 @@
 using Access_Models;
 using Access_Models.ViewModels;
 using Access_Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Access.Controllers
 {
+    [Authorize(Roles = WebConstants.AdminRole)]
     public class ProductController : Controller
     {
         private readonly IProductRepository _prodRepos;
         private readonly IProductImageRepository _prodImgRepos;
         private readonly IWebHostEnvironment _webHostEnvironment;
-
+        [BindProperty]
+        public ProductVM ProductVM { get; set; }
 
         public ProductController(IProductRepository prodRepos, IWebHostEnvironment webHostEnvironment, IProductImageRepository prodImgRepos)
         {
@@ -27,11 +30,10 @@ namespace Access.Controllers
             return View(objList);
         }
 
-        //GET - Upsert
+        [HttpGet]
         public IActionResult Upsert(int? id)
         {
-
-            ProductVM productVM = new ProductVM()
+            ProductVM = new ProductVM()
             {
                 Product = new Product()
                 {
@@ -45,48 +47,47 @@ namespace Access.Controllers
             if (id == null)
             {
                 //for create
-                return View(productVM);
+                return View(ProductVM);
             }
             else
             {
-                productVM.Product = _prodRepos.Find(id.GetValueOrDefault());
-                if (productVM.Product == null)
+                ProductVM.Product = _prodRepos.Find(id.GetValueOrDefault());
+                if (ProductVM.Product == null)
                 {
                     return NotFound();
                 }
-                productVM.ProductImages = _prodImgRepos.GetProductImages(productVM.Product.Id);
-                return View(productVM);
+                ProductVM.ProductImages = _prodImgRepos.GetProductImages(ProductVM.Product.Id);
+                return View(ProductVM);
             }
         }
 
-        //POST - Upsert
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(ProductVM productVM)
+        public IActionResult Upsert()
         {
             if (ModelState.IsValid)
             {
-                if (productVM.Product.Id == 0)
+                if (ProductVM.Product.Id == 0)
                 {
 
-                    _prodRepos.Add(productVM.Product);
+                    _prodRepos.Add(ProductVM.Product);
                     TempData[WebConstants.Success] = "Pruduct created successfully";
                 }
                 else
                 {
                     //update
-                    var objFromDb = _prodRepos.FirstOrDefault(u => u.Id == productVM.Product.Id, isTracking:false);
-                    _prodRepos.Update(productVM.Product);
+                    var objFromDb = _prodRepos.FirstOrDefault(u => u.Id == ProductVM.Product.Id, isTracking:false);
+                    _prodRepos.Update(ProductVM.Product);
                     TempData[WebConstants.Success] = "Pruduct updated successfully";
                 }
                 _prodRepos.Save();
                 return RedirectToAction("Index");
             }
-            productVM.CategorySelectList = _prodRepos.GetAllDropdownList(nameof(Category));
-            return View(productVM);
+            ProductVM.CategorySelectList = _prodRepos.GetAllDropdownList(nameof(Category));
+            return View(ProductVM);
         }
 
-        //GET - Delete
+        [HttpGet]
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
@@ -101,7 +102,6 @@ namespace Access.Controllers
             return View(product);
         }
 
-        //POST - Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeletePost(int? id)

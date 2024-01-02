@@ -2,14 +2,7 @@
 using Access_DataAccess.Repository.IRepository;
 using Access_Models;
 using Access_Models.ViewModels;
-using Access_Utility;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Access_DataAccess.Repository
 {
@@ -34,41 +27,16 @@ namespace Access_DataAccess.Repository
                 }));
                 return listItem;
             }
-            return null;
-        }
-
-        public async Task<IEnumerable<SelectListItem>> GetAllDropdownListAsync(string obj)
-        {
-            if (obj == nameof(Category))
+            if (obj == nameof(Product))
             {
                 List<SelectListItem> listItem = new List<SelectListItem>();
-                listItem.AddRange(await _db.Category.Select(i => new SelectListItem
+                listItem.AddRange(_db.Product.Select(i => new SelectListItem
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
-                }).ToListAsync());
+                }));
                 return listItem;
             }
-            return null;
-        }
-
-        public async Task<IndividualProductVM> GetIndividualProductVMAsync(int id)
-        {
-            try
-            {
-                IndividualProductVM IndividualProductVM = new IndividualProductVM()
-                {
-                    Product = await _db.Product.FindAsync(id),
-                    ProductAttributes = await _db.ProductAttribute.Where(i => i.ProductId == id).ToListAsync(),
-                    ProductImages = await _db.ProductImage.Where(i => i.ProductId == id).ToListAsync()
-                };
-                return IndividualProductVM;
-            }
-            catch
-            {
-
-            }
-
             return null;
         }
 
@@ -80,15 +48,21 @@ namespace Access_DataAccess.Repository
                 {
                     Product = _db.Product.Find(id),
                     ProductAttributes = _db.ProductAttribute.Where(i => i.ProductId == id).ToList(),
-                    ProductImages = _db.ProductImage.Where(i => i.ProductId == id).ToList()
                 };
+                List<ProductImage> images = new List<ProductImage>();
+                foreach(ProductAttribute attr in IndividualProductVM.ProductAttributes)
+                {
+                    if (IndividualProductVM.ProductAttributes.Count() > 1)
+                        images.AddRange(_db.ProductImage.Where(i => i.AttributeId == attr.Id && i.ImageNumber == 0).ToList());
+                    else images.AddRange(_db.ProductImage.Where(i => i.AttributeId == attr.Id).ToList());
+                }
+                IndividualProductVM.ProductImages = images;
                 return IndividualProductVM;
             }
             catch
             {
 
             }
-
             return new IndividualProductVM();
         }
 

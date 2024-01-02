@@ -2,7 +2,6 @@
 using Access_DataAccess.Repository.IRepository;
 using Access_Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace Access_DataAccess.Repository
 {
@@ -32,28 +31,6 @@ namespace Access_DataAccess.Repository
                     Text = i.Name,
                     Value = i.Id.ToString()
                 }));
-                return listItem;
-            }
-            return null;
-        }
-
-        public async Task<IEnumerable<SelectListItem>> GetAllDropdownListAsync(string obj)
-        {
-            if (obj == nameof(Category)) //WebConstants.CategoryName
-            {
-                List<SelectListItem> listItem = new List<SelectListItem>
-                {
-                    new SelectListItem()
-                    {
-                        Text = "No parent",
-                        Value = DBNull.Value.ToString()
-                    }
-                };
-                listItem.AddRange(await _db.Category.Select(i => new SelectListItem
-                {
-                    Text = i.Name,
-                    Value = i.Id.ToString()
-                }).ToListAsync());
                 return listItem;
             }
             return null;

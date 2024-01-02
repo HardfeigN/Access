@@ -1,7 +1,9 @@
 ﻿@model Access_Models.ViewModels.CatalogVM
+@using Access_Models
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
+    ViewData["Title"] = "Catalog - Access";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 <head>
@@ -14,9 +16,37 @@
 
     <div class="a-catalog-content">
         
+        <form id="a-catalog-filter" class="a-catalog-filter">
+            <input asp-for="@Model.CurrentCategory.Id" id="id" name="id" hidden />
+            <a href="javascript:void(0)" class="a-catalog-closebtn" onclick="closeNav()">&times;</a>
+            <a asp-action="Index" asp-route-id="" data-filter="all">All categories</a>
+            @for (int i = 0; i < Model.Categories.Count(); i++)
+            {
+                <a asp-action="Index" asp-route-id="@Model.Categories.ElementAt(i).Id">@Model.Categories.ElementAt(i).Name</a>
+            }
+
+        </form>
+        <div class="a-catalog-category-line">
+            <div class="a-catalog-category-name">
+                @if(Model.CurrentCategory == null)
+                {
+                    <p>All bags - Category</p>
+                }
+                else
+                {
+                    <p>@Model.CurrentCategory.Name - Category</p>
+                }
+            </div>
+            <div class="a-category-filter" onclick="openNav()">
+                sort by
+            </div>
+        </div>
+
 
         <div class="a-catalog-product-table">
             <div class="a-catalog-product-table-body">
+                @*
+
                 @{
                     for (int i = 0; i < Math.Ceiling(Model.IndividualProductVMs.Count() / 4.0); i++)
                     {
@@ -24,20 +54,88 @@
                             @for (int j = 0; j < 4; j++)
                             {
                                 //display all products
-                                <div class="a-catalog-product-table-cell">
-                                    @if (i * 4 + j < Model.IndividualProductVMs.Count() && j < 4)
-                                    {
-                                        <partial name="~/Views/Shared/_IndividualProductCard.cshtml" model="Model.IndividualProductVMs.ElementAt(i * 4 + j)" />
-                                    }
-                                </div>
+                                @if (i * 4 + j < Model.IndividualProductVMs.Count() && j < 4)
+                                {
+                                    <partial name="~/Views/Shared/_IndividualProductCard.cshtml" model="Model.IndividualProductVMs.ElementAt(i * 4 + j)" />
+                                }
                             }
                         </div>
                     }
                 }
+                *@
+                <div class="a-catalog-product-table-row">
+
+                </div>
+
             </div>
 
         </div>
 
+
     </div>
 
 </div>
+
+@section Scripts{
+
+    <script type="text/javascript">
+        function openNav() {
+            document.getElementById("a-catalog-filter").style.width = "15rem";
+        }
+
+        function closeNav() {
+            document.getElementById("a-catalog-filter").style.width = "0";
+        }
+
+        $(function () {
+
+            var page = 0;
+            var id = $('#id').val();
+            var url = '/Catalog/Index/?';
+            if (id != '') url = url + 'id=' + id + '&';
+            var _inCallback = false;
+            function loadItems() {
+                if (page > -1 && !_inCallback) {
+                    _inCallback = true;
+
+                    $.ajax({
+                        type: 'GET',
+                        url: url + 'page=' + page,
+                        success: function (data) {
+                            if (data.length > 2) {
+                                $(".a-catalog-product-table-row").append(data);
+                                page++;
+                            }
+                            _inCallback = false;
+                            $('.a-IPC-containet').each(function (i, elem) {
+                                $(elem).css('margin-bottom', '0');
+                                $(elem).css('margin-top', '0');
+                                if(i+1 % 4 != 0){
+                                    $(elem).css('margin-right', '1.37rem');
+                                }
+                                if(i >= 4){
+                                    $(elem).css('margin-top', '1.37rem');
+                                }
+                                if (i == $('.a-IPC-containet').length) {
+                                    $(elem).css('margin-bottom', '1.37rem');
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+            // обработка события скроллинга
+            $(window).scroll(function () {
+                if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+
+                    loadItems();
+                }
+            });
+            $(document).ready(function () {
+                loadItems();
+            });
+        })
+
+    </script>
+
+}

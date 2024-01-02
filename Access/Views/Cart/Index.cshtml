@@ -1,96 +1,227 @@
-﻿@model List<Product>
+﻿@model Access_Models.ViewModels.ProductUserVM
 @using Access_Models;
-@using Access_Utility
+@using Access_Utility;
+
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
+    ViewData["Title"] = "Cart - Access";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-@if (Model.Count() > 0)
-{
-    <form method="post">
-        <br />
-        <div class="backgroundWhiteBorder">
-            <div class="container row">
-                <div class="col -8">
-                    <div class="card mt-4">
-                        <div class="card-header bg-dark text-light ml-0 row container">
-                            <div class="col-6">
-                                <i class="fa fa-shopping-cart"></i> &nbsp;
-                                Shopping Cart
-                            </div>
-                            <div class="col-6 text-right">
-                                <a asp-action="Clear" class="btn btn-outline-info btn-sm">Clear Cart</a>
-                                <a asp-action="Index" asp-controller="Catalog" class="btn btn-outline-info btn-sm">Continue Shopping</a>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class=" d-none d-lg-block">
-                                <div class="row" style="color:#821f3d">
-                                    <div class="col-lg-2">
-                                    </div>
-                                    <div class="col-12 col-lg-7">
-                                        Product Details
-                                    </div>
-                                    <div class="col-12 col-lg-2">
-                                        Price per kg
-                                    </div>
-                                    <div class="col-6 col-sm-4 col-lg-1">
-                                    </div>
-                                </div>
-                            </div>
+<head>
+    <link rel="stylesheet" href="~/css/Cart.css" />
+</head>
 
-                            <hr />
-                            @for (int i = 0; i < Model.Count(); i++)
-                            {
-                                <input hidden asp-for="@Model[i].Id" />
-                                <div class="row h-100">
-                                    <div class="col-4 col-md-2 text-center py-2">
-                                        @*<img src="@WebConstants.ProductImagePath@obj.Image" class="rounded w-100" />*@
-                                    </div>
-                                    <div class="col-8 col-lg-7">
-                                        <h5>@Model.ElementAt(i).Name</h5>
-                                        <div style="font-size:11px;">@Model[i].ShortDesc</div>
-                                    </div>
-                                    <div class="col-3 col-lg-2 pt-lg-4" style="font-size:11px;">
-                                        <span style="font-size:17px;"> @Model[i].Price</span>
+<div class="a-container-content">
 
-                                    </div>
-                                    <div class="col-3 col-lg-2 pt-lg-4" style="font-size:11px;">
-                                        <input type="number" asp-for="@Model[i].TempQuantity" value="@Model[i].TempQuantity" />
-                                        <span asp-validation-for="@Model[i].TempQuantity"></span>
-                                    </div>
-                                    <div class="col-2 col-lg-1 p-0 pt-lg-4 text-center">
-                                        <a asp-action="Remove" asp-route-id="@Model[i].Id" class="btn btn-outline-danger">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </div>
-                                </div>
+    <div class="a-cart-container">
 
-                                <hr />
-                            }
-                        </div>
-                        <div class="card-footer">
-                            <div class="row">
-                                <div class="col-6 col-md-3 offset-md-9">
-                                    <button type="submit" class="btn btn-success form-control ">
-                                        <span>Continue</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="a-cart-title-line">
+
+            <div class="a-cart-title-line-text">Cart</div>
+            <a asp-action="Clear" class="a-cart-title-line-btn"><div>clear</div></a>
+
         </div>
-    </form>
-}
-else
-{
-    <p>Please add items to cart.</p>
-}
+
+
+        <form class="a-cart-form-container" method="post">
+            <input hidden asp-for="@Model.ApplicationUser.Id" />
+            @{
+                float totalPrice = 0;
+                <div class="a-cart-form-left">
+
+                    <div class="a-cart-form-left-container">
+
+                        @if (Model.ProductList.Count() > 0)
+                        {
+
+                            <div class="a-cart-form-left-title">
+                                ITEMS IN THE CART: @Model.ProductAttributeList.Count()
+                            </div>
+
+                            for (int i = 0; i < Model.ProductList.Count(); i++)
+                            {
+                                <input hidden asp-for="@Model.ProductList[i].Id" />
+                                <input hidden asp-for="@Model.ProductList[i].Price" />
+                            }
+
+                            for (int i = 0; i < Model.ProductAttributeList.Count(); i++)
+                            {
+                                <input hidden asp-for="@Model.ProductAttributeList[i].Id" />
+                                <input hidden asp-for="@Model.ProductAttributeList[i].ProductId" />
+
+                                ProductAttribute prodAttr = Model.ProductAttributeList[i];
+                                Product product = Model.ProductList.FirstOrDefault(u => u.Id == prodAttr.ProductId);
+                                totalPrice += product.Price * prodAttr.TempQuantity;
+                                <div class="a-cart-form-left-product-item">
+
+                                    <div class="a-cart-product-img">
+                                        @if (@Model.ProductImageList.FirstOrDefault(u => u.AttributeId == prodAttr.Id) != null)
+                                        {
+                                            <img loading="lazy" src="@WebConstants.ProductImagePath@product.Id\@Model.ProductImageList.FirstOrDefault(u => u.AttributeId == prodAttr.Id).Name" />
+                                        }
+                                        else
+                                        {
+                                            <img loading="lazy" src="" />
+                                        }
+                                    </div>
+
+                                    <div class="a-cart-product-info">
+                                        <div class="a-cart-product-name">
+                                            @product.Name
+                                        </div>
+                                        <div class="a-cart-product-attr">
+                                            @prodAttr.AttributeType.Name: @prodAttr.AttributeValue.Value
+                                        </div>
+                                    </div>
+
+                                    <div class="a-cart-product-count">
+                                        <div class="a-cart-product-count-buttons">
+                                            <a onclick="changeCount(this, -1)" class="a-cart-product-count-btn">−</a>
+                                            <input asp-for="@Model.ProductAttributeList[i].TempQuantity" class="a-cart-product-count-input" type="number" value="@Model.ProductAttributeList[i].TempQuantity" />
+                                            <a onclick="changeCount(this, 1)" class="a-cart-product-count-btn">+</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="a-cart-product-price">
+                                        $@product.Price
+                                    </div>
+
+                                </div>                            
+                            }
+
+
+                        }
+                        else
+                        {
+                            <div class="a-cart-form-left-title">
+                                PLEASE ADD ITEMS TO CART
+                            </div>
+
+                        }
+
+                    </div>
+
+
+                </div>
+
+                <div class="a-cart-form-right">
+
+                    <div class="a-cart-form-right-container">
+
+                        <div class="a-cart-form-right-title a-cart-form-right-list-item">
+                            Fill in the details:
+                        </div>
+
+                        <div class="a-cart-form-right-list-item">
+
+                            <div class="a-cart-form-right-list-item-name">
+                                Phone
+                            </div>
+
+                            <input asp-for="@Model.ApplicationUser.PhoneNumber" type="text" class="a-cart-form-right-list-item-input" value="@Model.ApplicationUser.PhoneNumber" />
+
+                        </div>
+
+                        <div class="a-cart-form-right-list-item">
+
+                            <div class="a-cart-form-right-list-item-name">
+                                Full Name
+                            </div>
+
+                            <input asp-for="@Model.ApplicationUser.FullName" type="text" class="a-cart-form-right-list-item-input" value="@Model.ApplicationUser.FullName" />
+
+                        </div>
+
+                        <div class="a-cart-form-right-list-item">
+
+                            <div class="a-cart-form-right-list-item-name">
+                                E-mail
+                            </div>
+
+                            <input asp-for="@Model.ApplicationUser.Email" type="text" class="a-cart-form-right-list-item-input" value="@Model.ApplicationUser.Email" />
+
+                        </div>
+
+                        <div class="a-cart-form-right-list-item">
+
+                            <div class="a-cart-form-right-list-item-name">
+                                Address
+                            </div>
+
+                            <textarea asp-for="@Model.ApplicationUser.FullAddress" class="a-cart-form-right-list-item-input">@Model.ApplicationUser.FullAddress</textarea>
+
+                        </div>
+
+                        <div class="a-cart-form-right-list-item">
+
+                            <div class="a-cart-form-right-list-item-name">
+                                Price: @totalPrice$
+                            </div>
+                        </div>
+
+                        <div class="a-cart-form-right-list-item">
+
+                            @if (Model.ProductList.Count() > 0)
+                            {
+                                @if (User.IsInRole(WebConstants.AdminRole))
+                                {
+                                    <button type="submit" onclick="return validateInput()" class="a-cart-form-right-button">
+                                        <div class="a-cart-form-right-button-text">
+                                            Submit Order
+                                        </div>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="submit" onclick="return validateInput()" class="a-cart-form-right-button">
+                                        <div class="a-cart-form-right-button-text">
+                                            Submit Inquiry
+                                        </div> 
+                                    </button>
+                                }
+                            }
+                            else
+                            {
+                                <button disabled class="a-cart-form-right-button">
+                                    <div class="a-cart-form-right-button-text">
+                                        Cart is empty
+                                    </div>
+                                </button>
+                            }
+
+
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+
+            }
+
+
+        </form>
+
+    </div>
+
+</div>
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        function changeCount(el, shift){
+            var input = $(el).closest('.a-cart-product-count-buttons').children('.a-cart-product-count-input');
+            var count = parseInt($(input).val()) + shift;
+            if (count < 1){
+                count = 1; //delete from cart
+                $(input).val(count);
+            }
+            else{
+                $(input).val(count);
+            }
+        }
+    </script>
 }

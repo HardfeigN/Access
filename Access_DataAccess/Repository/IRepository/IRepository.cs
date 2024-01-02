@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
 namespace Access_DataAccess.Repository.IRepository
 {
@@ -31,23 +26,5 @@ namespace Access_DataAccess.Repository.IRepository
         void RemoveRange(IEnumerable<T> entity);
 
         void Save();
-        Task<T> FindAsync(int id);
-
-        Task<ICollection<T>> GetAllAsync(
-            Expression<Func<T, bool>> filter = null,
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
-            string includeProperties = null,
-            bool isTracking = true
-            );
-
-        Task<T> FirstOrDefaultAsync(
-            Expression<Func<T, bool>> filter = null,
-            string includeProperties = null,
-            bool isTracking = true
-            );
-
-        void AddAsync(T entity);
-
-        void SaveAsync();
     }
 }

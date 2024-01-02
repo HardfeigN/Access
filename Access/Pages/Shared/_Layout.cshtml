@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Access_Utility
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -17,7 +19,7 @@
             <div class="a-container-content">
                 <div class="a-header">
                     <ul class="a-header-list">
-                        <a class="a-header-logo" asp-area="" asp-page="/Index">ACCESS</a>
+                        <a class="a-header-logo" asp-controller="Home" asp-action="Index">ACCESS</a>
                     </ul>
 
                     <ul class="a-header-list a-header-page-list">
@@ -27,7 +29,7 @@
                         </li>
 
                         <li >
-                            <a class="a-header-link" asp-controller="Inquiry" asp-action="Index">NEW ARRIVALS</a>
+                            <a class="a-header-link" asp-controller="Catalog" asp-action="NewArrivals">NEW ARRIVALS</a>
                         </li>
 
                         <li >
@@ -35,8 +37,28 @@
                         </li>
 
                         <li >
-                            <a class="a-header-link" asp-controller="Category" asp-action="Index">ABOUT</a>
+                            <a class="a-header-link" asp-controller="Home" asp-action="About">ABOUT</a>
                         </li>
+
+                        @if(User.IsInRole(WebConstants.AdminRole))
+                        {
+                            <li>
+                                <div class="a-header-dropdown">
+                                    <div class="a-header-dropbtn">MODERATION</div>
+                                    <div class="a-header-dropdown-content">
+                                        <a asp-controller="Inquiry" asp-action="Index">Inquiries</a>
+                                        <a asp-controller="Order" asp-action="Index">Orders</a>
+                                        <hr />
+                                        <a asp-controller="AttributeType" asp-action="Index">Attribute Type</a>
+                                        <a asp-controller="AttributeValue" asp-action="Index">Attribute Value</a>
+                                        <a asp-controller="Category" asp-action="Index">Category</a>
+                                        <a asp-controller="ProductAttribute" asp-action="Index">Product Attribute</a>
+                                        <a asp-controller="Product" asp-action="Index">Product</a>
+                                        <a asp-controller="Status" asp-action="Index">Status</a>
+                                    </div>
+                                </div>
+                            </li>
+                        }
 
                     </ul>
 

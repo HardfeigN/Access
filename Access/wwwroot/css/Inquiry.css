@@ -4,25 +4,26 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    top: 5rem;
+    margin-top: 5rem;
     position: relative;
 }
 
 .a-inquiry-table {
     min-width: 80rem;
-    background: #00000030;
+    border-spacing: .5rem !important;
+    border: none !important;
 }
 
 .a-inquiry-table th, td {
-    border: solid #808080;
+    outline: .125rem #FAF6F1 !important;
+    outline-offset: -.125rem !important;
 }
 
 .a-inquiry-edit-btn {
     width: 3rem;
     height: 3rem;
-    background: #808080;
     display: flex;
-    border-radius: 0.5rem;  
+
 }
 
 .a-inquiry-edit-btn-icon {
@@ -47,7 +48,8 @@
     width: 80rem;
     display: flex;
     flex-direction: column;
-    border: 0.05rem solid #808080;
+    outline: .125rem solid #FAF6F1;
+    outline-offset: -.125rem;
 }
 
 .a-inquiry-details-header {
@@ -57,13 +59,14 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background: #00000040;
-    border-bottom: 0.05rem solid #808080;
+    background: #FAF6F1;
+    outline: .125rem solid #262632;
+    outline-offset: -.125rem;
 }
 
 .a-inquiry-details-header-item,
-.a-inquiry-details-header-item > a{
-    color: #FAF6F1;
+.a-inquiry-details-header-item > a {
+    color: #262632;
     font-family: Play-Regular;
     font-size: 1.5rem;
     font-style: normal;
@@ -82,7 +85,8 @@
 .a-inquiry-details-header-button {
     width: 20%;
     height: 3rem;
-    border: 0.25rem solid #808080;
+    outline: .25rem solid #262632;
+    outline-offset: -.25rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -93,13 +97,13 @@
 }
 
 .a-inquiry-details-body {
+    margin-top: 1rem;
     width: 100%;
     min-height: 20rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background: #00000040;
 }
 
 .a-inquiry-details-info-item {
@@ -133,8 +137,12 @@
 }
 
 .a-inquiry-details-order-info-item input{
-    background-color: #808080;
-    border-color: #FAF6F160;
+    background: none;
+    border: none;
+}
+.a-inquiry-details-order-info-item input:focus{
+    outline: .125rem solid #FAF6F1;
+    outline-offset: -.125rem;
 }
 
 .a-inquiry-details-order-info-item-left {
@@ -157,10 +165,6 @@
     line-height: normal;
 }
 
-.a-inquiry-details-buttons-container {
-
-}
-
 .a-inquiry-details-buttons {
     width: 100%;
     display: flex;
@@ -177,18 +181,16 @@
     font-style: normal;
     font-weight: 300;
     line-height: normal;
-    width: 12rem;
-    height: 1.8rem;
-
-
 }
 
 .a-inquiry-details-btn {
-    border: 0.25rem solid #808080;
+    width: 45%;
+    outline: .125rem solid #FAF6F1;
+    outline-offset: -.125rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #90909060;
+    cursor: pointer;
 }
 
 .a-inquiry-details-products {
@@ -205,12 +207,14 @@
     width: 75%;
     height: 5rem;
     margin-top: 0.25rem;
+    padding: .25rem;
     position: relative;
     display: flex;
     flex-direction: row;
     justify-content: left;
     align-items: center;
-    border: 0.25rem solid #808080;
+    outline: .25rem solid #FAF6F1;
+    outline-offset: -.25rem;
 }
 
 .a-inquiry-details-product-img {

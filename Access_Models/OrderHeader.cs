@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Access_Models
 {
@@ -12,23 +9,33 @@ namespace Access_Models
     {
         [Key]
         public int Id { get; set; }
-        public int OrderStatusId { get; set; }
-        [ForeignKey("OrderStatusId")]
-        public virtual OrderStatus? OrderStatus { get; set; }
         public string CreatedByUserId { get; set; }
         [ForeignKey("CreatedByUserId")]
         public virtual ApplicationUser? CreatedBy { get; set; }
-        public float OrderPrice;
-        public DateTime CreateDate { get; set; }
-        public DateTime PaymentDate { get; set; }
-        public DateTime ComplationDate { get; set; }
-        public DateTime ShippingDate { get; set; }
+        public string? CustomerUserId { get; set; }
+        [ForeignKey("CustomerUserId")]
+        public virtual ApplicationUser? CustomerUser { get; set; }
         [Required]
         public string FullAddress { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
         [Required]
         public string FullName { get; set; }
+        [Required]
         public string Email { get; set; }
+        [Required]
+        public float OrderCost { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public virtual ICollection<OrderStatus> Statuses { get; set; }
+        [NotMapped]
+        public string OrderStatusName { get; set; }
+        [NotMapped]
+        public DateTime CreationDate { get; set; }
+        
+        public OrderHeader()
+        {
+            Statuses = new List<OrderStatus>();
+        }
     }
 }

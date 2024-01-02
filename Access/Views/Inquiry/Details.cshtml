@@ -3,13 +3,13 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Inquiry";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 <head>
     <link rel="stylesheet" href="~/css/Inquiry.css" />
 </head>
-
+ 
 <div class="a-container-content">
 
     <form method="post" class="a-inquiry-details-form-container">
@@ -58,6 +58,14 @@
 
                     <div class="a-inquiry-details-order-info-item">
                         <div class="a-inquiry-details-order-info-item-left">
+                            Address
+                        </div>
+                        <input asp-for="InquiryHeader.FullAddress" type="text" class="a-inquiry-details-order-info-item-right" />
+                        <span asp-validation-for="InquiryHeader.FullAddress"></span>
+                    </div>
+
+                    <div class="a-inquiry-details-order-info-item">
+                        <div class="a-inquiry-details-order-info-item-left">
                             Inquiry Date
                         </div>
                         <input value="@Model.InquiryHeader.InquiryDate.ToShortDateString()" type="text" class="a-inquiry-details-order-info-item-right" readonly />
@@ -86,14 +94,21 @@
                     {
                         <div class="a-inquiry-details-product-item">
                             <div class="a-inquiry-details-product-img">
-                                <img src="@WebConstants.ProductImagePath@prod.Product.Id\@Model.ProductImages.Where(u => u.ProductId == prod.Product.Id && u.ImageNumber == 0).FirstOrDefault().Name" />
+                                @if (Model.ProductImages.Where(u => u.ProductId == prod.ProductAttribute.Product.Id && u.ImageNumber == 0).Count() > 0)
+                                {
+                                    <img src="@WebConstants.ProductImagePath@prod.ProductAttribute.Product.Id\@Model.ProductImages.Where(u => u.ProductId == prod.ProductAttribute.Product.Id && u.ImageNumber == 0).FirstOrDefault().Name" />
+                                }
+                                else
+                                {
+                                    <img src="" /> 
+                                }
                             </div>
                             <div class="a-inquiry-details-product-info">
                                 <div class="a-inquiry-details-product-text">
-                                    @prod.Product.Name
+                                    @prod.ProductAttribute.Product.Name
                                 </div>
                                 <div class="a-inquiry-details-product-text">
-                                    Price: @prod.Product.Price $
+                                    Price: @prod.ProductAttribute.Product.Price$
                                 </div>
                             </div>
                         </div>                        

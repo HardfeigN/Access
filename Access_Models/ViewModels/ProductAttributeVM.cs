@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Access_Models.ViewModels
 {
@@ -17,5 +12,14 @@ namespace Access_Models.ViewModels
         public IEnumerable<SelectListItem> AttributeValueSelectList { get; set; }
         [ValidateNever]
         public IEnumerable<ProductImage> ProductImages { get; set; }
+        [ValidateNever]
+        public IEnumerable<SelectListItem> ProductSelectList { get; set; }
+        [ValidateNever]
+        public bool DeleteOldImages { get; set; }
+
+        public ProductAttributeVM() 
+        {
+            DeleteOldImages = false;
+        }
     }
 }

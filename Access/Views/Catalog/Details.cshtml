@@ -1,127 +1,255 @@
 ﻿@model Access_Models.ViewModels.IndividualProductVM
 @using Access_Utility
+@using Access_Models
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
+    ViewData["Title"] = $"{Model.Product.Name} - Access";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 <head>
     <link rel="stylesheet" href="~/css/Catalog.css" />
+    <link rel="stylesheet" href="~/css/_IndividualProductCard.css" />
 </head>
 
 <div class="a-container-content">
-    <div class="a-details-container">
-      <form method="post">
-        <input asp-for="@Model.Product.Id" hidden />
-        <div class="a-product-info">
-            <div class="a-details-slider">
-                @{
-                    int imgBlocksCount = 4;
-                    if (Model.ProductImages.Count() > 4) imgBlocksCount = Model.ProductImages.Count();
-                    string height = (Math.Round(imgBlocksCount * (13.375 + 1.54), 2).ToString() + "rem").Replace(",", ".");
-                    <div class="a-details-slider-images" style="height: @height;" onclick="sliderMove()">
-                        @for (int i = 0; i < 4 || i < Model.ProductImages.Count(); i++)
-                        {
-                            <div class="a-details-slider-images-item">
-                                @if(i < Model.ProductImages.Count())
-                                {
-                                    <img loading="lazy" src="@WebConstants.ProductImagePath@Model.Product.Id\@Model.ProductImages.ElementAt(i).Name" />
-                                }
-                            </div>                            
-                        }
-                    </div>
-                }
+    <div class="a-details">
 
-                <div class="a-details-slider-mainimage">
-                    <img src="@WebConstants.ProductImagePath@Model.Product.Id\@Model.ProductImages.ToArray()[Model.SliderImageIndex].Name" />
-                </div>
-            </div>
-
-            <div class="a-details-rightblock">
-                <div class="a-details-rightblock-content">
-
-                    <div class="a-details-product-name">
-                        @Model.Product.Name
-                    </div>
-
-                    <div class="a-details-product-price">
-                        @Model.Product.Price
-                    </div>
-
-                    <div class="a-details-product-color">
-
+        <div class="a-details-container">
+            <form method="post">
+                <input class="a-details-product-id" asp-for="@Model.Product.Id" hidden />
+                <div class="a-product-info">
+                    <div class="a-details-slider">
                         @{
-                            int count = Model.ProductAttributes.Where(a => a.AttributeType.Name == WebConstants.Color).Count();
-                            if (count > 0)
-                            {
-                                for (int i = 0; i < 3 || i < Model.ProductAttributes.Count(); i++)
-                                {
-                                    if (i < count)
+                            int imgBlocksCount = 4;
+                            if (Model.ProductImages.Count() > 4) imgBlocksCount = Model.ProductImages.Count();
+                            string height = (Math.Round(imgBlocksCount * (13.375 + 1.56) - 1.56, 2).ToString() + "rem").Replace(",", ".");
+                            <div class="a-details-slider-images-container">
+                                <div class="a-details-slider-images" style="height: @height;">
+                                    @for (int i = 0; i < 4 || i < Model.ProductImages.Count(); i++)
                                     {
-                                        <div class="a-details-product-color-item" style="background: @Model.ProductAttributes.ElementAt(i).AttributeValue.Value;border: 0.5rem solid #FAF6F1;">
-                                        </div>
+                                        @if (i < Model.ProductImages.Count())
+                                        {
+                                            <div class="a-details-slider-images-item" color="@Model.ProductImages.ElementAt(i).AttributeId">
+                                                <img class="a-details-slider-image" onclick="changeMainImage(this)" name="" loading="lazy" src="@WebConstants.ProductImagePath@Model.Product.Id\@Model.ProductImages.ElementAt(i).Name" />
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="a-details-slider-images-item">
+                                            </div>
+                                        }
                                     }
-                                    else
-                                    {
-                                        <div class="a-details-product-color-item">
-                                        </div>
-                                    }
+                                </div>
+                                <div class="a-details-slider-next-btn" onclick="move(1)">&Hat;</div>
+                                <div class="a-details-slider-prev-btn" onclick="move(-1)">&Hat;</div>
 
-                                }
-
-                            }
+                            </div>
                         }
+
+                        <div class="a-details-slider-mainimage">
+                            <img class="a-details-slider-mainimage-img" src="@WebConstants.ProductImagePath@Model.Product.Id\@Model.ProductImages.ToArray()[Model.SliderImageIndex].Name" />
+                        </div>
                     </div>
 
-                    @if (Model.ExistInCart)
-                    {
-                        <button asp-action="RemoveFromCart" asp-route-id="@Model.Product.Id" type="submit" class="a-details-product-addtocart-button">Remove from Cart</button>
-                    }
-                    else
-                    {
-                        <button type="submit" formmethod="post" class="a-details-product-addtocart-button">ADD TO CART</button>
-                    }
+                    <div class="a-details-rightblock">
+                        <div class="a-details-rightblock-content">
 
-                    <div class="a-details-product-description">
-                        <div class="a-details-product-description-buttons">
-                            <div class="a-details-product-description-buttons-item">
-                                DESCRIPTION
+                            <div class="a-details-product-name">
+                                @Model.Product.Name
                             </div>
-                            <div class="a-details-product-description-buttons-item">
-                                MATERIALS
-                            </div>
-                            <div class="a-details-product-description-buttons-item">
-                                SIZE
-                            </div>
-                            <div class="a-details-product-description-buttons-item">
-                                SHIPPING / RETURNS
-                            </div>
-                        </div>
 
-                        <div class="a-details-product-description-content">
-                            <p>
-                                Free delivery by courier within the day in Paris and suburbs. For any order in France, free shipping by DPD in 3 working days.In the rest of the world and from 200€ of order, free shipping by Fedex and DHL between 3 and 5 working days.
-                                <br />
-                                <br />
-                                Returns are eligible for refund within 30 days of your purchase (personalized items excluded).
-                            </p>
+                            <div class="a-details-product-price">
+                                @Model.Product.Price $
+                            </div>
+
+                            <div class="a-details-product-color">
+
+                                @{
+                                    @if (Model.ExistInCart)
+                                    {
+
+                                    }
+
+                                    int count = Model.ProductAttributes.Where(a => a.AttributeType.Name == WebConstants.Color).Count();
+                                    if (count > 0)
+                                    {
+                                        <input type="number" class="a-details-color-route" name="prodColor" value="@Model.ProductAttributes.ElementAt(0).Id" hidden />
+
+                                        for (int i = 0; i < 3 || i < Model.ProductAttributes.Count(); i++)
+                                        {
+                                            if (i < count)
+                                            {
+                                                if (i == 0)
+                                                {
+                                                    <div class="a-details-product-color-item active-color" id="@Model.ProductAttributes.ElementAt(i).Id" onclick="changeColor(this)" style="background: @Model.ProductAttributes.ElementAt(i).AttributeValue.Value;outline: 0.5rem solid #FAF6F1;outline-offset: -0.5rem;">
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="a-details-product-color-item" id="@Model.ProductAttributes.ElementAt(i).Id" onclick="changeColor(this)" style="background: @Model.ProductAttributes.ElementAt(i).AttributeValue.Value;">
+                                                    </div>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <div class="a-details-product-color-item-empty">
+                                                </div>
+                                            }
+                                        }
+                                    }
+                                }
+                            </div>
+
+                            <button formmethod="post" asp-route-id="@Model.Product.Id" type="submit" class="a-details-product-addtocart-button">Add to Cart</button>
+
+                            <div class="a-details-product-description">
+                                <div class="a-details-product-description-buttons">
+                                    <div class="a-details-product-description-buttons-item">
+                                        DESCRIPTION
+                                    </div>
+                                    <div class="a-details-product-description-buttons-item">
+                                        MATERIALS
+                                    </div>
+                                    <div class="a-details-product-description-buttons-item">
+                                        SIZE
+                                    </div>
+                                    <div class="a-details-product-description-buttons-item">
+                                        SHIPPING / RETURNS
+                                    </div>
+                                </div>
+
+                                <div class="a-details-product-description-content">
+                                    <p>
+                                        Free delivery by courier within the day in Paris and suburbs. For any order in France, free shipping by DPD in 3 working days.In the rest of the world and from 200€ of order, free shipping by Fedex and DHL between 3 and 5 working days.
+                                        <br />
+                                        <br />
+                                        Returns are eligible for refund within 30 days of your purchase (personalized items excluded).
+                                    </p>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
                 </div>
-            </div>
-
+            </form>
         </div>
-      </form>
+
+
+        @if (Model.IndividualProductVMs.Count() > 0)
+        {
+            <div class="a-details-category-products-container">
+                <div class="a-details-category-products-container-text">
+                    YOU MAY ALSO LIKE
+                </div>
+                <div class="a-catalog-product-table">
+                    <div class="a-catalog-product-table-body">
+                        @{
+                            <div class="a-catalog-product-table-row">
+                                @for (int j = 0; j < 4; j++)
+                                {
+                                    //display all products
+                                    <div class="a-catalog-product-table-cell">
+                                        @if (j < Model.IndividualProductVMs.Count())
+                                        {
+                                            <partial name="~/Views/Shared/_IndividualProductCard.cshtml" model="Model.IndividualProductVMs.ElementAt(j)" />
+                                        }
+                                        else
+                                        {
+                                            <partial name="~/Views/Shared/_IndividualProductCard.cshtml" model="@null" />
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+
+                </div>
+
+
+            </div>
+        }
     </div>
 </div>
 
-<script type="text/javascript">
-    function sliderMove() {
-        var imagesCount = $('.a-details-slider-images-item').length;
-        if (imagesCount > 4){
+@section Scripts{
 
-            $('.a-details-slider-images').css('bottom', '13.375rem');
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        function changeMainImage(el) {
+            var newSrc = $(el).attr('src');
+            $('.a-details-slider-mainimage-img').attr('src', newSrc);
         }
-    }
-</script>
+        function move(direction) {
+            var imgHeight = parseFloat($('.a-details-slider-images-item').css('height'));
+            var slideHeight = imgHeight + 1.56 * $(window).width() / 120;
+            var bottom = parseFloat($('.a-details-slider-images').css('bottom'));
+            var index = parseInt(bottom / slideHeight) + direction;
+            if (index == $('[color = ' + $('.active-color').attr('id') + ']').length - 4 + 1 || $('[color = ' + $('.active-color').attr('id') + ']').length <= 4) {
+                $('.a-details-slider-images').css('bottom', 0);
+            }
+            else if (index < 0) {
+                $('.a-details-slider-images').css('bottom', ($('[color = ' + $('.active-color').attr('id') + ']').length - 4) * slideHeight);
+            }
+            else {
+                $('.a-details-slider-images').css('bottom', index * slideHeight);
+            }
+        }
+        $(window).on('resize', function () {
+            resetSlider();
+        });
+
+        function resetSlider() {
+            $('.a-details-slider-images').css('bottom', 0);
+        }
+
+        function changeColor(el) {
+            resetSlider();
+            $('.a-details-slider-images-item').each(function (i, elem) {
+                $(elem).attr('hidden', true);
+            });
+            $('.active-color').css('outline', '0.1rem solid #FAF6F1');
+            $('.active-color').css('outline-offset', '-0.1rem');
+            $('.active-color').removeClass('active-color');
+            $(el).addClass('active-color');
+            $(el).css('outline', '0.5rem solid #FAF6F1');
+            $(el).css('outline-offset', '-0.5rem');
+            $('.a-details-color-route').attr('value', $(el).attr('id'));
+            isInCart($(el), $(el).attr('id'));
+
+            $('[color = ' + $('.active-color').attr('id') + ']').each(function (i, elem) {
+                if (i == 0) changeMainImage($(elem).children('.a-details-slider-image'));
+                $(elem).attr('hidden', false);
+                $('.a-details-slider-images').css('height', $('[color = ' + $('.active-color').attr('id') + ']').length * (13.375 + 1.56) - 1.56 + 'rem');
+            });
+        }
+
+        function changeButton(el, isInCart) {
+            if (isInCart == true) {
+                $('.a-details-product-addtocart-button').html('Remove from Cart');
+                $('.a-details-product-addtocart-button').attr('formaction', '/Catalog/RemoveFromCart/' + $('.a-details-product-id').val());
+            }
+            else {
+                $('.a-details-product-addtocart-button').html('Add to Cart');
+                $('.a-details-product-addtocart-button').attr('formaction', '/Catalog/Details/' + $('.a-details-product-id').val());
+            }
+        }
+
+        function isInCart(el, attrId) {
+            $.ajax({
+                type: "GET",
+                url: "/Catalog/IsInCart/" + attrId,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    changeButton(el, data.data);
+                }
+            });
+        };
+
+        $(document).ready(function () {
+            changeColor($('.active-color'));
+        });
+    </script>
+}

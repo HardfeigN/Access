@@ -6,6 +6,7 @@
     var title = "Create Product Attribute";
 }
 @{
+    ViewData["Title"] = "Manage - Product Attribute";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 <head>
@@ -56,15 +57,16 @@
 
                         </div>
 
-                        <div class="form-group a-upsert-form-item">
-                            <div class="a-upsert-form-lable a-upsert-form-item-div">
+                        <div class="form-group row">
+                            <div class="col-4">
                                 <label asp-for="ProductAttribute.ProductId"></label>
                             </div>
-                            <div class="a-upsert-form-input a-upsert-form-item-div">
-                                <input asp-for="ProductAttribute.ProductId" class="form-control" />
+                            <div class="col-8">
+                                <select asp-for="ProductAttribute.ProductId" asp-items="@Model.ProductSelectList" class="form-control">
+                                    <option disabled selected">--Select Product--</option>
+                                </select>
                                 <span asp-validation-for="ProductAttribute.ProductId" class="text-danger"></span>
                             </div>
-
                         </div>
 
                         <div class="form-group a-upsert-form-item">
@@ -90,12 +92,35 @@
                             <div class="a-upsert-form-item-div">
                                 <input type="file" name="files" id="uploadBox" multiple class="form-control" />
                             </div>
+                            @if (Model.ProductAttribute.Id != 0)
+                            {
+                                <div>
+                                    <label>Delete old images</label>
+                                    <input asp-for="DeleteOldImages" class="form-control" />
+                                </div>
+                            }
+                            else
+                            {
+                                <div hidden>
+                                    <label>Delete old images</label>
+                                    <input asp-for="DeleteOldImages" disabled class="form-control" />
+                                </div>
+                            }
+
 
                         </div>
 
+                        <div class="a-upsert-form-lable a-upsert-form-item-div" style="margin-top: 1rem;">
+                            @if (Model.ProductImages.Count() > 0)
+                            {
+                                foreach (var image in Model.ProductImages)
+                                {
+                                    <img src="@WebConstants.ProductImagePath@Model.ProductAttribute.ProductId\@image.Name" width="100" style="width: 3rem; height: 3rem; border-radius:5px; border:1px solid #bbb" />
+                                }
+                            }
+                        </div>
 
-
-                        <div class="form-group a-upsert-form-item">
+                        <div class="form-group a-upsert-form-item" style="margin-top: 1rem;">
                             <div class="a-upsert-form-item-div">
 
                                 <div class="a-upsert-form-item-div">
@@ -116,15 +141,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="a-upsert-form-lable a-upsert-form-item-div">
-                        @if (Model.ProductImages.Count() > 0)
-                        {
-                            foreach (var image in Model.ProductImages)
-                            {
-                                <img src="@WebConstants.ProductImagePath@Model.ProductAttribute.ProductId\@image.Name" width="100" style="width: 3rem; height: 3rem; border-radius:5px; border:1px solid #bbb" />
-                            }
-                        }
                     </div>
                 </div>
             </div>

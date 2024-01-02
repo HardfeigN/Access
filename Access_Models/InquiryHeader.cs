@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Access_Models
 {
@@ -14,7 +9,7 @@ namespace Access_Models
         public int Id { get; set; }
         public string ApplicationUserId { get; set; }
         [ForeignKey("ApplicationUserId")]
-        public virtual ApplicationUser ApplicationUser { get; set; }
+        public virtual ApplicationUser? ApplicationUser { get; set; }
         public DateTime InquiryDate { get; set; }
         [Required]
         public string PhoneNumber { get; set;}
@@ -22,5 +17,11 @@ namespace Access_Models
         public string FullName { get; set;}
         [Required]
         public string Email { get; set;}
+        [Required]
+        public string FullAddress { get; set;}
+        [NotMapped]
+        public int? OrderHeaderId { get; set; }
+        [NotMapped]
+        public string ShortInquiryDate { get; set; }
     }
 }

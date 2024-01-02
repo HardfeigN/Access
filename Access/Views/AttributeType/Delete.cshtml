@@ -2,50 +2,48 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
+    ViewData["Title"] = "Manage - Attribute Type";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 <head>
-    <link rel="stylesheet" href="~/css/CategoryManagement.css" />
+    <link rel="stylesheet" href="~/css/Management.css" />
 </head>
 
-<form method="post" asp-action="Delete">
-    <input asp-for="Id" hidden />
-    <div class="border p-3">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group row">
-            <h2 class="text-info pl-3">Delete Attribute Type</h2>
-        </div>
-        <div class="row">
-            <div class="col-8">
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="Name"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="Name" disabled class="form-control" />
+<div class="a-container-content">
+    <div class="a-management">
+        <div class="a-management-title">Delete Attribute Type</div>
+        <div class="a-management-form-container">
+            <form method="post" class="a-management-form">
+                <div class="a-management-inform-container">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="a-management-form-item">
+                        <div class="a-management-form-label">
+                            <label asp-for="Name"></label>
+                        </div>
+                        <div class="a-management-form-inp-cont">
+                            <input asp-for="Name" list="AttributeType" disabled class="a-management-form-input">
+                        </div>
+
                     </div>
 
-                </div>
-                <div class="form-group row">
-                    <div class="col-8 offset-4 row">
+                    <div class="a-management-form-item">
+                        <div class="a-management-form-buttons">
 
-                        <div class="col">
-                            <input type="submit" class="btn btn-danger w-100" value="Delete" />
-                        </div>
-                        <div class="col">
-                            <a asp-action="Index" class="btn btn-success w-100">
-                                <i class="fa-solid fa-arrow-right-from-bracket">Back</i>
-                            </a>
+                            <div class="a-management-form-btn-item">
+                                <input type="submit" class="a-management-form-btn" value="Delete" />
+                            </div>
+                            <div class="a-management-form-btn-item">
+                                <a asp-action="Index" class="a-management-form-btn">
+                                    <i class="fa-solid fa-right-from-bracket"></i> Back
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-4">
-                @* Keep this empty *@
-            </div>
+            </form>
         </div>
     </div>
-</form>
+</div>
 
 @section Scripts{
 

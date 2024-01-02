@@ -1,0 +1,182 @@
+﻿
+
+
+.a-login-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.a-login-title {
+    display: flex;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: start;
+    user-select: none;
+}
+
+.a-login-form-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.a-login-form {
+    width: 25rem;
+    margin-bottom: 2rem;
+    height: 25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    box-shadow: 0 .25rem 1rem #FAF6F1;
+}
+
+.a-login-form a, .a-reg-form a{
+    text-decoration: none;
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-align: center;
+    user-select: none;
+}
+
+.a-login-inform-container {
+    width: 90%;
+    margin: 2rem auto 2rem auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.a-login-form-item {
+    width: 100%;
+    margin: auto;
+    position: relative;
+    margin-top: 1.25rem;
+    letter-spacing: .0625rem;
+}
+
+.a-login-form-inp-cont{
+    height: 3rem;
+    margin-top: 2rem;
+}
+
+.a-login-form-span {
+    display: flex;
+    margin-top: .1rem;
+    font-family: Play-Regular;
+    font-size: 1rem;
+}
+
+.a-login-form-label {
+    position: absolute;
+    font-family: Play-Regular;
+    font-size: 1.25rem;
+    top: .5rem;
+    left: 0;
+    color: #9e9e9e;
+    transition: .3s;
+    user-select: none;
+}
+
+.a-login-form-input {
+    color: #FAF6F1;
+    width: 100%;
+    font-family: Play-Regular;
+    font-size: 1.25rem;
+    padding: 0 0 .625rem 0;
+    border: none;
+    border-bottom: .0625rem solid #FAF6F1;
+    outline: none;
+    transition: .3s;
+    background-color: transparent;
+}
+
+.a-login-form-input:focus {
+    border-bottom: .0625rem solid #FAF6F1;
+}
+
+.a-login-form-input:focus ~ .a-login-form-label, .a-login-form-input:not(:placeholder-shown) ~ .a-login-form-label{
+    top: -1.525rem;
+    font-size: 1rem;
+    color: #FAF6F1;
+}
+
+.a-login-form-checkbox {
+    color: #FAF6F1;
+    font-family: Play-Regular;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-align: center;
+    user-select: none;
+}
+
+.a-login-btn {
+    width: 100%;
+    height: 2.5rem;
+    background: linear-gradient(90deg, #7D5DDC 2.03%, #C96399 97.43%);
+    border: none;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    top: 46rem;
+    left: 34.69rem;
+    align-items: center;
+    color: #FAF6F1;
+    font-family: Play-Bold;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+}
+
+input:-webkit-autofill:focus ~ .a-login-form-label {
+    top: -1.525rem;
+    font-size: 1rem;
+    color: #FAF6F1;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    border-bottom: .0625rem solid #FAF6F1;
+    -webkit-text-fill-color: #FAF6F1;
+    -webkit-box-shadow: 0 0 0px 1000px #262632 inset;
+    background-color: transparent;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/*registration*/
+
+.a-reg-form {
+    width: 25rem;
+    margin-bottom: 2rem;
+    height: 35rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    box-shadow: 0 .25rem 1rem #FAF6F1;
+}

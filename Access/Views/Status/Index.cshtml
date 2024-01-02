@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Access_Models.Status>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Manage - Order Statuses";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/Management.css" />
+</head>
+
+    <div class="a-container-content">
+    <div class="a-management">
+        <div class="a-management-table-container">
+            <div class="a-management-list">
+                <div class="a-management-list-item a-management-list-text">Order Status List</div>
+                <div class="a-management-list-item">
+                    <a asp-controller="Status" asp-action="Upsert" class="a-management-create-cat-btn a-management-list-btn">
+                        <i class="fa-solid fa-plus"></i> &nbsp; Create new Status
+                    </a>
+                </div>
+            </div>
+            <br /><br />
+            @if (Model.Count() > 0)
+            {
+                <div class="a-management-list">
+                    <table class="a-management-table">
+                        <thead>
+                            <tr>
+                                <td width="50%">
+                                    Status Name
+                                </td>
+                                <td width="30%">
+                                    Parent Status Id
+                                </td>
+                                <td width="20%"></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var obj in Model)
+                            {
+                                <tr class="a-management-table-tr-pd">
+                                    <td width="50%">@obj.Name</td>
+                                    <td width="30%">@obj.ParentId</td>
+                                    <td width="20%" class="a-management-table-last-column">
+                                        <div role="group" class="a-management-table-btn-group">
+                                            <div class="a-management-table-btn-list">
+                                                <a asp-controller="Status" asp-route-Id="@obj.Id" asp-action="Upsert" class="a-management-table-btn">
+                                                    <img src="~/Images/Pages/_sheareout/published_with_changes.svg" class="a-management-table-btn-icon-del" />
+                                                </a>
+
+                                                <a asp-controller="Status" asp-route-Id="@obj.Id" asp-action="Delete" class="a-management-table-btn">
+                                                    <img src="~/Images/Pages/_sheareout/delete_forever.svg" class="a-management-table-btn-icon-del" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="a-management-list">No Statuses exists.</div>
+            }
+
+        </div>
+    </div>
+
+</div>

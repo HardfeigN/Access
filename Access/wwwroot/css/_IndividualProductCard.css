@@ -13,6 +13,13 @@
     overflow: hidden;
 }
 
+.a-IPC-containet-empty {
+    all: inherit;
+    cursor: default;
+    width: 27.1875rem;
+    height: 31.6875rem;
+}
+
 .a-IPC-img-container {
     width: auto;
     height: 27.1875rem;
@@ -28,6 +35,7 @@
     width: 27.1875rem;
     height: 27.1875rem;
     flex-shrink: 0;
+    object-fit: cover;
 }
 
 .a-IPC-imgages {
@@ -37,7 +45,7 @@
 }
 
 .a-IPC-detail-container {
-    width: auto;
+    width: 23.3974rem;
     height: 4.5rem;
     justify-content: space-between;
     display: flex;
@@ -48,9 +56,11 @@
 }
 
 .a-IPC-detail-container-item {
-    width: auto;
+    width: 45%;
     height: 100%;
     display: flex;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .a-IPC-name-text {
@@ -62,7 +72,9 @@
     font-weight: 600;
     line-height: normal;
     align-self: center;
-    text-align: center;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .a-IPC-name-price {
@@ -74,5 +86,7 @@
     font-weight: 600;
     line-height: normal;
     align-self: center;
-    text-align: center;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

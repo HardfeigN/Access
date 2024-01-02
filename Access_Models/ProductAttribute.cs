@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Access_Models
 {
@@ -12,11 +7,9 @@ namespace Access_Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
         public int AttributeValueId { get; set; }
         [ForeignKey("AttributeValueId")]
         public virtual AttributeValue? AttributeValue { get; set; }
-        [Required]
         public int AttributeTypeId { get; set; }
         [ForeignKey("AttributeTypeId")]
         public virtual AttributeType? AttributeType { get; set; }
@@ -25,9 +18,17 @@ namespace Access_Models
         public virtual Product? Product { get; set; }
         public bool IsInStock { get; set; }
         public virtual ICollection<ProductImage> ProductImage { get; }
+        [NotMapped]
+        public bool ExistInCart { get; set; }
+        [NotMapped]
+        [Range(1, 1000, ErrorMessage = "Quantity must be greater than 0.")]
+        public int TempQuantity { get; set; }
+
         public ProductAttribute()
         {
             ProductImage = new List<ProductImage>();
+            ExistInCart = false;
+            TempQuantity = 1;
         }
     }
 }

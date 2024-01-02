@@ -1,0 +1,102 @@
+﻿@model Access_Models.ViewModels.CatalogVM
+@using Access_Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Search - Access";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/_IndividualProductCard.css" />
+    <link rel="stylesheet" href="~/css/Catalog.css" />
+</head>
+
+
+<div class="a-container-content">
+
+    <div class="a-catalog-content">
+
+        <form method="get" class="a-catalog-search">
+            <input asp-for="@Model.SearchText" id="searchtext" name="searchtext" type="text" class="a-catalog-search-input" placeholder="Search text" value="@Model.SearchText"/>
+            <button class="a-catalog-btn" type="submit">Search</button>
+            <input name="id" class="a-search-cat-id" value="" hidden/>
+        </form>
+
+            <div id="a-catalog-filter" class="a-catalog-filter">
+                <a href="javascript:void(0)" class="a-catalog-closebtn" onclick="closeNav()">&times;</a>
+            <a onclick="changeId(this)">All categories</a>
+                @for (int i = 0; i < Model.Categories.Count(); i++)
+                {
+                <a onclick="changeId(this)" class="category-@Model.Categories.ElementAt(i).Id" name="@Model.Categories.ElementAt(i).Id">@Model.Categories.ElementAt(i).Name</a>
+                }
+
+            </div>
+
+            <div class="a-catalog-category-line">
+                <div class="a-catalog-category-name">
+                    @if (Model.CurrentCategory == null)
+                    {
+                        <p>All bags - Category</p>
+                    }
+                    else
+                    {
+                        <p>@Model.CurrentCategory.Name - Category</p>
+                    }
+                </div>
+                <div class="a-category-filter" onclick="openNav()">
+                    sort by
+                </div>
+            </div>
+
+        @if(Model.Products.Count() < 1)
+        {
+            
+        }
+        else
+        {        
+
+            <div class="a-catalog-product-table">
+                <div class="a-catalog-product-table-body">
+                    @{
+                        for (int i = 0; i < Math.Ceiling(Model.IndividualProductVMs.Count() / 4.0); i++)
+                        {
+                            <div class="a-catalog-product-table-row">
+                                @for (int j = 0; j < 4; j++)
+                                {
+                                    //display all products
+                                    <div class="a-catalog-product-table-cell">
+                                        @if (i * 4 + j < Model.IndividualProductVMs.Count() && j < 4)
+                                        {
+                                            <partial name="~/Views/Shared/_IndividualProductCard.cshtml" model="Model.IndividualProductVMs.ElementAt(i * 4 + j)" />
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</div>
+
+@section Scripts{
+
+    <script type="text/javascript">
+        function openNav() {
+            document.getElementById("a-catalog-filter").style.width = "15rem";
+        }
+
+        function closeNav() {
+            document.getElementById("a-catalog-filter").style.width = "0";
+        }
+
+        function changeId(el){
+            $('.a-search-cat-id').val($(el).attr('name'));
+            closeNav();
+        }
+    </script>
+}

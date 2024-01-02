@@ -6,67 +6,65 @@
     var title = "Create Attribute Type";
 }
 @{
+    ViewData["Title"] = "Manage - Attribute Type";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 <head>
-    <link rel="stylesheet" href="~/css/CategoryManagement.css" />
+    <link rel="stylesheet" href="~/css/Management.css" />
 </head>
 
-<form method="post">
-    @if (Model.Id != 0)
-    {
-        title = "Edit Attribute Type";
-        <input asp-for="Id" hidden />
-    }
-    <div class="border p-3">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group row">
-            <h2 class="text-info pl-3">@title</h2>
-        </div>
-        <div class="row">
-            <div class="col-8">
-                <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="Name"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="Name" list="AttributeType">
-                        <datalist   id="AttributeType">
-                            <option value="@WebConstants.Size"></option>
-                            <option value="@WebConstants.Color"></option>
-                        </datalist>
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
-
-                </div>
-
-                <div class="form-group row">
-                    <div class="col-8 offset-4 row">
-
-                        <div class="col">
-                            @if (Model.Id != 0)
-                            {
-                                <input type="submit" class="btn btn-info w-100" value="Update" />
-                            }
-                            else
-                            {
-                                <input type="submit" class="btn btn-primary w-100" value="Create" />
-                            }
+<div class="a-container-content">
+    <div class="a-management">
+        <div class="a-management-title">@title</div>
+        <div class="a-management-form-container">
+            <form method="post" class="a-management-form">
+                @if (Model.Id != 0)
+                {
+                    title = "Edit Attribute Type";
+                    <input asp-for="Id" hidden />
+                }
+                <div class="a-management-inform-container">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="a-management-form-item">
+                        <div class="a-management-form-label">
+                            <label asp-for="Name"></label>
                         </div>
-                        <div class="col">
-                            <a asp-action="Index" class="btn btn-success w-100">
-                                <i class="fa-solid fa-right-from-bracket"></i> Back
-                            </a>
+                        <div class="a-management-form-inp-cont">
+                            <input asp-for="Name" list="AttributeType" class="a-management-form-input">
+                            <datalist   id="AttributeType">
+                                <option value="@WebConstants.Size"></option>
+                                <option value="@WebConstants.Color"></option>
+                            </datalist>
+                            <span asp-validation-for="Name" class="text-danger" class="a-management-form-span"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="a-management-form-item">
+                        <div class="a-management-form-buttons">
+
+                            <div class="a-management-form-btn-item">
+                                @if (Model.Id != 0)
+                                {
+                                    <input type="submit" class="a-management-form-btn" value="Update" />
+                                }
+                                else
+                                {
+                                    <input type="submit" class="a-management-form-btn" value="Create" />
+                                }
+                            </div>
+                            <div class="a-management-form-btn-item">
+                                <a asp-action="Index" class="a-management-form-btn">
+                                    <i class="fa-solid fa-right-from-bracket"></i> Back
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-4">
-                @* Keep this empty *@
-            </div>
+            </form>
         </div>
     </div>
-</form>
+</div>
 
 @section Scripts{
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Access_Utility
+﻿namespace Access_Utility
 {
     public static class WebConstants
     {
@@ -17,6 +11,7 @@ namespace Access_Utility
         public const string Error = "Error";
         public const string Color = "Color";
         public const string Size = "Size";
+        public const string InquiryProcessed = "Processed";
 
 
         public const string StatusPending = "Pending";

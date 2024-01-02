@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Access_Models.ViewModels
 {
     public class ProductUserVM
     {
-        public ProductUserVM()
-        {
-            ProductList = new List<Product>();
-        }
-
         public ApplicationUser ApplicationUser { get; set; }
+        [ValidateNever]
         public IList<Product> ProductList { get; set; }
-
+        [ValidateNever]
+        public IList<ProductAttribute> ProductAttributeList { get; set; }
+        [ValidateNever]
+        public IList<ProductImage> ProductImageList { get; set; }
     }
 }

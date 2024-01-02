@@ -3,29 +3,39 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 
-<div>
-    <a asp-action="Details" asp-route-id="@Model.Product.Id" class="a-IPC-containet filter @Model.Product.Category.Name.Replace(' ','_')">
-        <!-- Card-->
-        <div class="a-IPC-img-container">
-            <div class="a-IPC-imgages">
-                @foreach (var image in @Model.ProductImages)
-                {
-                    <img class="slider-image" loading="lazy" src="@WebConstants.ProductImagePath@Model.Product.Id\@image.Name" alt="Card image cap" />
-                }
+@if(Model != null)
+{
+        <a asp-action="Details" asp-route-id="@Model.Product.Id" class="a-IPC-containet">
+            <!-- Card-->
+            <div class="a-IPC-img-container">
+                <div class="a-IPC-imgages">
+                    @foreach (var image in @Model.ProductImages)
+                    {
+                        <img class="slider-image" loading="lazy" src="@WebConstants.ProductImagePath@Model.Product.Id\@image.Name" alt="Card image cap" />
+                    }
 
+                </div>
             </div>
-        </div>
 
-        <div class="a-IPC-detail-container">
-            <div class="a-IPC-detail-container-item">
-                <div class="a-IPC-name-text">@Model.Product.Name</div>
+            <div class="a-IPC-detail-container">
+                <div class="a-IPC-detail-container-item">
+                    <div class="a-IPC-name-text">@Model.Product.Name</div>
+                </div>
+                <div class="a-IPC-detail-container-item">
+                    <div class="a-IPC-name-price">@Model.Product.Price $</div>
+                </div>
             </div>
-            <div class="a-IPC-detail-container-item">
-                <div class="a-IPC-name-price">@string.Format("{0:c}", Model.Product.Price) </div>
-            </div>
-        </div>
-    </a>
-</div>
+        </a>
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/js/IPC-slider.js" type="text/javascript"> </script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/IPC-slider.js" type="text/javascript"> </script>
+}
+else
+{
+    <div>
+        <a class="a-IPC-containet-empty">
+           
+        </a>
+    </div>
+
+}

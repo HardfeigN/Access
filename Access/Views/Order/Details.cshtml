@@ -3,150 +3,136 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
+    ViewData["Title"] = "Order";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
 <head>
-    <link rel="stylesheet" href="~/css/Inquiry.css" />
+    <link rel="stylesheet" href="~/css/Order.css" />
 </head>
 
 <div class="a-container-content">
 
-    <form method="post" class="a-inquiry-details-form-container">
+    <form method="post" class="a-order-details-form-container">
         <input hidden asp-for="OrderHeader.Id" />
-        <div class="a-inquiry-details">
-            <div class="a-inquiry-details-header">
-                <div class="a-inquiry-details-header-title a-inquiry-details-header-item">
+        <div class="a-order-details">
+            <div class="a-order-details-header">
+                <div class="a-order-details-header-title a-order-details-header-item">
                     Order Summary
                 </div>
-                <div class="a-inquiry-details-header-button a-inquiry-details-header-item">
+                <div class="a-order-details-header-button a-order-details-header-item">
                     <a asp-action="Index">
                         Back to Orders
                     </a>
                 </div>
             </div>
 
-            <div class="a-inquiry-details-body">
-                <div class="a-inquiry-details-info-item">
-                    <div class="a-inquiry-details-opi-header">
+            <div class="a-order-details-body">
+                <div class="a-order-details-info-item">
+                    <div class="a-order-details-opi-header">
                         PickUp Details
                     </div>
 
-                    <div class="a-inquiry-details-order-info-item">
-                        <div class="a-inquiry-details-order-info-item-left">
+                    <div class="a-order-details-order-info-item">
+                        <div class="a-order-details-order-info-item-left">
                             Name
                         </div>
-                        <input asp-for="OrderHeader.FullName" type="text" class="a-inquiry-details-order-info-item-right" />
+                        <input asp-for="OrderHeader.FullName" type="text" class="a-order-details-order-info-item-right" />
                         <span asp-validation-for="OrderHeader.FullName"></span>
                     </div>
 
-                    <div class="a-inquiry-details-order-info-item">
-                        <div class="a-inquiry-details-order-info-item-left">
+                    <div class="a-order-details-order-info-item">
+                        <div class="a-order-details-order-info-item-left">
                             Phone
                         </div>
-                        <input asp-for="OrderHeader.PhoneNumber" type="text" class="a-inquiry-details-order-info-item-right" />
+                        <input asp-for="OrderHeader.PhoneNumber" type="text" class="a-order-details-order-info-item-right" />
                         <span asp-validation-for="OrderHeader.PhoneNumber"></span>
                     </div>
 
-                    <div class="a-inquiry-details-order-info-item">
-                        <div class="a-inquiry-details-order-info-item-left">
+                    <div class="a-order-details-order-info-item">
+                        <div class="a-order-details-order-info-item-left">
                             Email
                         </div>
-                        <input asp-for="OrderHeader.Email" type="text" class="a-inquiry-details-order-info-item-right" />
+                        <input asp-for="OrderHeader.Email" type="text" class="a-order-details-order-info-item-right" />
                         <span asp-validation-for="OrderHeader.Email"></span>
                     </div>
 
-                    <div class="a-inquiry-details-order-info-item">
-                        <div class="a-inquiry-details-order-info-item-left">
+                    <div class="a-order-details-order-info-item">
+                        <div class="a-order-details-order-info-item-left">
                             Address
                         </div>
-                        <input asp-for="OrderHeader.FullAddress" type="text" class="a-inquiry-details-order-info-item-right" />
+                        <input asp-for="OrderHeader.FullAddress" type="text" class="a-order-details-order-info-item-right" />
                         <span asp-validation-for="OrderHeader.FullAddress"></span>
                     </div>
 
-                    <div class="a-inquiry-details-order-info-item">
-                        <div class="a-inquiry-details-order-info-item-left">
+                    <div class="a-order-details-order-info-item">
+                        <div class="a-order-details-order-info-item-left">
                             Status
                         </div>
-                        <input asp-for="OrderHeader.OrderStatus.Name" type="text" class="a-inquiry-details-order-info-item-right" readonly />
+                        <input asp-for="OrderHeader.OrderStatusName" type="text" class="a-order-details-order-info-item-right" readonly />
                     </div>
 
-                    <div class="a-inquiry-details-order-info-item">
-                        <div class="a-inquiry-details-order-info-item-left">
-                            Create Date
-                        </div>
-                        <input value="@Model.OrderHeader.CreateDate.ToShortDateString()" type="text" class="a-inquiry-details-order-info-item-right" id="CreateDate" readonly />
-                    </div>
+                    @for (int i = 0; i < Model.OrderStatus.Count(); i++)
+                    {
+                        <div class="a-order-details-order-info-item">
+                            <div class="a-order-details-order-info-item-left">
+                                @Model.OrderStatus.ElementAt(i).Status.Name Date
+                            </div>
+                            <input value="@Model.OrderStatus.ElementAt(i).Date.ToShortDateString()" type="text" class="a-order-details-order-info-item-right" id="CreateDate" readonly />
+                        </div>                        
+                    }
 
-                    <div class="a-inquiry-details-order-info-item">
-                        <div class="a-inquiry-details-order-info-item-left">
-                            Payment Date
+                    <div class="a-order-details-order-info-item">
+                        <div class="a-order-details-order-info-item-left">
                         </div>
-                        <input value="@Model.OrderHeader.PaymentDate.ToShortDateString()" type="text" class="a-inquiry-details-order-info-item-right" id="PaymentDate" readonly />
-                    </div>
-
-                    <div class="a-inquiry-details-order-info-item">
-                        <div class="a-inquiry-details-order-info-item-left">
-                            Shipping Date
-                        </div>
-                        <input value="@Model.OrderHeader.ShippingDate.ToShortDateString()" type="text" class="a-inquiry-details-order-info-item-right" id="ShippingDate" readonly />
-                    </div>
-
-                    <div class="a-inquiry-details-order-info-item">
-                        <div class="a-inquiry-details-order-info-item-left">
-                            Complation Date
-                        </div>
-                        <input value="@Model.OrderHeader.ComplationDate.ToShortDateString()" type="text" class="a-inquiry-details-order-info-item-right" id="ComplationDate" readonly />
-                    </div>
-
-                    <div class="a-inquiry-details-order-info-item">
-                        <div class="a-inquiry-details-order-info-item-left">
-                        </div>
-                        <div class="a-inquiry-details-order-info-item-right">
-                            <div class="a-inquiry-details-buttons">
-                                <input type="submit" formmethod="post" asp-action="UpdateOrderDetails" class="a-inquiry-details-btn a-inquiry-details-btn-ctc" value="Update Order Details" />
+                        <div class="a-order-details-order-info-item-right">
+                            <div class="a-order-details-buttons">
+                                <input type="submit" formmethod="post" asp-action="UpdateOrderDetails" class="a-order-details-btn" value="Update Order Details" />
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-                <div class="a-inquiry-details-info-item a-inquiry-details-products">
-                    <div class="a-inquiry-details-opi-header">
+                <div class="a-order-details-info-item a-order-details-products">
+                    <div class="a-order-details-opi-header">
                         Order Summary
                     </div>
 
                     @foreach (var prod in Model.OrderDetail)
                     {
-                        <div class="a-inquiry-details-product-item">
-                            <div class="a-inquiry-details-product-img">
-                                <img src="@WebConstants.ProductImagePath@prod.Product.Id\@Model.ProductImages.Where(u => u.ProductId == prod.Product.Id && u.ImageNumber == 0).FirstOrDefault().Name" />
+                        <div class="a-order-details-product-item">
+                            <div class="a-order-details-product-img">
+                                @if (Model.ProductImages.Where(u => u.ProductId == prod.ProductAttribute.Product.Id && u.ImageNumber == 0).Count() > 0)
+                                {
+                                    <img src="@WebConstants.ProductImagePath@prod.ProductAttribute.Product.Id\@Model.ProductImages.Where(u => u.ProductId == prod.ProductAttribute.Product.Id && u.ImageNumber == 0).FirstOrDefault().Name" />
+                                }
+                                else
+                                {
+                                    <img src="" />
+                                }
                             </div>
-                            <div class="a-inquiry-details-product-info">
-                                <div class="a-inquiry-details-product-text">
-                                    @prod.Product.Name
+                            <div class="a-order-details-product-info">
+                                <div class="a-order-details-product-text">
+                                    @prod.ProductAttribute.Product.Name
                                 </div>
-                                <div class="a-inquiry-details-product-text">
-                                    Price: @prod.Product.Price $
+                                <div class="a-order-details-product-text">
+                                    Price: @prod.ProductAttribute.Product.Price $
                                 </div>
                             </div>
                         </div>
                     }
 
-                    <div class="a-inquiry-details-product-item">
+                    <div class="a-order-details-product-item" style="border: none;">
                     <div class="" style="width: 100%; justify-content: center;">
                         <div class="" style="display: flex; justify-content: space-around;">
-                            @if(Model.OrderHeader.OrderStatus.Name == WebConstants.StatusApproved)
+                            @if(Model.OrderHeader.OrderStatusName != WebConstants.StatusShipped && Model.OrderHeader.OrderStatusName != WebConstants.StatusRefunded)
                             {
-                                <input type="submit" formmethod="post" asp-action="StartProcessing" class="a-inquiry-details-btn a-inquiry-details-btn-ctc" value="Starts processing" />
+                                <input type="submit" formmethod="post" asp-action="NextStatus" class="a-order-details-btn-status" value="Change to @Model.Status.FirstOrDefault(u => u.ParentId == Model.OrderStatus.MaxBy(d => d.Date).StatusId).Name" />
                             }
-                            @if(Model.OrderHeader.OrderStatus.Name == WebConstants.StatusProcessing)
+                            @if(Model.OrderHeader.OrderStatusName != WebConstants.StatusRefunded && Model.OrderHeader.OrderStatusName != WebConstants.StatusCancelled)
                             {
-                                <input type="submit" formmethod="post" asp-action="ShipOrder" class="a-inquiry-details-btn a-inquiry-details-btn-del" value="Ship Order" formaction="" formmethod="post" />
-                            }
-                            @if(Model.OrderHeader.OrderStatus.Name != WebConstants.StatusRefunded && Model.OrderHeader.OrderStatus.Name != WebConstants.StatusCancelled)
-                            {
-                                <input type="submit" formmethod="post" formaction="/Order/CancelOrder" class="a-inquiry-details-btn a-inquiry-details-btn-del" value="Cancel Order" formaction="" formmethod="post" />
+                                    <input type="submit" formmethod="post" formaction="/Order/CancelOrder" class="a-order-details-btn-status" value="Cancel Order" formaction="" formmethod="post" />
                             }
                         </div>
                     </div>
@@ -163,12 +149,4 @@
 
 @section Scripts{
     <partial name"_ValidationScriptsPartial" />
-
-    <script type="text/javascript">
-        $(document).ready(function (){
-            if ($('#PaymentDate').attr('value') == '01.01.0001') $('#PaymentDate').attr('value', '');
-            if ($('#ComplationDate').attr('value') == '01.01.0001') $('#ComplationDate').attr('value', '');
-            if ($('#ShippingDate').attr('value') == '01.01.0001') $('#ShippingDate').attr('value', '');
-        });
-    </script>
 }

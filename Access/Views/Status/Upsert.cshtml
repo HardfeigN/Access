@@ -1,0 +1,94 @@
+﻿@model Access_Models.ViewModels.StatusVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Access_Utility
+
+@{
+    var title = "Create Order Status";
+}
+@{
+    ViewData["Title"] = "Manage - Order Status";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/css/CategoryManagement.css" />
+</head>
+
+<form method="post">
+    @if (Model.Status.Id != 0)
+    {
+        title = "Edit Order Status";
+        <input asp-for="Status.Id" hidden />
+    }
+    <div class="border p-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <h2 class="text-info pl-3">@title</h2>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Status.Name"></label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Status.Name" list="StatusNumber" />
+                        <datalist id="StatusNumber">
+                            <option value="@WebConstants.StatusPending"></option>
+                            <option value="@WebConstants.StatusApproved"></option>
+                            <option value="@WebConstants.StatusProcessing"></option>
+                            <option value="@WebConstants.StatusShipped"></option>
+                            <option value="@WebConstants.StatusCancelled"></option>
+                            <option value="@WebConstants.StatusRefunded"></option>
+                        </datalist>
+                        <span asp-validation-for="Status.Name" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="Status.ParentId"></label>
+                    </div>
+                    <div class="col-8">
+                        <select asp-for="Status.ParentId" asp-items="@Model.StatusSelectList" class="form-control">
+                            <option disabled selected">--Select Category--</option>
+                        </select>
+                        <span asp-validation-for="Status.ParentId" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-8 offset-4 row">
+
+                        <div class="col">
+                            @if (Model.Status.Id != 0)
+                            {
+                                <input type="submit" class="btn btn-info w-100" value="Update" />
+                            }
+                            else
+                            {
+                                <input type="submit" class="btn btn-primary w-100" value="Create" />
+                            }
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success w-100">
+                                <i class="fa-solid fa-right-from-bracket"></i> Back
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                @* Keep this empty *@
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
