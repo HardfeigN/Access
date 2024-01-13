@@ -31,4 +31,8 @@
     <ProjectReference Include="..\Access_Utility\Access_Utility.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\Pages\Catalog\" />
+  </ItemGroup>
+
 </Project>

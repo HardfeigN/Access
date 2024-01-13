@@ -1,5 +1,6 @@
 ﻿@model Access_Models.ViewModels.CatalogVM
 @using Access_Models
+@using Access_Utility
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
@@ -16,110 +17,180 @@
 
     <div class="a-catalog-content">
         
-        <form id="a-catalog-filter" class="a-catalog-filter">
-            <input asp-for="@Model.CurrentCategory.Id" id="id" name="id" hidden />
-            <a href="javascript:void(0)" class="a-catalog-closebtn" onclick="closeNav()">&times;</a>
-            <a asp-action="Index" asp-route-id="" data-filter="all">All categories</a>
-            @for (int i = 0; i < Model.Categories.Count(); i++)
-            {
-                <a asp-action="Index" asp-route-id="@Model.Categories.ElementAt(i).Id">@Model.Categories.ElementAt(i).Name</a>
-            }
+        @if(Model.CatalogSection == CatalogSection.Search)
+        {
+            <form method="get" id="a-catalog-search" class="a-catalog-search">
+                <input asp-for="@Model.SearchText" id="searchtext" name="searchtext" type="text" class="a-catalog-search-input" placeholder="Search text" value="@Model.SearchText" />
+                <button class="a-catalog-search-btn" type="submit">Search</button>
+                <button class="a-catalog-search-btn" onclick="clearFilters(true)" type="button">Clear filters</button>
+                <input asp-for="@Model.CatalogSection" id="section" name="section" hidden />
+                <input asp-for="@Model.CurrentCategory.Id" id="id" name="id" hidden />
+            </form>
 
-        </form>
-        <div class="a-catalog-category-line">
-            <div class="a-catalog-category-name">
-                @if(Model.CurrentCategory == null)
-                {
-                    <p>All bags - Category</p>
-                }
-                else
-                {
-                    <p>@Model.CurrentCategory.Name - Category</p>
-                }
+            <form id="a-catalog-filter" class="a-catalog-filter">
+                <div class="a-catalog-filter-content">
+                    <a href="javascript:void(0)" class="a-catalog-closebtn" onclick="closeNav()">&times;</a>
+                    <select asp-for="@Model.CurrentCategory.Id" asp-items="@Model.CategoryList" class="a-catalog-selected-list">
+                        <optgroup class="a-catalog-selected-list-optgroup" label="--Select Category--" />
+                    </select>
+                    <div class="a-catalog-filter-btns">
+                        <button class="a-catalog-filter-apply" onclick="applyFilters()" type="button">Apply</button>
+                        <button class="a-catalog-filter-clear" onclick="clearFilters(false)" type="button">Clear filters</button>
+                    </div>
+                </div>
+            </form>
+            <input id="page" name="page" value="0" hidden />
+        }
+        else
+        {
+            <form method="get" id="a-catalog-filter" class="a-catalog-filter">
+                <div class="a-catalog-filter-content">
+                    <input asp-for="@Model.CurrentCategory.Id" id="id" name="id" hidden />
+                    <input asp-for="@Model.CatalogSection" id="section" name="section" hidden />
+                    <a href="javascript:void(0)" class="a-catalog-closebtn" onclick="closeNav()">&times;</a>
+                    <select asp-for="@Model.CurrentCategory.Id" asp-items="@Model.CategoryList" class="a-catalog-selected-list">
+                        <optgroup class="a-catalog-selected-list-optgroup" label="--Select Category--" />
+                    </select>
+                    <div class="a-catalog-filter-btns">
+                        <button class="a-catalog-filter-apply" onclick="applyFilters()" type="button">Apply</button>
+                        <button class="a-catalog-filter-clear" onclick="clearFilters()" type="button">Clear filters</button>
+                    </div>
+                </div>
+            </form>
+            <input id="page" name="page" value="0" hidden />
+        }
+        <input asp-for="@Model.PageSize" id="pagesize" name="pagesize" hidden />
+
+        <div class="a-catalog-product-table-container">
+            <div class="a-catalog-product-table-screen">
+
             </div>
-            <div class="a-category-filter" onclick="openNav()">
-                sort by
-            </div>
-        </div>
 
-
-        <div class="a-catalog-product-table">
-            <div class="a-catalog-product-table-body">
-                @*
-
-                @{
-                    for (int i = 0; i < Math.Ceiling(Model.IndividualProductVMs.Count() / 4.0); i++)
+            <div class="a-catalog-category-line">
+                <div class="a-catalog-category-name">
+                    @if(Model.CurrentCategory == null)
                     {
-                        <div class="a-catalog-product-table-row">
-                            @for (int j = 0; j < 4; j++)
-                            {
-                                //display all products
-                                @if (i * 4 + j < Model.IndividualProductVMs.Count() && j < 4)
-                                {
-                                    <partial name="~/Views/Shared/_IndividualProductCard.cshtml" model="Model.IndividualProductVMs.ElementAt(i * 4 + j)" />
-                                }
-                            }
-                        </div>
+                        <p class="a-catalog-category-p">All bags - Category</p>
                     }
-                }
-                *@
-                <div class="a-catalog-product-table-row">
+                    else
+                    {
+                        <p class="a-catalog-category-p">@Model.CurrentCategory.Name - Category</p>
+                    }
+                </div>
+                <div class="a-category-filter" onclick="openNav()">
+                    sort by
+                </div>
+            </div>
+
+            <div class="a-catalog-product-table">
+
+                <div class="a-catalog-product-table-body">
+
+                    <div class="a-catalog-product-table-row" style="display: none;">
+                        @if(Model.CatalogSection == CatalogSection.Search)
+                        {
+                            <partial name="~/Views/Shared/_CatalogItemsBlock.cshtml" model="Model.IndividualProductVMs" />
+                        }
+                    </div>
+
 
                 </div>
 
             </div>
 
-        </div>
+            <div class="a-catalog-product-loading a-catalog-hide-btn">
+                <div class="a-catalog-loading-btn">Load more</div>
+            </div>
 
+            <div class="a-catalog-product-loading a-catalog-hide-img">
+                <div class="a-catalog-loading-img"></div>
+            </div>
+
+        </div>
 
     </div>
 
 </div>
 
 @section Scripts{
-
     <script type="text/javascript">
         function openNav() {
-            document.getElementById("a-catalog-filter").style.width = "15rem";
+           $('#a-catalog-filter').css('width', '15rem');
+           $('#a-catalog-filter').css('right','0');
         }
 
         function closeNav() {
-            document.getElementById("a-catalog-filter").style.width = "0";
+           $('#a-catalog-filter').css('width','0');
+           $('#a-catalog-filter').css('right','-0.1rem');
+        }
+
+        function arrangeProductCards() {
+            $('.a-IPC-containet').each(function (i, elem) {
+                $(elem).css('margin-bottom', '0');
+                $(elem).css('margin-top', '0');
+                if (i + 1 % 4 != 0) {
+                    $(elem).css('margin-right', '1.37rem');
+                }
+                if (i >= 4) {
+                    $(elem).css('margin-top', '1.37rem');
+                }
+                if (i == $('.a-IPC-containet').length) {
+                    $(elem).css('margin-bottom', '1.37rem');
+                }
+            });
         }
 
         $(function () {
 
-            var page = 0;
+            var page = $('#page').val();
+            var prodcount = $('.a-IPC-containet').length;
+            var pagesize = $('#pagesize').val();
             var id = $('#id').val();
-            var url = '/Catalog/Index/?';
+            var url = '/Catalog?';
+            var section = $('#section').val();
+            var searchtext = $('#searchtext').val();
+            url = url + 'section=' + section + '&';
+            if (searchtext != '') url = url + 'searchtext=' + searchtext + '&';
             if (id != '') url = url + 'id=' + id + '&';
             var _inCallback = false;
+            var _isEnd = false;
             function loadItems() {
-                if (page > -1 && !_inCallback) {
+                if (page > -1 && !_inCallback && !_isEnd) {
                     _inCallback = true;
-
+                    
                     $.ajax({
                         type: 'GET',
                         url: url + 'page=' + page,
+                        beforeSend: function () {
+                            $('.a-catalog-hide-btn').hide();
+                            $('.a-catalog-hide-img').show();
+                            $('.a-catalog-product-table-screen').show();
+                        },
                         success: function (data) {
                             if (data.length > 2) {
                                 $(".a-catalog-product-table-row").append(data);
                                 page++;
                             }
+                            else {
+                                _isEnd = true;
+                            }
                             _inCallback = false;
-                            $('.a-IPC-containet').each(function (i, elem) {
-                                $(elem).css('margin-bottom', '0');
-                                $(elem).css('margin-top', '0');
-                                if(i+1 % 4 != 0){
-                                    $(elem).css('margin-right', '1.37rem');
-                                }
-                                if(i >= 4){
-                                    $(elem).css('margin-top', '1.37rem');
-                                }
-                                if (i == $('.a-IPC-containet').length) {
-                                    $(elem).css('margin-bottom', '1.37rem');
-                                }
-                            });
+                            arrangeProductCards();
+                        },
+                        complete: function () {
+                            $('.a-catalog-hide-img').hide();
+                            $('.a-catalog-product-table-screen').hide();
+                            if (_isEnd || ($('.a-IPC-containet').length - prodcount < pagesize)) {
+                                $('.a-catalog-hide-btn').css('outline', 'none');
+                                $('.a-catalog-hide-btn').css('cursor', 'default');
+                                $('.a-catalog-hide-btn').children().each(function (i, elem) {
+                                    $(elem).hide();
+                                });
+                                _isEnd = true;
+                            }
+                            prodcount = $('.a-IPC-containet').length;
+                            $('.a-catalog-hide-btn').show();
+                            $('.a-catalog-product-table-row').show();
                         }
                     });
                 }
@@ -127,15 +198,46 @@
             // обработка события скроллинга
             $(window).scroll(function () {
                 if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-
                     loadItems();
                 }
             });
             $(document).ready(function () {
                 loadItems();
+                $('.a-catalog-hide-btn').on("click", function () {
+                    loadItems();
+                });
             });
-        })
+        });
 
+        $(document).ready(function () {
+            $('.a-catalog-selected-list').on("change", function () {
+                changeId($(this));
+                arrangeProductCards();
+            });
+        });
+
+        function changeId(el) {
+            $('#id').val($(el).val());
+        }
+
+        function clearFilters(isClearSearch) {
+            if (isClearSearch){
+                $('.a-catalog-search').reset;
+                $('#searchtext').val(null);
+            }
+            $('#id').val(null);
+            $('.a-catalog-selected-list').prop('selectedIndex', 0);
+            $('.a-catalog-filter').reset;
+            $(".a-catalog-product-table-row").empty();
+            closeNav(); 
+            applyFilters();
+        }
+
+        function applyFilters() {
+            if ($('#a-catalog-search').length) $('#a-catalog-search').submit();
+            else $('#a-catalog-filter').submit();
+        }
     </script>
+
 
 }

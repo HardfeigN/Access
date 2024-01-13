@@ -15,11 +15,19 @@ namespace Access_DataAccess.Repository
             _db = db;
         }
 
-        public IEnumerable<SelectListItem> GetAllDropdownList(string obj)
+        public IEnumerable<SelectListItem> GetAllDropdownList(string obj, bool addAllCategory = false)
         {
             if (obj == nameof(Category))
             {
                 List<SelectListItem> listItem = new List<SelectListItem>();
+                if (addAllCategory)
+                {
+                    listItem.Add(new SelectListItem
+                    {
+                        Text = "All categories",
+                        Value = DBNull.Value.ToString()
+                    });
+                }
                 listItem.AddRange(_db.Category.Select(i => new SelectListItem
                 {
                     Text = i.Name,

@@ -3,6 +3,7 @@ using Access_Models;
 using Access_Models.ViewModels;
 using Access_Utility;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 
 namespace Access.Controllers
 {
@@ -36,189 +37,30 @@ namespace Access.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(int? id, int? page = null)
+        public IActionResult Index(int? id = null, int? page = null, string? searchText = null, CatalogSection ? section = CatalogSection.Index)
         {
-            if(id == null)
+            if(page != null)
             {
-
-                if (page != null)
+                if ((section != CatalogSection.Search) || (section == CatalogSection.Search && searchText != null))
                 {
-                    return PartialView("_CatalogItemsBlock", GetItemsPage(page.GetValueOrDefault()));
+                    return PartialView("_CatalogItemsBlock", GetItemsPage(id: id, page: page, searchText: (section == CatalogSection.Search)? searchText : null, 
+                        byDecs: (section == CatalogSection.NewArrivals)));                    
                 }
-
-                CatalogVM = new CatalogVM()
-                {
-                    Products = _prodRepos.GetAll(includeProperties: $"{nameof(Category)}"),
-                    Categories = _catRepos.GetAll(),
-                    ProductAttributes = _prodAttrRepos.GetAll(includeProperties: $"{nameof(AttributeType)},{nameof(AttributeValue)}"),
-                    ProductImages = _prodImgRepos.GetAll(),
-                    AttributeTypes = _attrTypeRepos.GetAll(),
-                    AttributeValues = _attrValRepos.GetAll(),
-                    IndividualProductVMs = new List<IndividualProductVM>(),
-                    CurrentCategory = null,
-                };
-                List<IndividualProductVM> list = new List<IndividualProductVM>();
-                foreach (var product in CatalogVM.Products)
-                {
-                    IndividualProductVM prodVM = _prodRepos.GetIndividualProductVM(product.Id);
-                    list.Add(prodVM);
-                }
-                //CatalogVM.IndividualProductVMs = list;
-                CatalogVM.IndividualProductVMs = GetItemsPage(0);
+                return PartialView("_CatalogItemsBlock", null);
             }
-            else
+
+            CatalogVM = new CatalogVM()
             {
-                CatalogVM = new CatalogVM()
-                {
-                    Products = _prodRepos.GetAll(u => u.CategoryId == id, includeProperties: $"{nameof(Category)}"),
-                    Categories = _catRepos.GetAll(),
-                    AttributeTypes = _attrTypeRepos.GetAll(),
-                    AttributeValues = _attrValRepos.GetAll(),
-                    IndividualProductVMs = new List<IndividualProductVM>(),
-                    CurrentCategory = _catRepos.FirstOrDefault(u => u.Id == id)
-                };
-                List<IndividualProductVM> individualProduct = new List<IndividualProductVM>();
-                List<ProductAttribute> productAttributes = new List<ProductAttribute>();
-                List<ProductImage> productImages = new List<ProductImage>();
-                foreach (var product in CatalogVM.Products)
-                {
-                    productAttributes.AddRange(_prodAttrRepos.GetAll(u => u.ProductId == product.Id, includeProperties: $"{nameof(AttributeType)},{nameof(AttributeValue)}"));
-                    productImages.AddRange(_prodImgRepos.GetAll(u => u.ProductId == product.Id));
+                CategoryList = _prodRepos.GetAllDropdownList(nameof(Category), addAllCategory: true),
+                CurrentCategory = (id == null)? null : _catRepos.Find(id.GetValueOrDefault()),
+                CatalogSection = section.GetValueOrDefault(),
+                PageSize = _pageSize
+            };
 
-                    IndividualProductVM prodVM = _prodRepos.GetIndividualProductVM(product.Id);
-                    individualProduct.Add(prodVM);
-                }
-                CatalogVM.IndividualProductVMs = individualProduct;
-                CatalogVM.ProductAttributes = productAttributes;
-                CatalogVM.ProductImages = productImages;
-            }
-            return View(CatalogVM);
-        }
-
-        [HttpGet]
-        public IActionResult NewArrivals(int? id)
-        {
-            if(id == null)
+            if (section == CatalogSection.Search && searchText != null)
             {
-                CatalogVM = new CatalogVM()
-                {
-                    Products = _prodRepos.GetAll(includeProperties: $"{nameof(Category)}").TakeLast(8),
-                    Categories = _catRepos.GetAll(),
-                    ProductAttributes = _prodAttrRepos.GetAll(includeProperties: $"{nameof(AttributeType)},{nameof(AttributeValue)}"),
-                    ProductImages = _prodImgRepos.GetAll(),
-                    AttributeTypes = _attrTypeRepos.GetAll(),
-                    AttributeValues = _attrValRepos.GetAll(),
-                    IndividualProductVMs = new List<IndividualProductVM>(),
-                    CurrentCategory = null
-                };
-                List<IndividualProductVM> list = new List<IndividualProductVM>();
-                foreach (var product in CatalogVM.Products)
-                {
-                    IndividualProductVM prodVM = _prodRepos.GetIndividualProductVM(product.Id);
-                    list.Add(prodVM);
-                }
-                CatalogVM.IndividualProductVMs = list;
+                CatalogVM.SearchText = searchText;
             }
-            else
-            {
-                CatalogVM = new CatalogVM()
-                {
-                    Products = _prodRepos.GetAll(u => u.CategoryId == id, includeProperties: $"{nameof(Category)}").TakeLast(8),
-                    Categories = _catRepos.GetAll(),
-                    AttributeTypes = _attrTypeRepos.GetAll(),
-                    AttributeValues = _attrValRepos.GetAll(),
-                    IndividualProductVMs = new List<IndividualProductVM>(),
-                    CurrentCategory = _catRepos.FirstOrDefault(u => u.Id == id)
-                };
-                List<IndividualProductVM> individualProduct = new List<IndividualProductVM>();
-                List<ProductAttribute> productAttributes = new List<ProductAttribute>();
-                List<ProductImage> productImages = new List<ProductImage>();
-                foreach (var product in CatalogVM.Products)
-                {
-                    productAttributes.AddRange(_prodAttrRepos.GetAll(u => u.ProductId == product.Id, includeProperties: $"{nameof(AttributeType)},{nameof(AttributeValue)}"));
-                    productImages.AddRange(_prodImgRepos.GetAll(u => u.ProductId == product.Id));
-
-                    IndividualProductVM prodVM = _prodRepos.GetIndividualProductVM(product.Id);
-                    individualProduct.Add(prodVM);
-                }
-                CatalogVM.IndividualProductVMs = individualProduct;
-                CatalogVM.ProductAttributes = productAttributes;
-                CatalogVM.ProductImages = productImages;
-            }
-            return View(CatalogVM);
-        }
-
-        [HttpGet]
-        public IActionResult Search(string? searchText, int? id)
-        {
-            if(searchText == null)
-            {
-                CatalogVM = new CatalogVM()
-                {
-                    Products = new List<Product>(),
-                    Categories = _catRepos.GetAll(),
-                    IndividualProductVMs = new List<IndividualProductVM>(),
-                    CurrentCategory = null
-                };
-                List<IndividualProductVM> list = new List<IndividualProductVM>();
-                foreach (var product in CatalogVM.Products)
-                {
-                    IndividualProductVM prodVM = _prodRepos.GetIndividualProductVM(product.Id);
-                    list.Add(prodVM);
-                }
-                CatalogVM.IndividualProductVMs = list;
-            }
-            else
-            {
-                if (id == null)
-                {
-                    CatalogVM = new CatalogVM()
-                    {
-                        Products = _prodRepos.GetAll(u => u.Name.Contains(searchText) || u.Description.Contains(searchText) || u.ShortDesc.Contains(searchText) ,includeProperties: $"{nameof(Category)}"),
-                        Categories = _catRepos.GetAll(),
-                        ProductAttributes = _prodAttrRepos.GetAll(includeProperties: $"{nameof(AttributeType)},{nameof(AttributeValue)}"),
-                        ProductImages = _prodImgRepos.GetAll(),
-                        AttributeTypes = _attrTypeRepos.GetAll(),
-                        AttributeValues = _attrValRepos.GetAll(),
-                        IndividualProductVMs = new List<IndividualProductVM>(),
-                        CurrentCategory = null
-                    };
-                    List<IndividualProductVM> list = new List<IndividualProductVM>();
-                    foreach (var product in CatalogVM.Products)
-                    {
-                        IndividualProductVM prodVM = _prodRepos.GetIndividualProductVM(product.Id);
-                        list.Add(prodVM);
-                    }
-                    CatalogVM.IndividualProductVMs = list;
-                }
-                else
-                {
-                    CatalogVM = new CatalogVM()
-                    {
-                        Products = _prodRepos.GetAll(u => u.CategoryId == id && (u.Name.Contains(searchText) || u.Description.Contains(searchText) || u.ShortDesc.Contains(searchText)), includeProperties: $"{nameof(Category)}").TakeLast(8),
-                        Categories = _catRepos.GetAll(),
-                        AttributeTypes = _attrTypeRepos.GetAll(),
-                        AttributeValues = _attrValRepos.GetAll(),
-                        IndividualProductVMs = new List<IndividualProductVM>(),
-                        CurrentCategory = _catRepos.FirstOrDefault(u => u.Id == id)
-                    };
-                    List<IndividualProductVM> individualProduct = new List<IndividualProductVM>();
-                    List<ProductAttribute> productAttributes = new List<ProductAttribute>();
-                    List<ProductImage> productImages = new List<ProductImage>();
-                    foreach (var product in CatalogVM.Products)
-                    {
-                        productAttributes.AddRange(_prodAttrRepos.GetAll(u => u.ProductId == product.Id, includeProperties: $"{nameof(AttributeType)},{nameof(AttributeValue)}"));
-                        productImages.AddRange(_prodImgRepos.GetAll(u => u.ProductId == product.Id));
-
-                        IndividualProductVM prodVM = _prodRepos.GetIndividualProductVM(product.Id);
-                        individualProduct.Add(prodVM);
-                    }
-                    CatalogVM.IndividualProductVMs = individualProduct;
-                    CatalogVM.ProductAttributes = productAttributes;
-                    CatalogVM.ProductImages = productImages;
-                }
-            }
-            CatalogVM.SearchText = searchText;
             return View(CatalogVM);
         }
 
@@ -304,12 +146,27 @@ namespace Access.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private List<IndividualProductVM> GetItemsPage(int page = 1)
+        private List<IndividualProductVM> GetItemsPage(int? id = null, int? page = 0, string? searchText = null, bool? byDecs = false)
         {
-            var itemsToSkip = page * _pageSize;
+            int itemsToSkip = page.GetValueOrDefault() * _pageSize;
+            List<Product> products = new List<Product>();
+            Expression<Func<Product, bool>> filter = null;
+            if(searchText != null)
+            {
+                if (id != null)
+                    filter = u => (u.Name.Contains(searchText) || u.Description.Contains(searchText) || u.ShortDesc.Contains(searchText)) && u.CategoryId == id;
+                else filter = u => (u.Name.Contains(searchText) || u.Description.Contains(searchText) || u.ShortDesc.Contains(searchText));
+            }
+            else
+            {
+                if (id != null) filter = u => u.CategoryId == id;
+            }
 
-            List<Product> products = _prodRepos.GetAll().OrderBy(t => t.Id).Skip(itemsToSkip).Take(_pageSize).ToList();
+            if (!byDecs.GetValueOrDefault()) products = _prodRepos.GetAll(filter).OrderBy(t => t.Id).Skip(itemsToSkip).Take(_pageSize).ToList();
+            else products = _prodRepos.GetAll(filter).OrderByDescending(t => t.Id).Skip(itemsToSkip).Take(_pageSize).ToList();
+
             List<IndividualProductVM> individualProductVMs = new List<IndividualProductVM>();
+
             foreach (Product prod in products)
             {
                 individualProductVMs.Add(_prodRepos.GetIndividualProductVM(prod.Id));

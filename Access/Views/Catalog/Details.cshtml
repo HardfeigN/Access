@@ -147,6 +147,11 @@
                     <div class="a-catalog-product-table-body">
                         @{
                             <div class="a-catalog-product-table-row">
+
+                                <partial name="~/Views/Shared/_CatalogItemsBlock.cshtml" model="Model.IndividualProductVMs" />
+
+
+                            @*
                                 @for (int j = 0; j < 4; j++)
                                 {
                                     //display all products
@@ -161,6 +166,7 @@
                                         }
                                     </div>
                                 }
+                                *@
                             </div>
                         }
                     </div>
@@ -223,6 +229,14 @@
                 $(elem).attr('hidden', false);
                 $('.a-details-slider-images').css('height', $('[color = ' + $('.active-color').attr('id') + ']').length * (13.375 + 1.56) - 1.56 + 'rem');
             });
+            if ($('[color = ' + $('.active-color').attr('id') + ']').length <= 4) {
+                $('.a-details-slider-next-btn').hide();
+                $('.a-details-slider-prev-btn').hide();
+            }
+            else{
+                $('.a-details-slider-next-btn').show();
+                $('.a-details-slider-prev-btn').show();
+            }
         }
 
         function changeButton(el, isInCart) {
@@ -248,8 +262,25 @@
             });
         };
 
+        function arrangeProductCards() {
+            $('.a-IPC-containet').each(function (i, elem) {
+                $(elem).css('margin-bottom', '0');
+                $(elem).css('margin-top', '0');
+                if (i + 1 % 4 != 0) {
+                    $(elem).css('margin-right', '1.37rem');
+                }
+                if (i >= 4) {
+                    $(elem).css('margin-top', '1.37rem');
+                }
+                if (i == $('.a-IPC-containet').length) {
+                    $(elem).css('margin-bottom', '1.37rem');
+                }
+            });
+        }
+
         $(document).ready(function () {
             changeColor($('.active-color'));
+            arrangeProductCards();
         });
     </script>
 }

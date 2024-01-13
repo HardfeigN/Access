@@ -17,4 +17,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Access_Utility\Access_Utility.csproj" />
+  </ItemGroup>
+
 </Project>

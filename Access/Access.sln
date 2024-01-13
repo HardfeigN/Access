@@ -3,13 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access", "Access.csproj", "{DB06D7B4-FA8B-48B9-8FE6-58064643CA49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access", "Access.csproj", "{DB06D7B4-FA8B-48B9-8FE6-58064643CA49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access_DataAccess", "..\Access_DataAccess\Access_DataAccess.csproj", "{EAD8DB76-9B3A-4C7A-97CC-0F1A025AF62D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access_DataAccess", "..\Access_DataAccess\Access_DataAccess.csproj", "{EAD8DB76-9B3A-4C7A-97CC-0F1A025AF62D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access_Models", "..\Access_Models\Access_Models.csproj", "{EBD31416-9FBD-4658-9314-1CF7C4D4842A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access_Models", "..\Access_Models\Access_Models.csproj", "{EBD31416-9FBD-4658-9314-1CF7C4D4842A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7731D178-0A19-4BC7-A92C-BD88E92D8196} = {7731D178-0A19-4BC7-A92C-BD88E92D8196}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access_Utility", "..\Access_Utility\Access_Utility.csproj", "{7731D178-0A19-4BC7-A92C-BD88E92D8196}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access_Utility", "..\Access_Utility\Access_Utility.csproj", "{7731D178-0A19-4BC7-A92C-BD88E92D8196}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

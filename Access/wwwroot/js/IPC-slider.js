@@ -12,3 +12,6 @@ $(".a-IPC-img-container").mousemove(function (event) {
     var index = parseInt(relX * imagesCount / imgWidth);
     changeImageTo($(this).children('.a-IPC-imgages'), index);
 });
+$(".a-IPC-img-container").mouseout(function () {;
+    changeImageTo($(this).children('.a-IPC-imgages'), 0);
+});
