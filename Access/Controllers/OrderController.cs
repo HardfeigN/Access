@@ -37,13 +37,12 @@ namespace Access.Controllers
             OrderListVM orderListVM = new OrderListVM()
             {
                 OrderHList = _orderHRepos.GetAll(),
-                StatusList = _statusRepos.GetAllDropdownList(nameof(Status), false, false), //_statusRepos.GetAllDropdownList(nameof(OrderStatus), true) for search by id
+                StatusList = _statusRepos.GetAllDropdownList(nameof(Status), false, false),
                 OrderStatus = _orderSRepos.GetAll(includeProperties: nameof(Status))
             };
             List<OrderStatus> orderStatuses = new List<OrderStatus>();
             foreach (OrderHeader ordH in orderListVM.OrderHList)
             {
-                //OrderStatus orderStatus = _orderSRepos.GetAll(u => u.OrderHeaderId == ordH.Id, includeProperties: nameof(Status)).MaxBy(u => u.Date);
                 OrderStatus orderStatus = orderListVM.OrderStatus.Where(u => u.OrderHeaderId == ordH.Id).MaxBy(u => u.Date);
                 orderStatuses.Add(orderStatus);
                 ordH.OrderStatusName = orderStatus.Status.Name;
@@ -67,7 +66,6 @@ namespace Access.Controllers
 
             if (!string.IsNullOrEmpty(Status_Name) && Status_Name != "--Order Status--")
             {
-                //orderListVM.OrderStatus = orderListVM.OrderStatus.Where(u => u.Status.Name.ToLower().Contains(Status_Name.ToLower()));
                 orderListVM.OrderHList = orderListVM.OrderHList.Where(u => u.OrderStatusName.ToLower().Contains(Status_Name.ToLower()));
             }
 
@@ -101,12 +99,40 @@ namespace Access.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConvertToCart()
+        {
+            OrderVM.OrderDetail = _orderDRepos.GetAll(u => u.OrderHeaderId == OrderVM.OrderHeader.Id, includeProperties: nameof(ProductAttribute));
+
+            List<ProductImage> images = new List<ProductImage>();
+            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
+            foreach (OrderDetail idetail in OrderVM.OrderDetail)
+            {
+                ShoppingCart shoppingCart = new ShoppingCart()
+                {
+                    ProductId = idetail.ProductAttribute.ProductId,
+                    ProductAttributeId = idetail.ProductAttribute.Id,
+                    Quantity = idetail.Quantity
+                };
+                shoppingCartList.Add(shoppingCart);
+                images.Add(_prodImgRepos.GetAll(u => u.AttributeId == idetail.ProductAttribute.Id).MinBy(u => u.ImageNumber));
+            }
+            OrderVM.ProductImages = images;
+
+            HttpContext.Session.Clear();
+            HttpContext.Session.Set(WebConstants.SessionCart, shoppingCartList);
+            HttpContext.Session.Set(WebConstants.SessionInquiryId, OrderVM.OrderHeader.Id);
+            TempData[WebConstants.Success] = "Order was converted to cart successfully";
+            return RedirectToAction("Index", "Cart");
+        }
+
+        [HttpPost]
         public IActionResult NextStatus()
         {
             OrderStatus currentOrderStatus = _orderSRepos.GetAll(u => u.OrderHeaderId == OrderVM.OrderHeader.Id, includeProperties: nameof(Status)).MaxBy(u => u.Date);
             if (_statusRepos.FirstOrDefault(u => u.ParentId == currentOrderStatus.StatusId) == new Status())
             {
-                TempData[WebConstants.Success] = "Current Order status is the last.";
+                TempData[WebConstants.Success] = "Current Order status is the last";
                 return RedirectToAction(nameof(Index));
             }
             else
@@ -155,5 +181,22 @@ namespace Access.Controllers
             TempData[WebConstants.Success] = "Order Details updated successfully.";
             return RedirectToAction("Details", "Order", new { id = orderHeaderFromDb.Id });
         }
+
+        #region API CALLS
+
+        [HttpGet]
+        public IActionResult GetOrderList()
+        {
+            List<OrderHeader> orderHeaders = _orderHRepos.GetAll().ToList();
+            foreach (OrderHeader orderHeader in orderHeaders)
+            {
+                orderHeader.ShortOrderDate = _orderSRepos.GetAll(u => u.OrderHeaderId == orderHeader.Id).MinBy(u => u.Date).Date.ToShortDateString();
+                orderHeader.OrderStatusName = _orderSRepos.GetAll(u => u.OrderHeaderId == orderHeader.Id, includeProperties: nameof(Status)).MinBy(u => u.Date).Status.Name;
+            }
+            return Json(new { data = orderHeaders });
+        }
+
+        #endregion
+
     }
 }

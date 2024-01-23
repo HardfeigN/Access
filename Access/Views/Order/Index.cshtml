@@ -30,13 +30,16 @@
 
                         <div>
                             @Html.DropDownList("Status_Name", Model.StatusList, "--Order Status--", htmlAttributes: new { @class="a-order-form-row-item a-order-selected-list"})
-                            @*@Html.DropDownListFor(u => u.Status.Name, Model.OrderStatusList, "--Order Status--", new { @class=""}); for search by id (in OrderStatusList.value set id's')*@
                         </div>
 
                     </div>
 
                     <button class="a-order-btn" type="submit">
                         Search
+                    </button>
+
+                    <button class="a-order-btn" type="button" onclick="clearFilters()">
+                        Clear filters
                     </button>
 
                 </div>
@@ -68,3 +71,21 @@
     </div>
 </div>
 
+@section Scripts{
+    <script type="text/javascript">
+        function clearFilters(){
+            $('#searchName').val(null);
+            $('#searchEmail').val(null);
+            $('#searchPhone').val(null);
+            $('#Status_Name').prop('selectedIndex', 0);
+            $('.a-order-form').submit();
+        }
+        $(document).ready(function () {
+            $('*').filter(function () {
+                return $(this).css('z-index') > 100000;
+            }).each(function (i, elem) {
+                $(elem).css('z-index', -1 * $(elem).css('z-index'));
+            });
+        });
+    </script>
+}

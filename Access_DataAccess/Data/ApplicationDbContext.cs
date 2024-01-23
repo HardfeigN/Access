@@ -15,9 +15,6 @@ namespace Access_DataAccess.Data
         public DbSet<AttributeValue> AttributeValue { get; set; }
         public DbSet<AttributeType> AttributeType { get; set; }
         public DbSet<Category> Category { get; set; }
-        public DbSet<InquiryDetail> InquiryDetail { get; set; }
-        public DbSet<InquiryHeader> InquiryHeader { get; set; }
-        public DbSet<InquiryToOrder> InquiryToOrder { get; set; }
         public DbSet<OrderHeader> OrderHeader { get; set; }
         public DbSet<OrderDetail> OrderDetail { get; set; }
         public DbSet<OrderStatus> OrderStatus { get; set; }

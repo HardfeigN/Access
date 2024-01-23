@@ -124,22 +124,26 @@
                     }
 
                     <div class="a-order-details-product-item" style="border: none;">
-                    <div class="" style="width: 100%; justify-content: center;">
-                        <div class="" style="display: flex; justify-content: space-around;">
-                            @if(Model.OrderHeader.OrderStatusName != WebConstants.StatusShipped && Model.OrderHeader.OrderStatusName != WebConstants.StatusRefunded)
-                            {
-                                <input type="submit" formmethod="post" asp-action="NextStatus" class="a-order-details-btn-status" value="Change to @Model.Status.FirstOrDefault(u => u.ParentId == Model.OrderStatus.MaxBy(d => d.Date).StatusId).Name" />
-                            }
-                            @if(Model.OrderHeader.OrderStatusName != WebConstants.StatusRefunded && Model.OrderHeader.OrderStatusName != WebConstants.StatusCancelled)
-                            {
+                        <div class="" style="width: 100%; justify-content: space-around; height: 100%;display: flex; flex-direction: column;">
+                            <div class="" style="display: flex; width: 100%; height: 2rem;">
+                                @if(Model.OrderHeader.OrderStatusName != WebConstants.StatusShipped && Model.OrderHeader.OrderStatusName != WebConstants.StatusRefunded)
+                                {
+                                    <input type="submit" formmethod="post" asp-action="NextStatus" class="a-order-details-btn-status" value="Change to @Model.Status.FirstOrDefault(u => u.ParentId == Model.OrderStatus.MaxBy(d => d.Date).StatusId).Name" />
+                                }
+                                @if(Model.OrderHeader.OrderStatusName != WebConstants.StatusRefunded && Model.OrderHeader.OrderStatusName != WebConstants.StatusCancelled)
+                                {
                                     <input type="submit" formmethod="post" formaction="/Order/CancelOrder" class="a-order-details-btn-status" value="Cancel Order" formaction="" formmethod="post" />
+                                }
+                            </div>
+                            @if(Model.OrderHeader.OrderStatusName == WebConstants.StatusPending)
+                            {
+                                <div class="" style="display: flex; width: 100%; height: 2rem;">                            
+                                    <input type="submit" formmethod="post" formaction="/Order/ConvertToCart" class="a-order-details-btn-status" value="Convert to cart" formaction="" formmethod="post" />
+                                </div>
                             }
                         </div>
                     </div>
                 </div>
-                </div>
-
-
 
             </div>
         </div>

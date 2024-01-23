@@ -9,8 +9,8 @@ namespace Access_Models
     {
         [Key]
         public int Id { get; set; }
-        public string CreatedByUserId { get; set; }
-        [ForeignKey("CreatedByUserId")]
+        public string? ApproveUserId { get; set; }
+        [ForeignKey("ApproveUserId")]
         public virtual ApplicationUser? CreatedBy { get; set; }
         public string? CustomerUserId { get; set; }
         [ForeignKey("CustomerUserId")]
@@ -32,7 +32,9 @@ namespace Access_Models
         public string OrderStatusName { get; set; }
         [NotMapped]
         public DateTime CreationDate { get; set; }
-        
+        [NotMapped]
+        public string ShortOrderDate { get; set; }
+
         public OrderHeader()
         {
             Statuses = new List<OrderStatus>();

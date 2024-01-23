@@ -16,9 +16,6 @@ namespace Access.Controllers
         private readonly IProductRepository _prodRepos;
         private readonly IProductAttributeRepository _prodAttrRepos;
         private readonly IProductImageRepository _prodImgRepos;
-        private readonly IInquiryDetailRepository _inqDRepos;
-        private readonly IInquiryHeaderRepository _inqHRepos;
-        private readonly IInquiryToOrderRepository _inqToOrdRepos;
         private readonly IOrderDetailRepository _orderDRepos;
         private readonly IOrderHeaderRepository _orderHRepos;
         private readonly IOrderStatusRepository _orderSRepos;
@@ -26,14 +23,12 @@ namespace Access.Controllers
         [BindProperty]
         public ProductUserVM ProductUserVM { get; set; }
 
-        public CartController(IApplicationUserRepository userRepos, IProductRepository prodRepos, IInquiryDetailRepository inqDRepos, IInquiryHeaderRepository inqHRepos, IWebHostEnvironment webHostEnvironment,
+        public CartController(IApplicationUserRepository userRepos, IProductRepository prodRepos, IWebHostEnvironment webHostEnvironment,
             IOrderHeaderRepository orderHRepos, IOrderDetailRepository orderDRepos, IOrderStatusRepository orderSRepos, IStatusRepository statusRepos, IProductAttributeRepository prodAttrRepos,
-            IProductImageRepository prodImgRepos, IInquiryToOrderRepository inqToOrdRepos)
+            IProductImageRepository prodImgRepos)
         {
             _userRepos = userRepos;
             _prodRepos = prodRepos;
-            _inqDRepos = inqDRepos;
-            _inqHRepos = inqHRepos;
             _orderHRepos = orderHRepos;
             _orderDRepos = orderDRepos;
             _orderSRepos = orderSRepos;
@@ -41,7 +36,6 @@ namespace Access.Controllers
             _statusRepos = statusRepos;
             _prodAttrRepos = prodAttrRepos;
             _prodImgRepos = prodImgRepos;
-            _inqToOrdRepos = inqToOrdRepos;
         }
 
         [HttpGet]
@@ -53,14 +47,14 @@ namespace Access.Controllers
             {
                 if (HttpContext.Session.Get<int>(WebConstants.SessionInquiryId) != 0)
                 {
-                    InquiryHeader inquiryHeader = _inqHRepos.FirstOrDefault(u => u.Id == HttpContext.Session.Get<int>(WebConstants.SessionInquiryId));
+                    OrderHeader orderHeader = _orderHRepos.FirstOrDefault(u => u.Id == HttpContext.Session.Get<int>(WebConstants.SessionInquiryId));
                     applicationUser = new ApplicationUser()
                     {
-                        Id = inquiryHeader.ApplicationUserId,
-                        Email = inquiryHeader.Email,
-                        FullName = inquiryHeader.FullName,
-                        FullAddress = inquiryHeader.FullAddress,
-                        PhoneNumber = inquiryHeader.PhoneNumber
+                        Id = orderHeader.CustomerUserId,
+                        Email = orderHeader.Email,
+                        FullName = orderHeader.FullName,
+                        FullAddress = orderHeader.FullAddress,
+                        PhoneNumber = orderHeader.PhoneNumber
                     };
                 }
                 else
@@ -91,7 +85,7 @@ namespace Access.Controllers
             foreach(ProductAttribute prodAttr in prodAttrList)
             {
                 prodAttr.TempQuantity = shoppingCartList.FirstOrDefault(u => u.ProductAttributeId == prodAttr.Id).Quantity;
-                images.AddRange(_prodImgRepos.GetAll(u => u.AttributeId == prodAttr.Id));
+                images.Add(_prodImgRepos.GetAll(u => u.AttributeId == prodAttr.Id).MinBy(u => u.ImageNumber));
             }
 
             ProductUserVM = new ProductUserVM()
@@ -121,17 +115,82 @@ namespace Access.Controllers
 
             if (User.IsInRole(WebConstants.AdminRole))
             {
-                //we need to create an order
+                if (HttpContext.Session.Get<int>(WebConstants.SessionInquiryId) != 0)
+                {
+                    OrderHeader orderHeader = _orderHRepos.FirstOrDefault(u => u.Id == HttpContext.Session.Get<int>(WebConstants.SessionInquiryId));
+                    OrderStatus currentOrderStatus = _orderSRepos.GetAll(u => u.OrderHeaderId == orderHeader.Id, includeProperties: nameof(Status)).MaxBy(u => u.Date);
+                    if (currentOrderStatus.Status.Name == WebConstants.StatusPending)
+                    {
+                        float orderPrice = 0;
+                        foreach (ProductAttribute prodAttr in ProductUserVM.ProductAttributeList)
+                        {
+                            orderPrice += (float)Math.Round((ProductUserVM.ProductList.FirstOrDefault(u => u.Id == prodAttr.ProductId).Price * prodAttr.TempQuantity), 2);
+                        }
+
+                        orderHeader.ApproveUserId = claim.Value;
+                        orderHeader.OrderCost = orderPrice;
+                        orderHeader.FullName = ProductUserVM.ApplicationUser.FullName;
+                        orderHeader.FullAddress = ProductUserVM.ApplicationUser.FullAddress;
+                        orderHeader.Email = ProductUserVM.ApplicationUser.Email;
+                        orderHeader.PhoneNumber = ProductUserVM.ApplicationUser.PhoneNumber;
+
+                        OrderStatus orderStatus = new OrderStatus()
+                        {
+                            OrderHeader = _orderHRepos.FirstOrDefault(u => u.Id == orderHeader.Id),
+                            Date = DateTime.Now,
+                            Status = _statusRepos.FirstOrDefault(u => u.ParentId == currentOrderStatus.StatusId)
+                        };
+                        _orderSRepos.Add(orderStatus);
+                        _orderSRepos.Save();
+
+                        _orderDRepos.RemoveRange(_orderDRepos.GetAll(u => u.OrderHeaderId == orderHeader.Id));
+                        foreach (var prodAttr in ProductUserVM.ProductAttributeList)
+                        {
+                            if( prodAttr.TempQuantity > 0)
+                            {
+                                OrderDetail orderDetail = new OrderDetail()
+                                {
+                                    OrderHeaderId = orderHeader.Id,
+                                    PricePerPiece = _prodRepos.FirstOrDefault(u => u.Id == prodAttr.ProductId).Price,
+                                    Quantity = prodAttr.TempQuantity,
+                                    ProductAttributeId = prodAttr.Id
+                                };
+                                _orderDRepos.Add(orderDetail);
+                            }
+                        }
+                        _orderDRepos.Save();
+
+                        OrderVM orderVM = new OrderVM()
+                        {
+                            OrderHeader = new OrderHeader()
+                            {
+                                Id = orderHeader.Id
+                            }
+                        };
+                        TempData[WebConstants.Success] = "Order was approved successfully";
+                        return RedirectToAction("Index", "Order");
+                    }
+                    else
+                    {
+                        //status is not pending
+                        TempData[WebConstants.Success] = $"Error. Order status is not \"{WebConstants.StatusPending}\"";
+                        return View(ProductUserVM);
+                    }
+                }
+                TempData[WebConstants.Success] = "Error. Order not found";
+                return RedirectToAction("Index", "Order");
+            }
+            else
+            {
                 float orderPrice = 0;
                 foreach (ProductAttribute prodAttr in ProductUserVM.ProductAttributeList)
                 {
-                    orderPrice += (float)Math.Round((ProductUserVM.ProductList.FirstOrDefault(u =>  u.Id == prodAttr.ProductId).Price * prodAttr.TempQuantity), 2);
+                    orderPrice += (float)Math.Round((ProductUserVM.ProductList.FirstOrDefault(u => u.Id == prodAttr.ProductId).Price * prodAttr.TempQuantity), 2);
                 }
 
                 OrderHeader orderHeader = new OrderHeader()
                 {
-                    CreatedByUserId = claim.Value,
-                    CustomerUserId = ProductUserVM.ApplicationUser.Id,
+                    CustomerUserId = claim.Value,
                     OrderCost = orderPrice,
                     FullName = ProductUserVM.ApplicationUser.FullName,
                     FullAddress = ProductUserVM.ApplicationUser.FullAddress,
@@ -140,14 +199,6 @@ namespace Access.Controllers
                 };
                 _orderHRepos.Add(orderHeader);
                 _orderHRepos.Save();
-
-                InquiryToOrder inquiryToOrder = new InquiryToOrder()
-                {
-                    InquiryHeaderId = HttpContext.Session.Get<int>(WebConstants.SessionInquiryId),
-                    OrderHeaderId = orderHeader.Id
-                };
-                _inqToOrdRepos.Add(inquiryToOrder);
-                _inqToOrdRepos.Save();
 
                 OrderStatus orderStatus = new OrderStatus()
                 {
@@ -160,22 +211,21 @@ namespace Access.Controllers
 
                 foreach (var prodAttr in ProductUserVM.ProductAttributeList)
                 {
-                    OrderDetail orderDetail = new OrderDetail()
+                    if (prodAttr.TempQuantity > 0)
                     {
-                        OrderHeaderId = orderHeader.Id,
-                        PricePerPiece = _prodRepos.FirstOrDefault(u => u.Id == prodAttr.ProductId).Price,
-                        Quantity = prodAttr.TempQuantity,
-                        ProductAttributeId = prodAttr.Id
-                    };
-                    _orderDRepos.Add(orderDetail);
-
+                        OrderDetail orderDetail = new OrderDetail()
+                        {
+                            OrderHeaderId = orderHeader.Id,
+                            PricePerPiece = _prodRepos.FirstOrDefault(u => u.Id == prodAttr.ProductId).Price,
+                            Quantity = prodAttr.TempQuantity,
+                            ProductAttributeId = prodAttr.Id
+                        };
+                        _orderDRepos.Add(orderDetail);
+                    }
                 }
                 _orderDRepos.Save();
-                TempData[WebConstants.Success] = "Order created successfully";
-                return RedirectToAction(nameof(InquiryConfirmation), new { id = orderHeader.Id });
-            }
-            else
-            {
+
+                /*
                 InquiryHeader inquiryHeader = new InquiryHeader()
                 {
                     ApplicationUserId = claim.Value,
@@ -200,20 +250,12 @@ namespace Access.Controllers
                     _inqDRepos.Add(inquiryDetail);
 
                 }
-                _inqDRepos.Save();
                 TempData[WebConstants.Success] = "Inquiry submitted successfully";
+                _inqDRepos.Save();
+                */
+                TempData[WebConstants.Success] = "Order was created successfully";
             }
-            //return RedirectToAction(nameof(InquiryConfirmation));
             return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        public IActionResult InquiryConfirmation(int id = 0)
-        {
-            OrderHeader orderHeader = _orderHRepos.FirstOrDefault(u => u.Id == id);
-
-            HttpContext.Session.Clear();
-            return View(orderHeader);
         }
 
         [HttpGet]
@@ -229,7 +271,7 @@ namespace Access.Controllers
 
             shoppingCartList.Remove(shoppingCartList.FirstOrDefault(u => u.ProductId == id));
             HttpContext.Session.Set(WebConstants.SessionCart, shoppingCartList);
-            TempData[WebConstants.Success] = "Pruduct removed from your cart successfully";
+            TempData[WebConstants.Success] = "Pruduct was removed from your cart successfully";
             return RedirectToAction(nameof(Index));
         }
 
@@ -237,7 +279,7 @@ namespace Access.Controllers
         public IActionResult Clear(int id)
         {
             HttpContext.Session.Clear();
-            TempData[WebConstants.Success] = "Cart cleared successfully";
+            TempData[WebConstants.Success] = "Cart was cleared successfully";
             return RedirectToAction("Index","Catalog");
         }
     }

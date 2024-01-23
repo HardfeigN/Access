@@ -289,7 +289,7 @@
 .a-order-details-btn-status {
     width: 45%;
     height: 2rem;
-    margin: auto 0 auto 0;
+    margin: auto;
     outline: .125rem solid #FAF6F1;
     outline-offset: -.125rem;
     display: flex;
