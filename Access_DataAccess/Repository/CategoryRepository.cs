@@ -16,7 +16,7 @@ namespace Access_DataAccess.Repository
 
         public IEnumerable<SelectListItem> GetAllDropdownList(string obj)
         {
-            if (obj == nameof(Category)) //WebConstants.CategoryName
+            if (obj == nameof(Category))
             {
                 List<SelectListItem> listItem = new List<SelectListItem>
                 {
@@ -28,7 +28,7 @@ namespace Access_DataAccess.Repository
                 };
                 listItem.AddRange(_db.Category.Select(i => new SelectListItem
                 {
-                    Text = i.Name,
+                    Text = i.VisibleName,
                     Value = i.Id.ToString()
                 }));
                 return listItem;

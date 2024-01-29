@@ -38,8 +38,8 @@ namespace Access_DataAccess.Repository
 
                 listItem.AddRange(_db.Status.Select(i => new SelectListItem
                 {
-                    Text = i.Name,
-                    Value = addId ? i.Id.ToString() : i.Name
+                    Text = i.VisibleName,
+                    Value = addId ? i.Id.ToString() : i.VisibleName
                 }));
                 return listItem;
             }

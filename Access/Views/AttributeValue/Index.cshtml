@@ -28,8 +28,11 @@
                     <table class="a-management-table">
                         <thead>
                             <tr>
-                                <td width="80%">
-                                    Attribute Value
+                                <td width="30%">
+                                    Value
+                                </td>
+                                <td width="50%">
+                                    Visible Name
                                 </td>
                                 <td width="20%"></td>
                             </tr>
@@ -38,7 +41,8 @@
                             @foreach (var obj in Model)
                             {
                                 <tr class="a-management-table-tr-pd">
-                                    <td width="80%">@obj.Value</td>
+                                    <td width="30%">@obj.Value</td>
+                                    <td width="50%">@obj.VisibleName</td>
                                     <td width="20%" class="a-management-table-last-column">
                                         <div role="group" class="a-management-table-btn-group">
                                             <div class="a-management-table-btn-list">

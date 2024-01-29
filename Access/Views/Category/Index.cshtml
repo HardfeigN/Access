@@ -29,10 +29,13 @@
                     <table class="a-management-table">
                         <thead>
                             <tr>
-                                <td width="50%">
+                                <td width="20%">
                                 Category Name
                                 </td>
-                                <td width="30%">
+                                <td width="40%">
+                                Category Name
+                                </td>
+                                <td width="20%">
                                 Parent Category
                                 </td>
                                 <td width="20%"></td>
@@ -42,8 +45,16 @@
                             @foreach (var obj in Model)
                             {
                                 <tr class="a-management-table-tr-pd">
-                                    <td width="50%">@obj.Name</td>
-                                    <td width="30%">@obj.ParentId</td>
+                                    <td width="20%">@obj.Name</td>
+                                    <td width="40%">@obj.VisibleName</td>
+                                    @if (obj.ParentId != null)
+                                    {
+                                        <td width="20%">@Model.FirstOrDefault( u => u.Id == obj.ParentId).VisibleName</td>
+                                    }
+                                    else
+                                    {
+                                        <td width="20%"></td>
+                                    }
                                     <td width="20%" class="a-management-table-last-column">
                                         <div role="group" class="a-management-table-btn-group">
                                             <div class="a-management-table-btn-list">

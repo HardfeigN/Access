@@ -27,76 +27,67 @@
 
         <form class="a-cart-form-container" method="post">
             <input hidden asp-for="@Model.ApplicationUser.Id" />
-            @{
+            
+            @if (Model.ProductList.Count() > 0)
+            {
                 float totalPrice = 0;
                 <div class="a-cart-form-left">
 
                     <div class="a-cart-form-left-container">
 
-                        @if (Model.ProductList.Count() > 0)
+
+                        <div class="a-cart-form-left-title">
+                            ITEMS IN THE CART: @Model.ProductAttributeList.Count()
+                        </div>
+
+                        @for (int i = 0; i < Model.ProductList.Count(); i++)
                         {
-
-                            <div class="a-cart-form-left-title">
-                                ITEMS IN THE CART: @Model.ProductAttributeList.Count()
-                            </div>
-
-                            for (int i = 0; i < Model.ProductList.Count(); i++)
-                            {
-                                <input hidden asp-for="@Model.ProductList[i].Id" />
-                                <input hidden asp-for="@Model.ProductList[i].Price" />
-                            }
-
-                            for (int i = 0; i < Model.ProductAttributeList.Count(); i++)
-                            {
-                                <input hidden asp-for="@Model.ProductAttributeList[i].Id" />
-                                <input hidden asp-for="@Model.ProductAttributeList[i].ProductId" />
-
-                                ProductAttribute prodAttr = Model.ProductAttributeList[i];
-                                Product product = Model.ProductList.FirstOrDefault(u => u.Id == prodAttr.ProductId);
-                                totalPrice += product.Price * prodAttr.TempQuantity;
-                                <div class="a-cart-form-left-product-item">
-
-                                    <div class="a-cart-product-img">
-                                        @if (@Model.ProductImageList.FirstOrDefault(u => u.AttributeId == prodAttr.Id) != null)
-                                        {
-                                            <img loading="lazy" src="@WebConstants.ProductImagePath@product.Id\@Model.ProductImageList.FirstOrDefault(u => u.AttributeId == prodAttr.Id).Name" />
-                                        }
-                                        else
-                                        {
-                                            <img loading="lazy" src="" />
-                                        }
-                                    </div>
-
-                                    <div class="a-cart-product-info">
-                                        <div class="a-cart-product-name">
-                                            @product.Name
-                                        </div>
-                                        <div class="a-cart-product-attr">
-                                            @prodAttr.AttributeType.Name: @prodAttr.AttributeValue.Value
-                                        </div>
-                                    </div>
-
-                                    <div class="a-cart-product-count">
-                                        <div class="a-cart-product-count-buttons">
-                                            <a onclick="changeCount(this, -1)" class="a-cart-product-count-btn">−</a>
-                                            <input asp-for="@Model.ProductAttributeList[i].TempQuantity" class="a-cart-product-count-input" type="number" value="@Model.ProductAttributeList[i].TempQuantity" />
-                                            <a onclick="changeCount(this, 1)" class="a-cart-product-count-btn">+</a>
-                                        </div>
-                                    </div>
-
-                                    <div class="a-cart-product-price">
-                                        $@product.Price
-                                    </div>
-
-                                </div>                            
-                            }
-
-
+                            <input hidden asp-for="@Model.ProductList[i].Id" />
+                            <input hidden asp-for="@Model.ProductList[i].Price" />
                         }
-                        else
+
+                        @for (int i = 0; i < Model.ProductAttributeList.Count(); i++)
                         {
-                            <div class="a-cart-form-left-title">
-                                PLEASE ADD ITEMS TO CART
+                            <input hidden asp-for="@Model.ProductAttributeList[i].Id" />
+                            <input hidden asp-for="@Model.ProductAttributeList[i].ProductId" />
+
+                            ProductAttribute prodAttr = Model.ProductAttributeList[i];
+                            Product product = Model.ProductList.FirstOrDefault(u => u.Id == prodAttr.ProductId);
+                            totalPrice += product.Price * prodAttr.TempQuantity;
+                            <div class="a-cart-form-left-product-item">
+
+                                <div class="a-cart-product-img">
+                                    @if (@Model.ProductImageList.FirstOrDefault(u => u.AttributeId == prodAttr.Id) != null)
+                                    {
+                                        <img loading="lazy" src="@WebConstants.ProductImagePath@product.Id\@Model.ProductImageList.FirstOrDefault(u => u.AttributeId == prodAttr.Id).Name" />
+                                    }
+                                    else
+                                    {
+                                        <img loading="lazy" src="" />
+                                    }
+                                </div>
+
+                                <div class="a-cart-product-info">
+                                    <div class="a-cart-product-name">
+                                        @product.Name
+                                    </div>
+                                    <div class="a-cart-product-attr">
+                                        @prodAttr.AttributeType.VisibleName: @prodAttr.AttributeValue.VisibleName
+                                    </div>
+                                </div>
+
+                                <div class="a-cart-product-count">
+                                    <div class="a-cart-product-count-buttons">
+                                        <a onclick="changeCount(this, -1)" class="a-cart-product-count-btn">−</a>
+                                        <input asp-for="@Model.ProductAttributeList[i].TempQuantity" class="a-cart-product-count-input" type="number" value="@Model.ProductAttributeList[i].TempQuantity" />
+                                        <a onclick="changeCount(this, 1)" class="a-cart-product-count-btn">+</a>
+                                    </div>
+                                </div>
+
+                                <div class="a-cart-product-price">
+                                    $@product.Price
+                                </div>
+
                             </div>
 
                         }
@@ -201,7 +192,13 @@
                 </div>
 
             }
-
+            else
+            {
+                <div class="a-cart-form-left-title">
+                    PLEASE ADD ITEMS TO CART
+                </div>
+            }
+            
 
         </form>
 

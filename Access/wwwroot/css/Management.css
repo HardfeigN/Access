@@ -68,6 +68,8 @@
 }
 
 .a-management-table-tr-pd td {
+    height: 5rem;
+    line-height: normal;
     padding-left: 2rem;
 }
 
@@ -106,7 +108,6 @@
 
 .a-management-table-btn-list {
     width: 6.875rem;
-    height: 100%;
     display: flex;
     justify-content: space-between;
     margin: auto;

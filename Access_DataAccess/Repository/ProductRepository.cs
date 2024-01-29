@@ -30,7 +30,7 @@ namespace Access_DataAccess.Repository
                 }
                 listItem.AddRange(_db.Category.Select(i => new SelectListItem
                 {
-                    Text = i.Name,
+                    Text = i.VisibleName,
                     Value = i.Id.ToString()
                 }));
                 return listItem;

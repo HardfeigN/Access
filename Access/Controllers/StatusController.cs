@@ -100,7 +100,7 @@ namespace Access.Controllers
                 Status = obj,
                 StatusSelectList = _statusRepos.GetAllDropdownList(nameof(Status), true, true)
             };
-            return View(obj);
+            return View(StatusVM);
         }
 
         [HttpPost]

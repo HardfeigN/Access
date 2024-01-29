@@ -41,6 +41,17 @@
                     </div>
 
                     <div class="a-management-form-item">
+                        <div class="a-management-form-label">
+                            <label asp-for="VisibleName">This name will be visible to the customers</label>
+                        </div>
+                        <div class="a-management-form-inp-cont">
+                            <input asp-for="VisibleName" list="AttributeType" class="a-management-form-input">
+                            <span asp-validation-for="VisibleName" class="text-danger" class="a-management-form-span"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="a-management-form-item">
                         <div class="a-management-form-buttons">
 
                             <div class="a-management-form-btn-item">

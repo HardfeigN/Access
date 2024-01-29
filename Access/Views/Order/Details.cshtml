@@ -128,7 +128,7 @@
                             <div class="" style="display: flex; width: 100%; height: 2rem;">
                                 @if(Model.OrderHeader.OrderStatusName != WebConstants.StatusShipped && Model.OrderHeader.OrderStatusName != WebConstants.StatusRefunded)
                                 {
-                                    <input type="submit" formmethod="post" asp-action="NextStatus" class="a-order-details-btn-status" value="Change to @Model.Status.FirstOrDefault(u => u.ParentId == Model.OrderStatus.MaxBy(d => d.Date).StatusId).Name" />
+                                    <input type="submit" formmethod="post" asp-action="NextStatus" class="a-order-details-btn-status" value="Change to @Model.Status.FirstOrDefault(u => u.ParentId == Model.OrderStatus.MaxBy(d => d.Date).StatusId).VisibleName" />
                                 }
                                 @if(Model.OrderHeader.OrderStatusName != WebConstants.StatusRefunded && Model.OrderHeader.OrderStatusName != WebConstants.StatusCancelled)
                                 {

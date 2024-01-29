@@ -92,7 +92,7 @@ namespace Access.Controllers
                     orderDList.AddRange(_ordDRepos.GetAll(u => u.OrderHeaderId == ordH.Id));
                     orderSList.Add(_ordSRepos.GetAll(u => u.OrderHeaderId == ordH.Id).MaxBy(s => s.Date));
                     ordH.CreationDate = _ordSRepos.GetAll(u => u.OrderHeaderId == ordH.Id).MinBy(s => s.Date).Date;
-                    ordH.OrderStatusName = _ordSRepos.GetAll(u => u.OrderHeaderId == ordH.Id, includeProperties: nameof(Status)).MaxBy(s => s.Date).Status.Name;
+                    ordH.OrderStatusName = _ordSRepos.GetAll(u => u.OrderHeaderId == ordH.Id, includeProperties: nameof(Status)).MaxBy(s => s.Date).Status.VisibleName;
                 }
                 foreach (OrderDetail ordD in orderDList)
                 {

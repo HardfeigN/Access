@@ -224,35 +224,6 @@ namespace Access.Controllers
                     }
                 }
                 _orderDRepos.Save();
-
-                /*
-                InquiryHeader inquiryHeader = new InquiryHeader()
-                {
-                    ApplicationUserId = claim.Value,
-                    FullName = ProductUserVM.ApplicationUser.FullName,
-                    Email = ProductUserVM.ApplicationUser.Email,
-                    PhoneNumber = ProductUserVM.ApplicationUser.PhoneNumber,
-                    FullAddress = ProductUserVM.ApplicationUser.FullAddress,
-                    InquiryDate = DateTime.Now
-                };
-
-                _inqHRepos.Add(inquiryHeader);
-                _inqHRepos.Save();
-
-                foreach (var prodAttr in ProductUserVM.ProductAttributeList)
-                {
-                    InquiryDetail inquiryDetail = new InquiryDetail()
-                    {
-                        InquiryHeaderId = inquiryHeader.Id,
-                        ProductAttributeId = prodAttr.Id,
-                        Quantity = prodAttr.TempQuantity
-                    };
-                    _inqDRepos.Add(inquiryDetail);
-
-                }
-                TempData[WebConstants.Success] = "Inquiry submitted successfully";
-                _inqDRepos.Save();
-                */
                 TempData[WebConstants.Success] = "Order was created successfully";
             }
             return RedirectToAction("Index", "Home");

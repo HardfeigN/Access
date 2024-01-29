@@ -21,7 +21,7 @@ namespace Access_DataAccess.Repository
                 List<SelectListItem> listItem = new List<SelectListItem>();
                 listItem.AddRange(_db.AttributeType.Select(i => new SelectListItem
                 {
-                    Text = i.Name,
+                    Text = i.VisibleName,
                     Value = i.Id.ToString()
                 }));
                 return listItem;
@@ -31,7 +31,7 @@ namespace Access_DataAccess.Repository
                 List<SelectListItem> listItem = new List<SelectListItem>();
                 listItem.AddRange(_db.AttributeValue.Select(i => new SelectListItem
                 {
-                    Text = i.Value,
+                    Text = i.VisibleName,
                     Value = i.Id.ToString()
                 }));
                 return listItem;
