@@ -82,12 +82,14 @@
                                             {
                                                 if (i == 0)
                                                 {
-                                                    <div class="a-details-product-color-item active-color" id="@Model.ProductAttributes.ElementAt(i).Id" onclick="changeColor(this)" style="background: @Model.ProductAttributes.ElementAt(i).AttributeValue.Value;outline: 0.5rem solid #FAF6F1;outline-offset: -0.5rem;">
+                                                    <div class="a-details-product-color-item active-color" id="@Model.ProductAttributes.ElementAt(i).Id" isinstock="@Model.ProductAttributes.ElementAt(i).IsInStock.ToString()" onclick="changeColor(this)" style="background: @Model.ProductAttributes.ElementAt(i).AttributeValue.Value;outline: 0.5rem solid #FAF6F1;outline-offset: -0.5rem;">
+                                                        <div class="a-details-krest" hidden></div>
                                                     </div>
                                                 }
                                                 else
                                                 {
-                                                    <div class="a-details-product-color-item" id="@Model.ProductAttributes.ElementAt(i).Id" onclick="changeColor(this)" style="background: @Model.ProductAttributes.ElementAt(i).AttributeValue.Value;">
+                                                    <div class="a-details-product-color-item" id="@Model.ProductAttributes.ElementAt(i).Id" isinstock="@Model.ProductAttributes.ElementAt(i).IsInStock.ToString()" onclick="changeColor(this)" style="background: @Model.ProductAttributes.ElementAt(i).AttributeValue.Value;">
+                                                        <div class="a-details-krest" hidden></div>
                                                     </div>
                                                 }
                                             }
@@ -150,23 +152,6 @@
 
                                 <partial name="~/Views/Shared/_CatalogItemsBlock.cshtml" model="Model.IndividualProductVMs" />
 
-
-                            @*
-                                @for (int j = 0; j < 4; j++)
-                                {
-                                    //display all products
-                                    <div class="a-catalog-product-table-cell">
-                                        @if (j < Model.IndividualProductVMs.Count())
-                                        {
-                                            <partial name="~/Views/Shared/_IndividualProductCard.cshtml" model="Model.IndividualProductVMs.ElementAt(j)" />
-                                        }
-                                        else
-                                        {
-                                            <partial name="~/Views/Shared/_IndividualProductCard.cshtml" model="@null" />
-                                        }
-                                    </div>
-                                }
-                                *@
                             </div>
                         }
                     </div>
@@ -240,13 +225,21 @@
         }
 
         function changeButton(el, isInCart) {
-            if (isInCart == true) {
-                $('.a-details-product-addtocart-button').html('Remove from Cart');
-                $('.a-details-product-addtocart-button').attr('formaction', '/Catalog/RemoveFromCart/' + $('.a-details-product-id').val());
-            }
-            else {
-                $('.a-details-product-addtocart-button').html('Add to Cart');
-                $('.a-details-product-addtocart-button').attr('formaction', '/Catalog/Details/' + $('.a-details-product-id').val());
+
+            if ($(el).attr('isinstock') != 'True') {
+                $('.a-details-product-addtocart-button').html('SOLD OUT');
+                $('.a-details-product-addtocart-button').attr('disabled', true);
+            } else {
+                $('.a-details-product-addtocart-button').attr('disabled', false);
+
+                if (isInCart == true) {
+                    $('.a-details-product-addtocart-button').html('REMOVE FROM CART');
+                    $('.a-details-product-addtocart-button').attr('formaction', '/Catalog/RemoveFromCart/' + $('.a-details-product-id').val());
+                }
+                else {
+                    $('.a-details-product-addtocart-button').html('ADD TO CART');
+                    $('.a-details-product-addtocart-button').attr('formaction', '/Catalog/Details/' + $('.a-details-product-id').val());
+                }
             }
         }
 
@@ -281,6 +274,15 @@
         $(document).ready(function () {
             changeColor($('.active-color'));
             arrangeProductCards();
+        });
+
+        $(document).ready(function () {
+            changeColor($('.active-color'));
+            $('.a-details-product-color-item').each(function (i, elem) {
+                if ($(elem).attr('isinstock') != 'True') {
+                    $(elem).children('.a-details-krest').attr('hidden', false);
+                }
+            });
         });
     </script>
 }

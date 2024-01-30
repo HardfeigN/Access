@@ -421,6 +421,7 @@
     flex-shrink: 0;
     outline: 0.1rem solid #FAF6F1;
     outline-offset: -0.1rem;
+    overflow: hidden;
 }
 
 .a-details-product-color-item-empty {
@@ -428,6 +429,30 @@
     height: 3.25rem;
     flex-shrink: 0;
     outline: none;
+}
+
+
+.a-details-krest {
+    position: relative;
+    top: 38%;
+    left: -22%;
+}
+
+.a-details-krest:after {
+    content: "";
+    border: .1rem solid #00000070;
+    position: absolute;
+    width: 150%;
+    height: .3rem;
+    background: #FAF6F1;
+}
+
+.a-details-krest:before {
+    transform: rotate(45deg);
+}
+
+.a-details-krest:after {
+    transform: rotate(-45deg);
 }
 
 .a-details-product-addtocart-button {

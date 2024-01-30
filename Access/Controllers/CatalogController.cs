@@ -113,16 +113,21 @@ namespace Access.Controllers
         [HttpPost, ActionName("Details")]
         public IActionResult DetailsPost(int id, int prodColor)
         {
-            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
-            if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart) != null
-                && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).Count() > 0)
+            ProductAttribute attr = _prodAttrRepos.FirstOrDefault(u => u.Id == prodColor);
+            if (attr != null && attr.IsInStock)
             {
-                shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WebConstants.SessionCart);
-            }
-            shoppingCartList.Add(new ShoppingCart { ProductId = id, Quantity = 1, ProductAttributeId = prodColor });
-            HttpContext.Session.Set(WebConstants.SessionCart, shoppingCartList);
+                List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
+                if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart) != null
+                    && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).Count() > 0)
+                {
+                    shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WebConstants.SessionCart);
+                }
+                shoppingCartList.Add(new ShoppingCart { ProductId = id, Quantity = 1, ProductAttributeId = prodColor });
+                HttpContext.Session.Set(WebConstants.SessionCart, shoppingCartList);
 
-            return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
+            }
+            return NotFound();
         }
 
         [HttpPost]

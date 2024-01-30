@@ -17,6 +17,8 @@
 
     <div class="a-cart-container">
 
+        @if (Model.ProductList.Count() > 0)
+        {
         <div class="a-cart-title-line">
 
             <div class="a-cart-title-line-text">Cart</div>
@@ -25,182 +27,201 @@
         </div>
 
 
-        <form class="a-cart-form-container" method="post">
-            <input hidden asp-for="@Model.ApplicationUser.Id" />
-            
-            @if (Model.ProductList.Count() > 0)
-            {
-                float totalPrice = 0;
-                <div class="a-cart-form-left">
+            <form class="a-cart-form-container" method="post">
+                <input hidden asp-for="@Model.ApplicationUser.Id" />
+                    @{
 
-                    <div class="a-cart-form-left-container">
+                    float totalPrice = 0;
+                    <div class="a-cart-form-left">
 
+                        <div class="a-cart-form-left-container">
 
-                        <div class="a-cart-form-left-title">
-                            ITEMS IN THE CART: @Model.ProductAttributeList.Count()
+                            <div class="a-cart-form-left-title">
+                                ITEMS IN THE CART: @Model.ProductAttributeList.Count()
+                            </div>
+
+                            @for (int i = 0; i < Model.ProductList.Count(); i++)
+                            {
+                                <input hidden asp-for="@Model.ProductList[i].Id" />
+                                <input hidden asp-for="@Model.ProductList[i].Price" />
+                            }
+
+                            @for (int i = 0; i < Model.ProductAttributeList.Count(); i++)
+                            {
+                                <input hidden asp-for="@Model.ProductAttributeList[i].Id" />
+                                <input hidden asp-for="@Model.ProductAttributeList[i].ProductId" />
+                                <input hidden asp-for="@Model.ProductAttributeList[i].IsInStock" />
+
+                                ProductAttribute prodAttr = Model.ProductAttributeList[i];
+                                Product product = Model.ProductList.FirstOrDefault(u => u.Id == prodAttr.ProductId);
+                                totalPrice += (prodAttr.IsInStock) ? product.Price * prodAttr.TempQuantity : 0;
+                                string attrClasses = "a-cart-form-left-product-item" + ((prodAttr.IsInStock) ? "" : " a-cart-product-soldout");
+                                <div class="@attrClasses">
+
+                                    <div class="a-cart-product-img">
+                                        @if (@Model.ProductImageList.FirstOrDefault(u => u.AttributeId == prodAttr.Id) != null)
+                                        {
+                                            <img loading="lazy" src="@WebConstants.ProductImagePath@product.Id\@Model.ProductImageList.FirstOrDefault(u => u.AttributeId == prodAttr.Id).Name" />
+                                        }
+                                        else
+                                        {
+                                            <img loading="lazy" src="" />
+                                        }
+                                    </div>
+
+                                    <div class="a-cart-product-info">
+                                        <div class="a-cart-product-name">
+                                            @product.Name
+                                        </div>
+                                            @if (prodAttr.IsInStock)
+                                            {
+                                                <div class="a-cart-product-attr">
+                                                    @prodAttr.AttributeType.VisibleName: @prodAttr.AttributeValue.VisibleName
+                                                </div>
+                                            }
+                                            else 
+                                            {
+                                                <div class="a-cart-product-attr">
+                                                    @prodAttr.AttributeType.VisibleName: @prodAttr.AttributeValue.VisibleName / sold out
+                                                </div>
+                                            }
+                                    </div>
+
+                                    <div class="a-cart-product-count">
+                                        <div class="a-cart-product-count-buttons">
+                                            @if (prodAttr.IsInStock)
+                                            {
+                                                <a onclick="changeCount(this, -1)" class="a-cart-product-count-btn">−</a>
+                                                <input asp-for="@Model.ProductAttributeList[i].TempQuantity" class="a-cart-product-count-input" type="number" value="@Model.ProductAttributeList[i].TempQuantity" />
+                                                <a onclick="changeCount(this, 1)" class="a-cart-product-count-btn">+</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="a-cart-product-del-btn">
+                                                    <img src="~/Images/Pages/_sheareout/delete_forever.svg" class="a-cart-product-icon-del" />
+                                                </a>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <div class="a-cart-product-price">
+                                        $@product.Price
+                                    </div>
+
+                                </div>
+
+                            }
+
                         </div>
 
-                        @for (int i = 0; i < Model.ProductList.Count(); i++)
-                        {
-                            <input hidden asp-for="@Model.ProductList[i].Id" />
-                            <input hidden asp-for="@Model.ProductList[i].Price" />
-                        }
 
-                        @for (int i = 0; i < Model.ProductAttributeList.Count(); i++)
-                        {
-                            <input hidden asp-for="@Model.ProductAttributeList[i].Id" />
-                            <input hidden asp-for="@Model.ProductAttributeList[i].ProductId" />
+                    </div>
 
-                            ProductAttribute prodAttr = Model.ProductAttributeList[i];
-                            Product product = Model.ProductList.FirstOrDefault(u => u.Id == prodAttr.ProductId);
-                            totalPrice += product.Price * prodAttr.TempQuantity;
-                            <div class="a-cart-form-left-product-item">
+                    <div class="a-cart-form-right">
 
-                                <div class="a-cart-product-img">
-                                    @if (@Model.ProductImageList.FirstOrDefault(u => u.AttributeId == prodAttr.Id) != null)
+                        <div class="a-cart-form-right-container">
+
+                            <div class="a-cart-form-right-title a-cart-form-right-list-item">
+                                Fill in the details:
+                            </div>
+
+                            <div class="a-cart-form-right-list-item">
+
+                                <div class="a-cart-form-right-list-item-name">
+                                    Phone
+                                </div>
+
+                                <input asp-for="@Model.ApplicationUser.PhoneNumber" type="text" class="a-cart-form-right-list-item-input" value="@Model.ApplicationUser.PhoneNumber" />
+
+                            </div>
+
+                            <div class="a-cart-form-right-list-item">
+
+                                <div class="a-cart-form-right-list-item-name">
+                                    Full Name
+                                </div>
+
+                                <input asp-for="@Model.ApplicationUser.FullName" type="text" class="a-cart-form-right-list-item-input" value="@Model.ApplicationUser.FullName" />
+
+                            </div>
+
+                            <div class="a-cart-form-right-list-item">
+
+                                <div class="a-cart-form-right-list-item-name">
+                                    E-mail
+                                </div>
+
+                                <input asp-for="@Model.ApplicationUser.Email" type="text" class="a-cart-form-right-list-item-input" value="@Model.ApplicationUser.Email" />
+
+                            </div>
+
+                            <div class="a-cart-form-right-list-item">
+
+                                <div class="a-cart-form-right-list-item-name">
+                                    Address
+                                </div>
+
+                                <textarea asp-for="@Model.ApplicationUser.FullAddress" class="a-cart-form-right-list-item-input">@Model.ApplicationUser.FullAddress</textarea>
+
+                            </div>
+
+                            <div class="a-cart-form-right-list-item">
+
+                                <div class="a-cart-form-right-list-item-name">
+                                    Price: @totalPrice$
+                                </div>
+                            </div>
+
+                            <div class="a-cart-form-right-list-item">
+
+                                @if (Model.ProductList.Count() > 0)
+                                {
+                                    @if (User.IsInRole(WebConstants.AdminRole))
                                     {
-                                        <img loading="lazy" src="@WebConstants.ProductImagePath@product.Id\@Model.ProductImageList.FirstOrDefault(u => u.AttributeId == prodAttr.Id).Name" />
+                                        <button type="submit" onclick="return validateInput()" class="a-cart-form-right-button">
+                                            <div class="a-cart-form-right-button-text">
+                                                Submit Order
+                                            </div>
+                                        </button>
                                     }
                                     else
                                     {
-                                        <img loading="lazy" src="" />
+                                        <button type="submit" onclick="return validateInput()" class="a-cart-form-right-button">
+                                            <div class="a-cart-form-right-button-text">
+                                                Submit Inquiry
+                                            </div> 
+                                        </button>
                                     }
-                                </div>
-
-                                <div class="a-cart-product-info">
-                                    <div class="a-cart-product-name">
-                                        @product.Name
-                                    </div>
-                                    <div class="a-cart-product-attr">
-                                        @prodAttr.AttributeType.VisibleName: @prodAttr.AttributeValue.VisibleName
-                                    </div>
-                                </div>
-
-                                <div class="a-cart-product-count">
-                                    <div class="a-cart-product-count-buttons">
-                                        <a onclick="changeCount(this, -1)" class="a-cart-product-count-btn">−</a>
-                                        <input asp-for="@Model.ProductAttributeList[i].TempQuantity" class="a-cart-product-count-input" type="number" value="@Model.ProductAttributeList[i].TempQuantity" />
-                                        <a onclick="changeCount(this, 1)" class="a-cart-product-count-btn">+</a>
-                                    </div>
-                                </div>
-
-                                <div class="a-cart-product-price">
-                                    $@product.Price
-                                </div>
-
-                            </div>
-
-                        }
-
-                    </div>
-
-
-                </div>
-
-                <div class="a-cart-form-right">
-
-                    <div class="a-cart-form-right-container">
-
-                        <div class="a-cart-form-right-title a-cart-form-right-list-item">
-                            Fill in the details:
-                        </div>
-
-                        <div class="a-cart-form-right-list-item">
-
-                            <div class="a-cart-form-right-list-item-name">
-                                Phone
-                            </div>
-
-                            <input asp-for="@Model.ApplicationUser.PhoneNumber" type="text" class="a-cart-form-right-list-item-input" value="@Model.ApplicationUser.PhoneNumber" />
-
-                        </div>
-
-                        <div class="a-cart-form-right-list-item">
-
-                            <div class="a-cart-form-right-list-item-name">
-                                Full Name
-                            </div>
-
-                            <input asp-for="@Model.ApplicationUser.FullName" type="text" class="a-cart-form-right-list-item-input" value="@Model.ApplicationUser.FullName" />
-
-                        </div>
-
-                        <div class="a-cart-form-right-list-item">
-
-                            <div class="a-cart-form-right-list-item-name">
-                                E-mail
-                            </div>
-
-                            <input asp-for="@Model.ApplicationUser.Email" type="text" class="a-cart-form-right-list-item-input" value="@Model.ApplicationUser.Email" />
-
-                        </div>
-
-                        <div class="a-cart-form-right-list-item">
-
-                            <div class="a-cart-form-right-list-item-name">
-                                Address
-                            </div>
-
-                            <textarea asp-for="@Model.ApplicationUser.FullAddress" class="a-cart-form-right-list-item-input">@Model.ApplicationUser.FullAddress</textarea>
-
-                        </div>
-
-                        <div class="a-cart-form-right-list-item">
-
-                            <div class="a-cart-form-right-list-item-name">
-                                Price: @totalPrice$
-                            </div>
-                        </div>
-
-                        <div class="a-cart-form-right-list-item">
-
-                            @if (Model.ProductList.Count() > 0)
-                            {
-                                @if (User.IsInRole(WebConstants.AdminRole))
-                                {
-                                    <button type="submit" onclick="return validateInput()" class="a-cart-form-right-button">
-                                        <div class="a-cart-form-right-button-text">
-                                            Submit Order
-                                        </div>
-                                    </button>
                                 }
                                 else
                                 {
-                                    <button type="submit" onclick="return validateInput()" class="a-cart-form-right-button">
+                                    <button disabled class="a-cart-form-right-button">
                                         <div class="a-cart-form-right-button-text">
-                                            Submit Inquiry
-                                        </div> 
+                                            Cart is empty
+                                        </div>
                                     </button>
                                 }
-                            }
-                            else
-                            {
-                                <button disabled class="a-cart-form-right-button">
-                                    <div class="a-cart-form-right-button-text">
-                                        Cart is empty
-                                    </div>
-                                </button>
-                            }
+
+
+                            </div>
+
 
 
                         </div>
 
-
-
                     </div>
 
-                </div>
-
-            }
-            else
-            {
+                    }
+            </form>
+        }
+        else
+        {
+            <div class="a-cart-title-line">
                 <div class="a-cart-form-left-title">
                     PLEASE ADD ITEMS TO CART
                 </div>
-            }
-            
-
-        </form>
+            </div>
+        }
 
     </div>
 

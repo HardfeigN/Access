@@ -146,7 +146,7 @@ namespace Access.Controllers
                         _orderDRepos.RemoveRange(_orderDRepos.GetAll(u => u.OrderHeaderId == orderHeader.Id));
                         foreach (var prodAttr in ProductUserVM.ProductAttributeList)
                         {
-                            if( prodAttr.TempQuantity > 0)
+                            if( prodAttr.TempQuantity > 0 && prodAttr.IsInStock)
                             {
                                 OrderDetail orderDetail = new OrderDetail()
                                 {
@@ -211,7 +211,7 @@ namespace Access.Controllers
 
                 foreach (var prodAttr in ProductUserVM.ProductAttributeList)
                 {
-                    if (prodAttr.TempQuantity > 0)
+                    if (prodAttr.TempQuantity > 0 && prodAttr.IsInStock)
                     {
                         OrderDetail orderDetail = new OrderDetail()
                         {
